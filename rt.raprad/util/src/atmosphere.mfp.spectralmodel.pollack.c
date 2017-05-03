@@ -20,35 +20,18 @@
 #define DENSITY_WATER            1.000   	/* gm/cm^3 */
 #define GWATERVAPOR		 18.016 	/* Molecular Weight of Water Vapor (g/mol) */
 
-double bext_gasamounts_atmosphere();
-double bext_watervapor_cntnm_atmosphere();
+double bext_gasamounts_atmosphere(int, double *, double *, double *, double, int, double, double, double);
+double bext_watervapor_cntnm_atmosphere(int, double *, double *, double *, double *, double *, double, int, double, double *, double *);
 
 /**********************************************************************/
 
-void
-mfp_spectralmodel_pollack(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
-
-  int
-    i,
-    j,
-    k;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+void mfp_spectralmodel_pollack(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, 
+   double *cvd, double *ucvd, double *bi
+)
 {
-  double
-    z;
+  double z;
 
   /*--------------------------------------------------------------*/
   /* Mid-layer height.                                            */
@@ -166,19 +149,13 @@ mfp_spectralmodel_pollack(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
 /*****************************************************************/
 /* Linear interpolate a profile to a specific altitude.          */
 
-double
-bext_watervapor_cntnm_atmosphere(numlayers,u,air,p,T,height,altitude,flag_ucvd,ucvd,csself,csforeign)
-int numlayers;
-double *u;
-double *air;
-double *p;
-double *T;
-double *height;
-double altitude;
-int flag_ucvd;
-double ucvd;
-double *csself;
-double *csforeign;
+double mxratio_precmpercm_numberdensity();
+double continuum_crosssection();
+
+double bext_watervapor_cntnm_atmosphere(
+   int numlayers, double *u, double *air, double *p, double *T, double *height, double altitude,
+   int flag_ucvd, double ucvd, double *csself, double *csforeign
+)
 {
   double cs, km, slope, densh2oeff, dryairdenseff, peff, Teff, ueff, bext;
   int i;

@@ -2,6 +2,7 @@
 /****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "../include/numrec.nrutil.h"
@@ -9,27 +10,14 @@
 
 /*---------------------------------------------------------------*/
 
-int read_geometry_sunzenith();
+extern int setup(FILE *);
 
 /****************************************************************/
 
-int
-read_geometry_sunzenith(geometryfile, suna)
-char
-  *geometryfile;
-Sun
-  *suna;
+void read_geometry_sunzenith(char *geometryfile, Sun *suna)
 {
-  int
-    c,
-    i;
-
-  double
-    pi;
-
-  FILE
-    *finput,
-    *fopen();
+  double pi;
+  FILE *finput, *fopen();
 
   /*-------------------------------------------------------------*/
 

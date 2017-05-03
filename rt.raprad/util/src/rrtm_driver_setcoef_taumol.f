@@ -84,8 +84,9 @@ c plankbnd   the integrated Planck functions at the surface temperature
 c planklay   the integrated Planck functions at the layer temperature
 c planklev   the integrated Planck functions at the level temperature
 
+      implicit none
 
-
+      integer nbands
       parameter (nbands = 16)
 
       real tbound, albedo, semiss
@@ -99,9 +100,12 @@ c planklev   the integrated Planck functions at the level temperature
 
       real*8 plankbnd, planklay, planklev
 
-      integer iband, ig, lay, jp, jt, jt1
+      real*8 wx_1, wx_2, wx_3, wx_4
+
+      integer iband, iband_lw, ig, lay, jp, jt, jt1
       integer laytrop, layswtch, laylow
       integer ng(nbands), nspa(nbands), nspb(nbands)
+      integer indself
 
       data ng  /16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16/
       data nspa /1, 1,10, 9, 9, 1, 9, 1,11, 1, 1, 9, 9, 1, 9, 9/
@@ -113,6 +117,7 @@ c Mlawer's band starts from shortest wavenumber.
       iband_lw = 16 - iband + 1
       semiss = 1.0 - albedo
 
+
       call setcoef 
      &  (iband_lw, ig, lay,
      &   tbound, tz, tavel, pz, pavel,
@@ -123,6 +128,7 @@ c Mlawer's band starts from shortest wavenumber.
      &   indself, colh2o, colco2, colo3, coln2o, colch4, colo2,  
      &   coldry, co2mult,
      &   plankbnd, planklay, planklev)
+      
 
 
 C     BAND 1:  10-250 cm-1 (low - H2O; high - H2O)
@@ -285,8 +291,9 @@ C     BAND 16:  2600-3000 cm-1 (low - H2O,CH4; high - nothing)
       bi = taug
       gau_wt = fracs
 
-      if (bi .lt. 0.0) then
-        write(*,*) iband_lw, bi, co2mult, coln2o, colo3, wx_3, wx_4
-      end if
+!      if (bi .lt. 0.0) then
+!        write(*,*) iband_lw, bi, co2mult, coln2o, colo3, wx_3, wx_4
+!      end if
+
       return
       end

@@ -13,9 +13,7 @@
 /* Routine to compute the total rayleigh transmisson given the rayleigh       */
 /* optical depth and the cosine of the incident zenith angle.                 */
 
-double
-rayleigh_total_transmission(depth, mu)
-double depth, mu;
+double rayleigh_total_transmission(double depth, double mu)
 {
 
   double t, gamma;
@@ -35,9 +33,7 @@ double depth, mu;
 /* above a certain pressure (height) given the pressure and wavelength.       */
 /* The pressure must be in pascals */
 
-double
-rayleigh_optical_depth(p, lambda)
-double p, lambda;
+double rayleigh_optical_depth(double p, double lambda)
 {
 
   double tau;

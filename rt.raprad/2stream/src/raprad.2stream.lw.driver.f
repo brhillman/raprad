@@ -45,38 +45,50 @@ c sol_direct(j)  Direct beam irradiance (W m^-2) (j=1,ntaujs)
 
 c ivert  = maximum number of layers;
 
+      implicit none
+      integer irflag,ivert,ilayer,idbl,ngauss
       parameter (irflag = 1)
       parameter (ivert=200)
       parameter (ilayer=ivert+1, idbl=2*ilayer)
       parameter (ngauss = 3)
 
 
-      implicit double precision(a-h, o-z)
+!     implicit real*8(a-h, o-z)
+      real*8 solconst,dis2sun
+      integer nlayers
+      real*8 af,ak,b1,b2,b3,bf,ck1,ck2
+      real*8 den,denom,direc,direct,directu
+      real*8 ee1,ef,el1,el2,em1,em2,epsilon
+      real*8 fdn,fluxird,fluxiru,fnet,fo,fup,g0t
+      real*8 gami,gangle,gweight
+      real*8 sol_direct,u1i,u1s,w0max,w0t,x,y3
+      integer i,j,j1,ntaujs
 
       dimension fup(ilayer), fdn(ilayer), direct(ilayer)
       dimension fnet(ilayer)
       dimension sol_direct(ilayer)
-      dimension planklay_temp(*), planklev_temp(*), bandwidth(2)
-      dimension gau_wt_temp(*)
+      real*8 planklay_temp(ilayer), planklev_temp(ilayer), bandwidth(2)
+      real*8 gau_wt_temp(ilayer)
 
       dimension b1(ilayer), b2(ilayer), b3(ilayer)
       dimension el1(ilayer), el2(ilayer)
       dimension em1(ilayer), em2(ilayer), ee1(ilayer)
       dimension af(idbl), bf(idbl), ef(idbl)
       dimension ak(ilayer), ck1(ilayer), ck2(ilayer)
-      dimension slope(ilayer), ptemp(ilayer)
+      real*8 slope(ilayer), ptemp(ilayer)
       dimension direc(ilayer), directu(ilayer)
       dimension gangle(ngauss), gweight(ngauss)
       dimension y3(ngauss,ilayer), gami(ilayer)
       dimension fluxird(ilayer), fluxiru(ilayer)
 
-      real w0_temp(*), g0_temp(*), taul_temp(*)
+      real w0_temp(ilayer), g0_temp(ilayer), taul_temp(ilayer)
       real w0(ilayer), g0(ilayer)
       real taul(ilayer), g0l(ilayer), w0l(ilayer)
       real taulnd(ivert), opd(ilayer), opdnd(ilayer)
       real amu0, suralb
       real*8 planklay(ilayer), planklev(ilayer)
       real*8 gau_wt(ilayer)
+      real*8 plankbnd,ptempg
 
 
       data epsilon / 1.0e-15 /
@@ -192,23 +204,26 @@ c making the delta approximation
          directu(j) = 0.0
  2000   continue
 
-      if (iopen .eq. 0) then
+
 
         open
      &  (unit=41,file='../../results/raprad.lw.out',status='unknown')
-c       open(unit=41,file='out.twosrt.dat',status='unknown')
 
-      endif
 
-      iopen = 1
+c      print*,'plankg1=',plankbnd,planklev(ntaujs)
 
 
 c calculating weighted plank functions and slope defined by Eq. 26 in 
 c Toon et al.
 
+
       call oppr1
      & (ntaujs,ptempg,taul,slope,ptemp,bandwidth,
      &  plankbnd,gau_wt,planklev)
+
+
+c      print*,'ptempg2=',ptempg,ptemp(ntaujs)
+
 
       call twostr
      & (ntaujs,irflag,taul,w0,g0,suralb,
@@ -237,12 +252,14 @@ c        write(*, 400) j, fluxiru(j), fluxird(j), sol_direct(j)
 
  3000 continue
 
+c       print*,'fluxiru=',fluxiru(ntaujs)
+
 c      write(40,240) amu0, dis2sun
 c      write(40,200)
 
- 200  format('layer z(km)  prs(mb)   sw down    sw up')
- 220  format(i4,2x,f6.2,2x,f7.1,2x,f9.3,3x,f9.3)
- 240  format('mu_0=',f6.4,5x,'radau=',f6.4)
+!200  format('layer z(km)  prs(mb)   sw down    sw up')
+!220  format(i4,2x,f6.2,2x,f7.1,2x,f9.3,3x,f9.3)
+!240  format('mu_0=',f6.4,5x,'radau=',f6.4)
 
   400 format(i5,3e15.5)
 

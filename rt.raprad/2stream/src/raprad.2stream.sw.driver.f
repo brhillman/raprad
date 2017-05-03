@@ -36,34 +36,43 @@ c sol_direct(j)  Direct beam irradiance (W m^-2) (j=1,ntaujs)
 
 c ivert  = maximum number of layers;
 
+!     implicit double precision(a-h, o-z)
+      implicit none
+
+      integer ivert, ilayer, idbl
       parameter (ivert=200)
       parameter (ilayer=ivert+1)  
-      parameter (idbl = ilayer*2)                       
+      parameter (idbl=ilayer*2)                       
                      
+!     inputs
+      double precision solconst
+      integer nlayers
+      real amu0
+      real w0_temp(*), g0_temp(*), suralb, taul_temp(*)
+      double precision gau_wt
+      double precision dis2sun
 
+!     local namespace
+      double precision fup(ilayer), fdn(ilayer), fdi(ilayer)
+      double precision fnet(ilayer)
+      double precision sol_fluxup(ilayer), sol_fluxdn(ilayer)
+      double precision sol_direct(ilayer)
 
-      implicit double precision(a-h, o-z)
+      double precision b1(ilayer), b2(ilayer), b3(ilayer)
+      double precision el1(ilayer), el2(ilayer)
+      double precision em1(ilayer), em2(ilayer)
+      double precision af(idbl), bf(idbl), ef(idbl)
+      double precision ak(ilayer)
 
-      dimension fup(ilayer), fdn(ilayer), direct(ilayer)
-      dimension fnet(ilayer)
-      dimension sol_fluxup(ilayer), sol_fluxdn(ilayer)
-      dimension sol_direct(ilayer)
+      double precision den, denom, dist_cor, fo, g0t
 
-      dimension b1(ilayer), b2(ilayer), b3(ilayer)
-      dimension el1(ilayer), el2(ilayer)
-      dimension em1(ilayer), em2(ilayer)
-      dimension af(idbl), bf(idbl), ef(idbl)
-      dimension ak(ilayer)
-
-      
-
-      real w0_temp(*), g0_temp(*), taul_temp(*)
       real w0(ilayer), g0(ilayer)
       real taul(ilayer), g0l(ilayer), w0l(ilayer)
       real taulnd(ivert), opd(ilayer), opdnd(ilayer)
-      real amu0, suralb
-      real*8 gau_wt
 
+      integer j, j1, ntaujs
+      real w0max,w0t
+      double precision epsilon
       data epsilon / 1.0e-15 /
 
 c radcorr corrects the solar constant based on the ephemeris derived
@@ -78,6 +87,7 @@ c than 0.9999 tend to induce model instabilities.
       ntaujs = nlayers + 1
 
       do 1000 j = 1, ntaujs
+
         if(j .eq. 1) then
           taul(j) = 0.0
           w0l(j)   = 0.0
@@ -87,12 +97,14 @@ c than 0.9999 tend to induce model instabilities.
           w0l(j)   = w0_temp(j-1)
           g0l(j)   = g0_temp(j-1)
         end if
+
  1000 continue
 
 
 c making the delta approximation
 
       do 10 j =1, ntaujs
+
         if(j.ne.1) then
           j1=j-1
         else
@@ -101,6 +113,7 @@ c making the delta approximation
 
         if(taul(j).lt.epsilon)  taul(j) = epsilon
            w0t = w0l(j)
+
         if(w0t.gt.1.-epsilon)   w0t=1.-epsilon
            denom = w0l(j) * taul(j)
         if(denom.le.epsilon)  denom=epsilon
@@ -113,10 +126,17 @@ c making the delta approximation
 
 
         fo        = g0t**2
+
         den       = 1.-w0t*fo
+
+
+
         taulnd(j) = taul(j)
         taul(j)   = taul(j) * den
         w0(j)     = (1.-fo)*w0t/den
+
+
+
         g0(j)     = g0t/(1.+g0t)
         opd(j)    = 0.0
         opd(j)    = opd(j1) + taul(j)
@@ -132,14 +152,16 @@ c making the delta approximation
          fdn(j) = 0.0
  20   continue
 
+
+
        if (amu0 .gt. 0.0) then
-         call twostr
-     &   (ntaujs,taul,w0,g0,suralb,b1,b2,el1,el2,em1,em2,af,bf,ef,
+         call twostr 
+     &   (ntaujs,taul,w0,g0,suralb,b1,b2,el1,el2,em1,em2,af,bf,ef, 
      &    ak)
 
-         call add
-     &    (ntaujs,taul,w0,g0,suralb,opd,opdnd,ak,b1,b2,b3,em1,em2,
-     &     el1,el2,af,bf,ef,amu0,fnet,fup,fdn,direct)
+         call add 
+     &    (ntaujs,taul,w0,g0,suralb,opd,opdnd,ak,b1,b2,b3,em1,em2, 
+     &     el1,el2,af,bf,ef,amu0,fnet,fup,fdn,fdi)
 
        end if
 
@@ -151,23 +173,25 @@ c correction factor of the sun to the earth distance
 
 c obtain irradiances at the bottom of jth layer
 
-      if (iopen .eq. 0) then
 
         open
      &  (unit=41,file='../../results/raprad.sw.out',status='unknown')
 
-      endif
-
-      iopen = 1
+!solconst changes with layer
+!gau_wt=1.
+!dist_cor=1. 
 
       do 50 j = 1,ntaujs
+
          sol_fluxup(j) = fup(j)*solconst*gau_wt*dist_cor
          sol_fluxdn(j) = fdn(j)*solconst*gau_wt*dist_cor
-         sol_direct(j) = direct(j)*solconst*gau_wt*dist_cor*amu0
+         sol_direct(j) = fdi(j)*solconst*gau_wt*dist_cor*amu0
 
          write(41,400) j, sol_fluxup(j), sol_fluxdn(j), sol_direct(j)
 
  50   continue
+
+
 
 
 c      write(40,240) amu0, dis2sun
@@ -178,6 +202,10 @@ c      write(40,200)
  240  format('mu_0=',f6.4,5x,'radau=',f6.4)
 
   400 format(i5,3e15.5)
+
+
+
+
 
       return
       end

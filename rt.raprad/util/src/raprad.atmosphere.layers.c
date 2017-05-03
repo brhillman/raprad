@@ -2,6 +2,8 @@
 /***********************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/SpectralModel.h"
@@ -11,35 +13,10 @@
 
 /***********************************************************************/
 
-int
-atmosphere_layers(i, j, ps, sm, c, rt, atm)
-
-int
-  i,
-  j;
-PhotonSpace
-  *ps;
-SpectralModel
-  *sm;
-Constituents
-  *c;
-Rt
-  *rt;
-Atmosphere
-  *atm;
-
+void atmosphere_layers(int i, int j, PhotonSpace *ps, SpectralModel *sm, Constituents *c, Rt *rt, Atmosphere *atm)
 {
-  int
-    jj,
-    k,
-    kinv,
-    n;
-
-  double
-    w,
-    wght,
-    g,
-    g_legendre;
+  int jj,k,kinv,n;
+  double w,wght,g,g_legendre;
 
   /*-------------------------------------------------------------------*/
   /* COMMENT about the current geometry.  As it now stands, the        */

@@ -1,6 +1,4 @@
-void piksrt(n,arr)
-int n;
-double arr[];
+void piksrt(int n, double arr[])
 {
 	int i,j;
 	float a;

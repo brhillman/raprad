@@ -2,6 +2,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/PhotonSpace.h"
@@ -9,27 +10,15 @@
 
 /*----------------------------------------------------------------------------*/
 
-#define DELTA      0.05
+#define DELTA 0.05
 
 /******************************************************************************/
+extern void piksrt(int, double []);
 
-void photon_space_final(ps, c)
-  PhotonSpace
-    *ps;
-  Constituents
-    *c;
+void photon_space_final(PhotonSpace *ps, Constituents *c)
 {
-  int
-    i,
-    j,
-    n,
-    nn,
-    planecount,
-    planes_max,
-    rtonflag;
-  double
-    *planesi,
-    *planesf;
+  int i, j, n, nn, planecount, planes_max, rtonflag;
+  double *planesi, *planesf;
 
   /*--------------------------------------------------------------------------*/
   /* Allocate space to hold all of the heights of all possible constituent    */

@@ -9,35 +9,17 @@
 
 /*--------------------------------------------------------------------*/
 
-double rayleigh_optical_depth();
+double rayleigh_optical_depth(double, double);
 
 /**********************************************************************/
 
-void
-mfp_rayleighscatter(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
-
-  int
-    i,
-    j,
-    k;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+void mfp_rayleighscatter(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, 
+   double *cvd, double *ucvd, double *bi
+)
 {
-  double
-    taua,
-    taub;
+  double taua, taub;
 
   /*--------------------------------------------------------------*/
   /* Compute the optical depth of the atmosphere at this          */

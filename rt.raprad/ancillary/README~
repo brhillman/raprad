@@ -21,18 +21,32 @@ Comments about the original Kato spectral model label notation:
 		Ozone cross sections come from work by Eric P. Shettle.
 		These are the ozone cross sections used in Modtran 3.
 
-	4sgp_mfrsr:
 
-		A kluge in order to compute irradiances at the MFRSR
-		wavelengths.  The solar constant is given by the Langley
-		Io value developed by Kato.  The wavelengths, too, match
-		the instrument wavelengths.  All gaseous absorption is
-		neglected, excepth that due to ozone.  The wavelengths
-		other than the instrument wavelengths do not contain any
-		useful information
+	combine_overlap
+		CO2 concentration is fixed relative to water vapor to reduce the number of 
+		subbands.
 
-	4sgp_mfr:
+	fu_kato
+		use bands of the fu-liou code
 
-		The same as 4sgp_mfrsr, except for the MFRSR instrument
-		with no rotating shadow band that was used during the
-		Spring 1997 aircraft IOP.
+	hitran2k
+		k distributions obtained from HITRAN 2000 data base.
+
+Comments about the phase function input files
+
+Each data line corresponds to a wavelength band. In each line:
+1.  wavelength: wavelength at the centre of the band
+2.  radiusout
+3.  radiussig
+4.  relrefoutr
+5.  relrefoutc
+6.  p_legendre_number: NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION
+7.  p_g: ASYMMETRY PARAMETER
+8.  w0: SINGLE SCATTERING ALBEDO
+9.  sig_ext: TOTAL EXTINCTION CROSS-SECTION (micron^2)
+10. sig_sca: TOTAL SCATTERING CROSS-SECTION (micron^2)
+11. sig_abs:  TOTAL ABSORPTION CROSS-SECTION (micron^2)
+12. p_normalization
+
+As far as I can see the first five numbers in this input file are read in but are not used anywhere in the program. The wavelengths should be the same as in the photonpartition file contained in rt.raprad/scenarios/bbflux/st_atm_lw or st_atm.
+These inputs for the phase functions are read by the file /rt.raprad_package/rt.raprad/util/src/phasefcns.read.ascii.c

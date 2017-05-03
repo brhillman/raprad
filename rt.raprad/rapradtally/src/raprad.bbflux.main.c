@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -16,29 +17,48 @@
 
 /******************************************************************************/
 
-void
-  atmosphere_read_mcclatchey(),
-  check_atmosphere_gasamounts_u(),
-  check_atmosphere_layers(),
-  check_atmosphere_layers_subdivide(),
-  check_brdf_selection(),
-  check_constituents(),
-  check_geometry_sunzenith(),
-  check_photon_partition(),
-  check_photon_space_final(),
-  check_spectralmodel_kato(),
-  photon_space_final(),
-  read_configuration(),
-  read_geometry_sunzenith(),
-  read_photon_partition(),
-  read_photon_space();
+extern void atmosphere_gasamounts_u(Atmosphere *atm);
+extern void atmosphere_layers(int i, int j, PhotonSpace *ps, SpectralModel *sm, Constituents *c, Rt *rt, Atmosphere *atm);
+extern void atmosphere_layers_subdivide(PhotonSpace *ps, Atmosphere *atm, Atmosphere *atmnew);
 
-Constituents
-  *read_constituents();
+extern void atmosphere_layers_tau(int i, int j, PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, Rt *rt, Brdf *d);
 
-int
-  read_brdf_selection(),
-  spectralmodel_read_kato();
+
+extern void atmosphere_read_mcclatchey(char *file_name, Atmosphere *atm);
+extern void check_atmosphere_gasamounts_u(Atmosphere *atm);
+extern void check_atmosphere_layers(int i, int j, SpectralModel *sm, Rt *rt, Sun *suna, Brdf *d);
+extern void check_atmosphere_layers_subdivide(Atmosphere *atmnew);
+extern void check_brdf_selection(PhotonPartition *pp, Brdf *b);
+extern void check_constituents(PhotonPartition *pp, PhotonSpace *ps, Constituents *c);
+extern void check_geometry_sunzenith(Sun *suna);
+extern void check_photon_partition(PhotonPartition *pp);
+extern void check_photon_space_final(PhotonSpace *ps);
+
+extern void check_spectralmodel_kato(PhotonPartition *pp, SpectralModel *sm);
+extern void check_spectralmodel_pollack(PhotonPartition *pp, SpectralModel *sm);
+extern void check_cntnmmodel(PhotonPartition *pp, SpectralModel *sm);
+extern void cntnmmodel_read(char *filename, PhotonPartition *pp, SpectralModel *sm);
+extern void photon_space_final(PhotonSpace *ps, Constituents *c);
+
+extern void read_configuration(
+   char *configfileName, char *configfilePhotonPartition,
+   char *configfileConstituents, char *configfileSpectralModel, char *configfileCntnm,
+   char *configfileAtmosphere, char *configfilePhotonSpace, char *configfileSunView,
+   char *configfileQuadrature, char *configfileBrdfSelection, char *configfileBrdf, char *outfileResults
+);
+extern void read_geometry_sunzenith(char *geometryfile, Sun *suna);
+extern void read_photon_partition(char *filename, PhotonPartition *pp);
+extern void read_photon_space(char *filename, PhotonSpace *ps);
+extern void read_brdf_selection(char *filename, PhotonPartition *pp, Brdf *);
+extern void spectralmodel_read_mlawer_lw(char *filename, PhotonPartition *pp, PhotonSpace *ps, SpectralModel *sm);
+extern void spectralmodel_read_kato(char *filename, PhotonPartition *pp, SpectralModel *sm);
+extern void spectralmodel_read_pollack(char *filename, PhotonPartition *pp, SpectralModel *sm);
+extern Constituents *read_constituents(char *constituentsfile, PhotonPartition *pp, PhotonSpace *ps);
+extern void bb_flux_(
+   double *alt, double *press, float *wave, int *nlayer, int *n_band, int *nsub_band,
+   float *u0, float *thz, float *gmt_time, double *sol_const
+);
+
 
 /******************************************************************************/
 
@@ -194,37 +214,35 @@ char
       /* Read in the Kato gaseous absorption model.                           */
       /*----------------------------------------------------------------------*/
 
-      spectralmodel_read_kato(configfileSpectralModel, pp, ps, sm);
-      if (inputcheck) { check_spectralmodel_kato(pp, sm); }
+      spectralmodel_read_kato(configfileSpectralModel, pp, sm);
+      if (inputcheck) check_spectralmodel_kato(pp, sm);
       break;
 
       /*----------------------------------------------------------------------*/
       /* DONE reading in the Kato gaseous absorption model.                   */
       /*----------------------------------------------------------------------*/
 
-    }
-    else if (!strcmp(c[n].name, "GaseousAbsorptionSpectralModelMlawerLw")) {
+    } else if (!strcmp(c[n].name, "GaseousAbsorptionSpectralModelMlawerLw")) {
 
       /*----------------------------------------------------------------------*/
       /* Read in the Mlawer gaseous absorption model.                         */
       /*----------------------------------------------------------------------*/
 
       spectralmodel_read_mlawer_lw(configfileSpectralModel, pp, ps, sm);
-      if (inputcheck) { check_spectralmodel_mlawer_lw(pp, sm); }
+      if (inputcheck) check_spectralmodel_mlawer_lw(pp, sm);
 
       /*----------------------------------------------------------------------*/
       /* DONE reading in the Mlawer gaseous absorption model.                 */
       /*----------------------------------------------------------------------*/
 
-    }
-    else if (!strcmp(c[n].name, "GaseousAbsorptionSpectralModelPollack")) {
+    } else if (!strcmp(c[n].name, "GaseousAbsorptionSpectralModelPollack")) {
 
       /*----------------------------------------------------------------------*/
       /* Read in the Pollack gaseous absorption model.                        */
       /*----------------------------------------------------------------------*/
 
       spectralmodel_read_pollack(configfileSpectralModel, pp, sm);
-      if (inputcheck) { check_spectralmodel_pollack(pp, sm); }
+      if (inputcheck) check_spectralmodel_pollack(pp, sm);
 
       /*----------------------------------------------------------------------*/
       /* Extract the water vapor continuum absorption coefficients as         */
@@ -234,7 +252,7 @@ char
       /*----------------------------------------------------------------------*/
 
       cntnmmodel_read(configfileCntnm, pp, sm);
-      if (inputcheck) { check_cntnmmodel(pp, sm); }
+      if (inputcheck) check_cntnmmodel(pp, sm);
 
       break;
 
@@ -264,7 +282,7 @@ char
 
   atmosphere_layers_subdivide(ps, atm, atmrt1d);
 
-  if (inputcheck) { check_atmosphere_layers_subdivide(atmrt1d); }
+  if (inputcheck) check_atmosphere_layers_subdivide(atmrt1d);
 
   /*--------------------------------------------------------------------------*/
   /* Get ILLUMINATION information from configfileSunZenith.                   */
@@ -274,7 +292,7 @@ char
 
   read_geometry_sunzenith(configfileSunView, suna);
 
-  if (inputcheck) { check_geometry_sunzenith(suna); }
+  if (inputcheck) check_geometry_sunzenith(suna);
 
   /*--------------------------------------------------------------------------*/
   /* Compute the broadband flux.                                              */

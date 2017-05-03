@@ -1,6 +1,6 @@
 /******************************************************************************/
 /******************************************************************************/
-/* List of Thermodynamic Functions and Their Inputs and Outputs.
+/* List of Thermodynamic Functions and Their Inputs and Outputs.*/
 /******************************************************************************/
 /*
 	double latenheat();
@@ -41,46 +41,44 @@
 /******************************************************************************/
 /* These values come from Rogers and Yau.                                     */
 
-#define RGAS                          8.31441 	/* J/mol/K */
-#define RVAPOR                         461.5 	/* J/kg/K  */
-#define T0 			       273.15   /* Kelvin  */
-#define E0WATER			       611.21   /* Pascals */
-#define E0ICE			       611.15   /* Pascals */
-#define CL                             4187.0   /* J/kg/K  */
-#define CPV                            1870.0   /* J/kg/K  */
-#define LWATER                      2.501E+06   /* J/kg */
-#define LICE                        2.834E+06   /* J/kg */
+#define RGAS             8.31441 	/* J/mol/K */
+#define RVAPOR           461.5 	   /* J/kg/K  */
+#define T0 			       273.15     /* Kelvin  */
+#define E0WATER			 611.21     /* Pascals */
+#define E0ICE			    611.15     /* Pascals */
+#define CL               4187.0     /* J/kg/K  */
+#define CPV              1870.0     /* J/kg/K  */
+#define LWATER           2.501E+06  /* J/kg */
+#define LICE             2.834E+06  /* J/kg */
 
-#define GWATERVAPOR		       18.016 	/* Molecular Weight of Water Vapor (g/mol) */
+#define GWATERVAPOR		 18.016 	   /* Molecular Weight of Water Vapor (g/mol) */
 
-#define  PRECISION                        15
-#define  MODIFIER                         1000.000000
+#define  PRECISION       15
+#define  MODIFIER        1000.000000
 
 /******************************************************************************/
 
-double latentheat();
+double latentheat(double T);
 
-double clausiusclapyron_water_integration();
-	double clausiusclapyron_exponent();
-	double trapezoid_integration();
-	double richardson_extrapolation();
+double clausiusclapyron_water_integration(double T);
+double clausiusclapyron_exponent(double T);
+double trapezoid_integration(double (*y)(), double a, double b, int i);
+void richardson_extrapolation(double **matrix, int i);
 
-double clausiusclapyron_water_bolton();
-double clausiusclapyron_water_starr();
-double clausiusclapyron_water_loweficke();
-double clausiusclapyron_ice_loweficke();
-double clausiusclapyron_water_constant_L();
-double clausiusclapyron_ice_constant_L();
-double clausiusclapyron_water_variable_L();
+double clausiusclapyron_water_bolton(double T);
+double clausiusclapyron_water_starr(double T);
+double clausiusclapyron_water_loweficke(double T);
+double clausiusclapyron_ice_loweficke(double T);
+double clausiusclapyron_water_constant_L(double T);
+double clausiusclapyron_ice_constant_L(double T);
+double clausiusclapyron_water_variable_L(double T);
 
 /******************************************************************************/
 /******************************************************************************/
 /* Function to calculate the latent heat as a function of temperature:        */
 /* L(T) = L(T0) - (CL - CPV)*(T - T0) = 2500. - (4.187 - 1.870)*(T - T0)      */
 
-double
-latentheat(T)
-double T;
+double latentheat(double T)
 {
   double lat_heat;
 
@@ -94,9 +92,7 @@ double T;
 /******************************************************************************/
 /* By Romberg Integration and Richardson Extrapolation */
 
-double
-clausiusclapyron_water_integration(T)
-double T;
+double clausiusclapyron_water_integration(double T)
 {
   int    i;
   double  **rich, saturationvaporpressure, change;
@@ -144,9 +140,7 @@ double T;
 
 /******************************************************************************/
 
-double
-clausiusclapyron_exponent(T)
-double T;
+double clausiusclapyron_exponent(double T)
 {
   double R_watervapor, value;
 
@@ -165,10 +159,7 @@ double T;
        y: pointer to function containing the integrand
 */
 
-double trapezoid_integration(y,a,b,i)
-double (*y)();
-double a,b;
-int   i;
+double trapezoid_integration(double (*y)(), double a, double b, int i)
 {
 
   double trap,sum,x,dx;
@@ -195,9 +186,7 @@ int   i;
 	matrix: the matrix containing the values
 */
 
-double richardson_extrapolation(matrix,i)
-double **matrix;
-int   i;
+void richardson_extrapolation(double **matrix, int i)
 {
   int  j,jpwr;
   double constant;
@@ -216,9 +205,7 @@ int   i;
 /******************************************************************************/
 /* Taken from Bolton and as presented in Rogers and Yau.                      */
 
-double
-clausiusclapyron_water_bolton(T)
-double T;
+double clausiusclapyron_water_bolton(double T)
 {
   double A, B, C, saturationvaporpressure;
 
@@ -249,9 +236,7 @@ double T;
 /* Routine to compute the saturation vapor pressure at a specific temperture  */
 /*   using a 6th order polynomial.                                            */
 
-double
-clausiusclapyron_water_starr(T)
-double T;
+double clausiusclapyron_water_starr(double T)
 {
   int i;
   double C0,C1,C2,C3,C4,C5,C6;
@@ -309,12 +294,8 @@ double T;
 /******************************************************************************/
 /* From Pruppacher and Klett Appendices (Lowe and Ficke, 1974)                */
 
-double
-clausiusclapyron_water_loweficke(T)
-double T;
+double clausiusclapyron_water_loweficke(double T)
 {
-  int i;
-  double t0,t1,t2,t3,t4,t5,t6;
   double saturationvaporpressure;
 
   static double C[7] = { 
@@ -352,12 +333,8 @@ double T;
 /******************************************************************************/
 /* From Pruppacher and Klett Appendices (Lowe and Ficke, 1974)                */
 
-double
-clausiusclapyron_ice_loweficke(T)
-double T;
+double clausiusclapyron_ice_loweficke(double T)
 {
-  int i;
-  double t0,t1,t2,t3,t4,t5,t6;
   double saturationvaporpressure;
 
   static double C[7] = { 
@@ -395,9 +372,7 @@ double T;
 /******************************************************************************/
 /* Constant Latent Heat of Vaporization.                                      */
 
-double
-clausiusclapyron_water_constant_L(T)
-double T;
+double clausiusclapyron_water_constant_L(double T)
 {
   double A, B, saturationvaporpressure;
 
@@ -414,9 +389,7 @@ double T;
 /******************************************************************************/
 /* Constant Latent Heat of Sublimation.                                       */
 
-double
-clausiusclapyron_ice_constant_L(T)
-double T;
+double clausiusclapyron_ice_constant_L(double T)
 {
   double A, B, saturationvaporpressure;
 
@@ -433,9 +406,7 @@ double T;
 /******************************************************************************/
 /* Constant Latent Heat of Vaporization.                                      */
 
-double
-clausiusclapyron_water_variable_L(T)
-double T;
+double clausiusclapyron_water_variable_L(double T)
 {
   double A, B, C, saturationvaporpressure;
 

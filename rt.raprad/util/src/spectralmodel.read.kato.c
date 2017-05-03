@@ -15,42 +15,14 @@
 
 /******************************************************************************/
 
-int spectralmodel_read_kato(filename, pp, ps, sm)
-char
-  *filename;
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
+void spectralmodel_read_kato(char *filename, PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fptrabs,
-    *fopen();
-
-  char
-    c,
-    gas[256],
-    *moleculeptr;
-
-  int
-    i,
-    j,
-    k,
-    m,
-   *mindex,
-    npts,
-    bandnumber,
-    used,
-    count,
-    numbands,
-    numintervals,
-    nummolecules,
-    useband;
-
-  double
-    abscoefficient,
-    correction;
+  FILE *fpt, *fptrabs, *fopen();
+  char c, *moleculeptr;
+  int i, j, k, m, *mindex, npts, bandnumber;
+  int numbands, useband;
+  double abscoefficient;
+   
 
   /*--------------------------------------------------------------------------*/
   /* Count the number of gaseous absorption bands that are used in the        */

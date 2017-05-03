@@ -12,20 +12,10 @@
 
 /******************************************************************************/
 
-int check_spectralmodel_pollack(pp, sm)
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
+void check_spectralmodel_pollack(PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fopen();
-
-  int
-    i,
-    j,
-    m;
+  FILE *fpt, *fopen();
+  int i, j, m;
 
   /*--------------------------------------------------------------------------*/
   /* Open check.spectralmodel.pollack                                         */

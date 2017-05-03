@@ -1,6 +1,6 @@
 SPECTRAL MODEL KATO (Correlated-k)
 
-The model has 32 spectral intervals with gaseous absorptionin in 29 of the intervals.
+The model has 32 spectral intervals with gaseous absorption in 29 of the intervals.
 Absorption is treated using the correlated-k technique on HI-TRAN database coefficients
 that are a function of pressure and temperature.  The water vapor coefficients are also
 a function of the water vapor concentration.  The transmission is given by

@@ -4,64 +4,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-
+#include <string.h>
 #include "../include/Atmosphere.h"
 
 /******************************************************************************/
 
 #define DATA_CHECK_RES 200
 
-#define G	        9.80665 /* Acceleration Due to Gravity */
+#define G 9.80665 /* Acceleration Due to Gravity */
 
-#define GAIR	       28.964   /* Molecular Weight of Air (g/mol) */
+#define GAIR 28.964   /* Molecular Weight of Air (g/mol) */
 #define GCARBONDIOXIDE 44.00995 /* Molecular Weight of Carbon Dioxide (g/mol) */
-#define GWATERVAPOR    18.016   /* Molecular Weight of Water Vapor (g/mol) */
-#define GOXYGEN	       31.9988  /* Molecular Weight of Ozone (g/mol) */
-#define GOZONE	       47.9982  /* Molecular Weight of Ozone (g/mol) */
-#define GNITROUSOXIDE  44.0128  /* Molecular Weight of Nitrous Oxide (g/mol) */
-#define GMETHANE       16.0426  /* Molecular Weight of Methane (g/mol) */
+#define GWATERVAPOR 18.016   /* Molecular Weight of Water Vapor (g/mol) */
+#define GOXYGEN 31.9988  /* Molecular Weight of Ozone (g/mol) */
+#define GOZONE 47.9982  /* Molecular Weight of Ozone (g/mol) */
+#define GNITROUSOXIDE 44.0128  /* Molecular Weight of Nitrous Oxide (g/mol) */
+#define GMETHANE 16.0426  /* Molecular Weight of Methane (g/mol) */
 
-#define CO2_MIXING_RATIO  3.55E-04  /* Volume CO2 / Volume Air */
+#define CO2_MIXING_RATIO 3.55E-04  /* Volume CO2 / Volume Air */
 /* #define CO2_MIXING_RATIO  7.10E-04  Volume CO2 / Volume Air */
-#define O2_MIXING_RATIO   2.0946E-01 /* Volume  O2 / Volume Air */
+#define O2_MIXING_RATIO 2.0946E-01 /* Volume  O2 / Volume Air */
 
 /******************************************************************************/
 
-double pVnRT_numberdensity();
-double pVnRT_pressure();
-double numberdensity_dryair();
-double hydrostatic_airmass();
+extern double pVnRT_numberdensity(double, double);
+extern double pVnRT_pressure(double, double);
+extern double numberdensity_dryair(double, double);
+extern double hydrostatic_airmass(double);
 
-double mxratio_h2o_gmperkg_numberdensity();
-double mxratio_o3_gmpergm_numberdensity();
-double mxratio_volpervol_numberdensity();
-double mxratio_volpervol_gmperkg();
+extern double mxratio_h2o_gmperkg_numberdensity(double, double);
+extern double mxratio_o3_gmpergm_numberdensity(double, double);
+extern double mxratio_volpervol_numberdensity(double, double);
+extern double mxratio_volpervol_gmperkg(double, double);
+
+extern int setup(FILE *);
 
 /******************************************************************************/
 
-void atmosphere_read_mcclatchey(file_name, atm)
-char *file_name;
-Atmosphere *atm;
-
+void atmosphere_read_mcclatchey(char *file_name, Atmosphere *atm)
 {
-  int
-    countrequired,
-    i,
-    layer,
-    n;
-
-  double
-    dryairdensity,
-    vaporpressure,
-    dryairpressure;
-
-  FILE
-    *fpt,
-    *fopen();
-
-  char
-    c,
-    **collabel;
+  int countrequired, i, n;
+  double dryairdensity, vaporpressure, dryairpressure;
+  FILE *fpt, *fopen();
+  char c, **collabel;
 
   /*--------------------------------------------------------------------------*/
   /* Open the atmospheric file.                                               */

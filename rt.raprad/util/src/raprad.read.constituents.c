@@ -2,6 +2,8 @@
 /****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/Constituents.h"
@@ -9,30 +11,14 @@
 #include "../include/PhotonSpace.h"
 
 /****************************************************************/
+int setup();
+void myfscanf();
 
-Constituents
-*read_constituents(constituentsfile, pp, ps)
-char
-  *constituentsfile;
-PhotonPartition
-  *pp;
-PhotonSpace
-  *ps;
+Constituents *read_constituents(char *constituentsfile, PhotonPartition *pp, PhotonSpace *ps)
 {
-  int
-    ca,
-    i,
-    j;
-
-  char
-    input_type[2];
-
-  Constituents
-    *c;
-
-  FILE
-    *finput,
-    *fopen();
+  int i,j;
+  Constituents *c;
+  FILE *finput,*fopen();
 
   /*-------------------------------------------------------------*/
   /* Open the constituents input file.                           */
@@ -44,7 +30,7 @@ PhotonSpace
   /* Read the number of atmospheric constituents.                */
   /*-------------------------------------------------------------*/
 
-  if (setup(finput)) { fscanf(finput, "%d", &ps->cnumber); }
+  if (setup(finput)) fscanf(finput, "%d", &ps->cnumber);
 
   /*-------------------------------------------------------------*/
 
@@ -57,23 +43,24 @@ PhotonSpace
 
     /*-----------------------------------------------------------*/
 
-    if (setup(finput)) { myfscanf(c[i].name, finput); }
-    else {
+    if (setup(finput)) { 
+      myfscanf(c[i].name, finput); 
+    } else {
       printf("User must specify a valid constituent name.\n");
       exit(0);
     }
 
     c[i].base_height = -1.;
-    if (setup(finput)) { fscanf(finput, "%lf", &c[i].base_height); }
+    if (setup(finput)) fscanf(finput, "%lf", &c[i].base_height);
 
     c[i].top_height = -1.;
-    if (setup(finput)) { fscanf(finput, "%lf", &c[i].top_height); }
+    if (setup(finput)) fscanf(finput, "%lf", &c[i].top_height);
 
     c[i].scale_height = -1.;
-    if (setup(finput)) { fscanf(finput, "%lf", &c[i].scale_height); }
+    if (setup(finput)) fscanf(finput, "%lf", &c[i].scale_height);
 
     c[i].cdensity = -1.;
-    if (setup(finput)) { fscanf(finput, "%lf", &c[i].cdensity); }
+    if (setup(finput)) fscanf(finput, "%lf", &c[i].cdensity);
 
     c[i].tau_abs_user = dvector(1, pp->numintervals);
     c[i].tau_sca_user = dvector(1, pp->numintervals);
@@ -151,7 +138,7 @@ PhotonSpace
       }
     }
 
-    if (setup(finput)) { myfscanf(c[i].phasefcn_file, finput); }
+    if (setup(finput)) myfscanf(c[i].phasefcn_file, finput);
 
     if (setup(finput)) {
       myfscanf(c[i].phasefcn_format, finput);
@@ -173,10 +160,10 @@ PhotonSpace
     }
 
     c[i].p_explicit_number = -1;
-    if (setup(finput)) { fscanf(finput, "%d", &c[i].p_explicit_number); }
+    if (setup(finput)) fscanf(finput, "%d", &c[i].p_explicit_number);
 
     c[i].p_legendre_number = -1;
-    if (setup(finput)) { fscanf(finput, "%d", &c[i].p_legendre_number); }
+    if (setup(finput)) fscanf(finput, "%d", &c[i].p_legendre_number);
 
     if (setup(finput)) {
       myfscanf(c[i].es, finput);
@@ -214,24 +201,18 @@ PhotonSpace
       if ( (0. <= c[i].tau_abs_user[j]) && (0. <= c[i].tau_sca_user[j]) ) {
         c[i].tau_user[j] = c[i].tau_abs_user[j] + c[i].tau_sca_user[j];
         c[i].w0_user[j] = c[i].tau_sca_user[j] / c[i].tau_user[j];
-      }
-
-      else if ( (0. <= c[i].tau_user[j]) && (0. <= c[i].w0_user[j]) ) {
+      } else if ( (0. <= c[i].tau_user[j]) && (0. <= c[i].w0_user[j]) ) {
         c[i].tau_sca_user[j] = c[i].w0_user[j] * c[i].tau_user[j];
         c[i].tau_abs_user[j] = c[i].tau_user[j] - c[i].tau_sca_user[j];
-      }
-
-      else if ( (0. <= c[i].tau_sca_user[j]) && (0. <= c[i].w0_user[j]) ) {
+      } else if ( (0. <= c[i].tau_sca_user[j]) && (0. <= c[i].w0_user[j]) ) {
         c[i].tau_user[j] = c[i].tau_sca_user[j] / c[i].w0_user[j];
         c[i].tau_abs_user[j] = c[i].tau_user[j] - c[i].tau_sca_user[j];
-      }
-
-      else if ( (0. <= c[i].tau_abs_user[j]) && (0. <= c[i].w0_user[j]) ) {
+      } else if ( (0. <= c[i].tau_abs_user[j]) && (0. <= c[i].w0_user[j]) ) {
         c[i].tau_user[j] = c[i].tau_abs_user[j] / (1. - c[i].w0_user[j]);
         c[i].tau_sca_user[j] = c[i].tau_user[j] - c[i].tau_abs_user[j];
       }
 
-      if (c[i].tau_user[j] < 0.) { break; }
+      if (c[i].tau_user[j] < 0.) break;
 
     }
 

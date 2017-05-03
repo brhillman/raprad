@@ -12,68 +12,24 @@
 #include "../include/Atmosphere.h"
 #include "../include/Constituents.h"
 
-double
-    bext_spectralmodelkato(),
-    bext_gasamounts_atmosphere(),
-    bext_watervapor_cntnm_atmosphere(),
-    linear_interpolate(),
-    log_interpolate();
+double bext_spectralmodelkato(int numlayers, double *dens, double *height, double altitude, double km);
+double bext_gasamounts_atmosphere(int, double *, double *, double *, double, int, double, double, double);
+double bext_watervapor_cntnm_atmosphere(int, double *, double *, double *, double *, double *, double, int, double, double *, double *);
+double linear_interpolate(double *, double *, int, double);
+double log_interpolate(double *, double *, int, double);
 
 /**********************************************************************/
 
-void
-mfp_spectralmodel_kato(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
-
-  int
-    i,
-    j,
-    k;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+void mfp_spectralmodel_kato(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, 
+   double *cvd, double *ucvd, double *bi
+)
 {
-  int
-    ii,
-    ip,
-    it,
-    iw,
-    m,
-    mm,
-    npts,
-    npts_shift,
-    iw_shift,
-    operatediv,
-    operatemod,
-    quadptindex;
-
-  double
-    ansyrl,
-    ansyru,
-    frcnx,
-    frcny,
-    p,
-    t,
-    w,
-    *xsect[9],
-    z;
-
-  char
-    *moleculeptr;
-
-  FILE
-    *fptr,
-    *fopen();
+  int ii, ip, it, iw, m, mm, npts, npts_shift, iw_shift, operatediv, operatemod, quadptindex;
+  double ansyrl, ansyru, frcnx, frcny, p, t, w, *xsect[9], z;
+  char *moleculeptr;
+  FILE *fopen();
 
   /*--------------------------------------------------------------*/
   /* Mid-layer height.                                            */
@@ -626,19 +582,9 @@ mfp_spectralmodel_kato(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
 
 /**********************************************************************/
 
-double
-bext_spectralmodelkato(numlayers,dens,height,altitude,km)
-int numlayers;
-double *dens;
-double *height;
-double altitude;
-double km;
+double bext_spectralmodelkato(int numlayers, double *dens, double *height, double altitude, double km)
 {
-  double
-    bext,
-    densmidlayer;
-
-  int i;
+  double bext, densmidlayer;
 
   /* densmidlayer = linear_interpolate(dens, height, numlayers, altitude); */
   densmidlayer = log_interpolate(dens, height, numlayers, altitude);

@@ -1,6 +1,6 @@
 /****************************************************************/
 /****************************************************************/
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "../include/numrec.nrutil.h"
@@ -9,24 +9,12 @@
 #include "../include/Brdf.h"
 
 /****************************************************************/
+extern int setup(FILE *);
 
-int
-read_brdf_selection(brdfpropertiesfile, pp, b)
-char
-  *brdfpropertiesfile;
-PhotonPartition
-  *pp;
-Brdf
-  *b;
+void read_brdf_selection(char *brdfpropertiesfile, PhotonPartition *pp, Brdf *b)
 {
-  int
-    c,
-    i,
-    j;
-
-  FILE
-    *finput,
-    *fopen();
+  int c, i, j;
+  FILE *finput, *fopen();
 
   /*-------------------------------------------------------------*/
 

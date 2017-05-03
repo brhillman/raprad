@@ -3,20 +3,16 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/Atmosphere.h"
 
 /******************************************************************************/
 
-void check_atmosphere_gasamounts_u(atm)
-  Atmosphere
-    *atm;
+void check_atmosphere_gasamounts_u(Atmosphere *atm)
 {
-  int
-    i;
-  FILE
-    *fpta,
-    *fopen();
+  int i;
+  FILE *fpta, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open check.atmosphere.gasamounts.u                                       */

@@ -10,19 +10,10 @@
 
 /******************************************************************************/
 
-void
-check_cntnmmodel(pp, sm)
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
+void check_cntnmmodel(PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fopen();
-
-  int
-    i;
+  FILE *fpt, *fopen();
+  int i;
 
   /*--------------------------------------------------------------------------*/
   /* Open check.cntnmmodel                                                    */

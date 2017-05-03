@@ -2,30 +2,22 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /*----------------------------------------------------------------------------*/
 
-void
-read_configuration(configfileName, configfilePhotonPartition,
-     configfileConstituents, configfileSpectralModel, configfileCntnm,
-     configfileAtmosphere, configfilePhotonSpace, configfileSunView,
-     configfileQuadrature, configfileBrdfSelection, configfileBrdf, outfileResults)
-  char
-    *configfileName,
-    *configfilePhotonPartition,
-    *configfileConstituents,
-    *configfileSpectralModel,
-    *configfileCntnm,
-    *configfileAtmosphere,
-    *configfilePhotonSpace,
-    *configfileSunView,
-    *configfileQuadrature,
-    *configfileBrdfSelection,
-    *configfileBrdf,
-    *outfileResults;
+int setup(FILE *);
+
+void myfscanf(char *, FILE *);
+
+void read_configuration(
+   char *configfileName, char *configfilePhotonPartition,
+   char *configfileConstituents, char *configfileSpectralModel, char *configfileCntnm,
+   char *configfileAtmosphere, char *configfilePhotonSpace, char *configfileSunView,
+   char *configfileQuadrature, char *configfileBrdfSelection, char *configfileBrdf, char *outfileResults
+)
 {
-  FILE
-    *fpta;
+  FILE *fpta;
 
   /*--------------------------------------------------------------------------*/
   /* Read all of the input file names from configfileName.                    */

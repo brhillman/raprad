@@ -2,26 +2,20 @@
 /*****************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/PhotonSpace.h"
 
 /*****************************************************************************/
 
-void
-read_photon_space(configfilename, ps)
-char
-  *configfilename;
-PhotonSpace
-  *ps;
-{
-  int
-    index,
-    j,
-    number;
+extern int setup(FILE *);
+extern void myfscanf(char *, FILE *);
+extern void position(FILE *);
 
-  FILE
-    *fptr,
-    *fopen();
+void read_photon_space(char *configfilename, PhotonSpace *ps)
+{
+  int j, number;
+  FILE *fptr, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open configfilename                                                      */

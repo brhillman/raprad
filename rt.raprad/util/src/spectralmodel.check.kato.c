@@ -12,21 +12,10 @@
 
 /******************************************************************************/
 
-int check_spectralmodel_kato(pp, sm)
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
+void check_spectralmodel_kato(PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fopen();
-
-  int
-    i,
-    j,
-    k,
-    m;
+  FILE *fpt, *fopen();
+  int i, j, k;
 
   /*--------------------------------------------------------------------------*/
   /* Open check.spectralmodel.pollack                                         */

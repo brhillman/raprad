@@ -1,5 +1,7 @@
 /**********************************************************************/
 /**********************************************************************/
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/PhotonPartition.h"
@@ -9,36 +11,19 @@
 
 /*--------------------------------------------------------------------*/
 
-double
-  compute_cloud_watervapordensity(),
-  mxratio_numberdensity_precmpercm();
+extern double compute_cloud_watervapordensity(char *, double, Atmosphere *);
+extern double mxratio_numberdensity_precmpercm(double);
 
 /**********************************************************************/
 
 void
-mfp_cloudextinction(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
-  int
-    i,
-    j,
-    k;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+mfp_cloudextinction(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, 
+   double *cvd, double *ucvd, double *bi
+)
 {
-  double
-    dz,
-    z;
+  double dz, z;
 
   /*--------------------------------------------------------------*/
   /* Layer thickness and mid-layer height.                        */

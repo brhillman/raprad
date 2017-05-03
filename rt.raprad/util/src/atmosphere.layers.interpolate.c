@@ -3,34 +3,31 @@
 /***************************************************************/
 
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /***************************************************************/
 
 #define SMALL_NUMBER  1.E-37
 
-double
-linear_interpolate(profile, height, number, altitude)
-double *profile;
-double *height;
-int number;
-double altitude;
+double linear_interpolate(double *profile, double *height, int number, double altitude)
 {
   double value, slope;
   int i;
 
   i = number - 1;
 
-  while ((altitude<(height[i]-SMALL_NUMBER)) && (i >= 0)) { --i; }
+  while ((altitude<(height[i]-SMALL_NUMBER)) && (i >= 0)) --i;
 
   if ((i==(number - 1)) && (altitude>(height[i]+SMALL_NUMBER))) {
     printf("Some linear interpolation was out of range and we\n");
-    printf("currently do not allow extrapolations.  Exiting!\n");
+    printf("currently do not allow extrapolations.  Exiting! 1\n");
     exit(1);
   }
 
   if (i<0) {
     printf("Some linear interpolation was out of range and we\n");
-    printf("currently do not allow extrapolations.  Exiting!\n");
+    printf("currently do not allow extrapolations.  Exiting! 2\n");
     exit(1);
   }
 
@@ -47,29 +44,29 @@ double altitude;
 /* Logarithmically interpolate a profile to a specific altitude.*/
 /***************************************************************/
 
-double
-log_interpolate(profile, height, number, altitude)
-double *profile;
-double *height;
-int number;
-double altitude;
+double log_interpolate(double *profile, double *height, int number, double altitude)
 {
   double value, slope;
   int i;
 
   i = number - 1;
 
-  while ((altitude<(height[i]-SMALL_NUMBER)) && (i >= 0)) { --i; }
+  while ((altitude<(height[i]-SMALL_NUMBER)) && (i >= 0)) --i;
+
+  /*  
+  printf("%3i\n",i);
+  printf("%6.2f\n",altitude);
+  printf("%6.2f\n",height[i]);*/
 
   if ((i==(number - 1)) && (altitude>(height[i]+SMALL_NUMBER))) {
     printf("Some linear interpolation was out of range and we\n");
-    printf("currently do not allow extrapolations.  Exiting!\n");
+    printf("currently do not allow extrapolations.  Exiting! 3\n");
     exit(1);
   }
 
   if (i<0) {
     printf("Some linear interpolation was out of range and we\n");
-    printf("currently do not allow extrapolations.  Exiting!\n");
+    printf("currently do not allow extrapolations.  Exiting! 4\n");
     exit(1);
   }
 

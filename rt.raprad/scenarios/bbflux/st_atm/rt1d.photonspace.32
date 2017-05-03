@@ -25,7 +25,7 @@
 /*-----------------------------------------------------------------*/
 
 [zm] LOWEST  ELEVATION FOR PHOTONS (in meters): 0.,
-[zp] HIGHEST ELEVATION FOR PHOTONS (in meters): 100000.,
+[zp] HIGHEST ELEVATION FOR PHOTONS (in meters): 70000.,
 
 [gridnum] NUMBER OF ATMOSPHERIC LAYERS: 31,
 

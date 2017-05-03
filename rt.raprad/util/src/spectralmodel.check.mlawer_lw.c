@@ -12,21 +12,10 @@
 
 /******************************************************************************/
 
-int check_spectralmodel_mlawer_lw(pp, sm)
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
+void check_spectralmodel_mlawer_lw(PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fopen();
-
-  int
-    i,
-    j,
-    k,
-    m;
+  FILE *fpt, *fopen();
+  int i;
 
   /*--------------------------------------------------------------------------*/
   /* Open check.spectralmodel.mlawer_lw                                       */

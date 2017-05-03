@@ -2,31 +2,22 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/PhotonPartition.h"
 
 /******************************************************************************/
 
-void
-read_photon_partition(configfilePhotonPartition, pp)
-  char
-    *configfilePhotonPartition;
-  PhotonPartition
-    *pp;
+extern int setup(FILE *);
+extern void myfscanf(char *, FILE *);
+extern void position(FILE *);
+
+
+void read_photon_partition(char *configfilePhotonPartition, PhotonPartition *pp)
 {
-  int
-    i,
-    j,
-    dummyi,
-    smindex;
-
-  FILE
-    *fpta,
-    *fopen();
-
-  char
-    c;
+  int i, dummyi, smindex;
+  FILE *fpta, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open  configfilePhotonPartition                                          */

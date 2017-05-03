@@ -4,10 +4,21 @@
 c This program computes broad band flux based on the output.
 c Currently, no IR is treated.
 
+      implicit none
+
+      integer maxsub_band,maxlayers,maxband
       parameter(maxsub_band = 1000)
       parameter(maxlayers = 200)
       parameter(maxband = 200)
 
+!     inputs
+      real*8 alt(*), press(*)
+      real wave(*)
+      integer nlayer, n_band, nsub_band(*)
+      real u0,thz,gmt_time
+      real*8 sol_const(*)
+
+!     local namespace
       real sol_fluxup_sub(maxsub_band,maxlayers)
       real sol_fluxdn_sub(maxsub_band,maxlayers)
       real sol_direct_sub(maxsub_band,maxlayers)
@@ -18,12 +29,9 @@ c Currently, no IR is treated.
       real total_sol_direct(maxlayers), total_sol_diff(maxlayers)
       real sol_absop(maxband)
 
-      real wave(*)
-
-      real*8 sol_const(*)
-      real*8 alt(*), press(*) 
-
-      integer nlayer, n_band, nsub_band(*)
+      real*8 alt_km,press_mb
+      real solnet,xirdown,xirup,fill_ir
+      integer i,j,jj,jlayers,n,nend,nstart,ntot_band
 
       character*100 in_file
 
@@ -54,7 +62,7 @@ c Currently, no IR is treated.
 c computing band flux at each level
 
       do 2000 j = 1, jlayers
-        do 2100 i = 1, nband
+        do 2100 i = 1, n_band
           sol_fluxup(i,j) = 0.0
           sol_fluxdn(i,j) = 0.0
           sol_direct(i,j) = 0.0
@@ -78,30 +86,30 @@ c computing band flux at each level
         endif
         
         do 2400 j = 1, jlayers
-
           do 2500 n = nstart, nend
-     
             sol_fluxup(i,j) = sol_fluxup(i,j) + sol_fluxup_sub(n,j)
             sol_fluxdn(i,j) = sol_fluxdn(i,j) + sol_fluxdn_sub(n,j)
             sol_direct(i,j) = sol_direct(i,j) + sol_direct_sub(n,j)
-
  2500     continue
  2400   continue
  2300 continue
 
+
       do 2600 j = 1, jlayers
-
         do 2700 i = 1, n_band
-
           total_sol_fluxup(j) = total_sol_fluxup(j) + sol_fluxup(i,j)
           total_sol_fluxdn(j) = total_sol_fluxdn(j) + sol_fluxdn(i,j)
           total_sol_direct(j) = total_sol_direct(j) + sol_direct(i,j)
-
  2700   continue
-
         total_sol_diff(j) = total_sol_fluxdn(j) - total_sol_direct(j)
-
  2600 continue
+   
+
+      print*,'short wave'
+      print*,sum(sol_fluxup(:,30))-sum(sol_fluxup(:,29))
+     &         +sum(sol_fluxdn(:,29))-sum(sol_fluxdn(:,30))
+
+
 
       do 2800 i = 1, n_band
         sol_absop(i) = sol_fluxdn(i,1) - sol_fluxup(i,1)
@@ -164,7 +172,6 @@ c        alt  m -> km, press Pa -> mb
 
 
 
-  100 format(1x)
   527 FORMAT(' RADOUT:      ',
      +     'SOLNET    XIRDOWN   XIRUP     U0       THETA Z   TIME-GMT')
   530 FORMAT(10X,F8.2,2X,2(F9.3,2X),F8.4,F10.4,3x,f6.1)
@@ -174,9 +181,6 @@ c        alt  m -> km, press Pa -> mb
      3       'SOL FLUX UP',T55,'IR FLUX UP',T69,'IR FLUX DN',T82,
      4       'SOL DIFFUSE',T97,'SOL DIRECT')
   665 FORMAT(I4,2X,F7.3,2X,F7.1,6(4X,F10.2))
-  666 format(2x,'Wave l',7x,'solfx(top)',7x,'Flux dn',
-     &       9x,'Flux up',9x,'Absorbed flux by ATM')
-  667 format(1x,f7.3,2x,8e16.5)
       end
 
 

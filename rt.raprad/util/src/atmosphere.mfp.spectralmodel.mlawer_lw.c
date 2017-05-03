@@ -16,77 +16,31 @@
 #include "../include/Brdf.h"
 
 
-double
-    bext_spectralmodelkato(),
-    bext_gasamounts_atmosphere(),
-    bext_watervapor_cntnm_atmosphere(),
-    linear_interpolate(),
-    log_interpolate();
+double bext_spectralmodelkato(int, double *, double *, double, double);
+double bext_gasamounts_atmosphere(int, double *, double *, double, int, double, double, double);
+double bext_watervapor_cntnm_atmosphere(int, double *, double *, double *, double *, double *, double, int, double, double *, double *);
+double linear_interpolate(double *, double *, int, double);
+double log_interpolate(double *, double *, int, double);
+
+void rrtm_driver_setcoef_taumol_(
+   int *iband, int *ig, int *lay, float *tbound, double *tz, double *tavel, double *pz, double *pavel,
+   double *wkl_1, double *wkl_2, double *wkl_3, double *wkl_4, double *wkl_6, double *wkl_7,
+   double *coldry, float *albedo, int *laytrop, int *layswtch, int *laylow,
+   double *bi, double *gau_wt, double *plankbnd, double *planklay, double *planklev
+);
+
 
 /**********************************************************************/
 
-void
-mfp_spectralmodel_mlawer_lw(i, j, k, ps, pp, sm, atm, c, rt, cvd, ucvd, d, bi, laytrop, layswtch, laylow)
-
-  int
-    i,
-    j,
-    k,
-    laytrop,
-    layswtch,
-    laylow;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  Rt
-    *rt;
-  Brdf
-    *d;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+void mfp_spectralmodel_mlawer_lw(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, Rt *rt, 
+   double *cvd, double *ucvd, Brdf *d, double *bi, 
+   int laytrop, int layswtch, int laylow
+)
 {
-  int
-    ii,
-    ip,
-    it,
-    iw,
-    m,
-    mm,
-    npts,
-    operatediv,
-    operatemod,
-    quadptindex;
-
-  double
-    ansyrl,
-    ansyru,
-    frcnx,
-    frcny,
-    p,
-    plev,
-    t,
-    w,
-    xsect[9][64],
-    z,
-    dz,
-    dryaircolumn,
-    plkbnd;
-
-  char
-    *moleculeptr;
-
-  FILE
-    *fptr,
-    *fopen();
+  double p, plev, t, z, dz, dryaircolumn, plkbnd;
+  FILE *fopen();
 
   /*--------------------------------------------------------------*/
   /* Mid-layer height. z and dz are in m.                         */
@@ -127,6 +81,7 @@ mfp_spectralmodel_mlawer_lw(i, j, k, ps, pp, sm, atm, c, rt, cvd, ucvd, d, bi, l
     &atm->uo3[k-1], &atm->un2o[k-1], &atm->uch4[k-1], 
     &atm->uo2[k-1], &dryaircolumn, &d->albedo[i][1], &laytrop, &layswtch, &laylow,
     &bi[0], &sm->alphau[i][j][k], &plkbnd, &rt->planklayu[k], &rt->planklevu[k-1]) ;
+
 
   /*--------------------------------------------------------------*/
   /* Save the Planck function source radiance for this layer.     */

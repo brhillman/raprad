@@ -11,16 +11,7 @@
 
 /*----------------------------------------------------------------------------*/
 
-void
-raprad_alloc(pp, ps, rt)
-
-PhotonPartition
-  *pp;
-PhotonSpace
-  *ps;
-Rt
-  *rt;
-
+void raprad_alloc(PhotonPartition *pp, PhotonSpace *ps, Rt *rt)
 {
 
   /*--------------------------------------------------------------------------*/
