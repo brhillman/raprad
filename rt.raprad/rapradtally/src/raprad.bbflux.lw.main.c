@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -21,7 +22,11 @@ void
   read_photon_space(),
   read_photon_partition(),
   atmosphere_read_mcclatchey(),
-  atmosphere_layers_subdivide();
+  atmosphere_layers_subdivide(),
+  check_spectralmodel_pollack(),
+  check_cntnmmodel(),
+  cntnmmodel_read(),
+  spectralmodel_read_pollack();
 
 Constituents
   *read_constituents();

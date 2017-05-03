@@ -1,6 +1,6 @@
 /****************************************************************/
 /****************************************************************/
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "../include/numrec.nrutil.h"
@@ -9,8 +9,9 @@
 #include "../include/Brdf.h"
 
 /****************************************************************/
+int setup();
 
-int
+void
 read_brdf_selection(brdfpropertiesfile, pp, b)
 char
   *brdfpropertiesfile;

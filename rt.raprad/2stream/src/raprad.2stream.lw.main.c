@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -23,7 +24,7 @@ void
   atmosphere_layers_tau(),
   atmosphere_read_mcclatchey(),
   check_atmosphere_gasamounts_u(),
-  check_atmosphere_layers(),
+  check_atmosphere_layers_lw(),
   check_atmosphere_layers_subdivide(),
   check_brdf_selection(),
   check_constituents(),
@@ -31,24 +32,30 @@ void
   check_photon_partition(),
   check_photon_space_final(),
   check_spectralmodel_mlawer_lw(),
+  check_spectralmodel_kato(),
+  check_spectralmodel_pollack(),
+  check_cntnmmodel(),
+  cntnmmodel_read(),
   photon_space_final(),
-  rapad_alloc(),
+  raprad_alloc(),
+  rap_twostr_lw_(),
   read_configuration(),
   read_constituents_phasefcns(),
   read_geometry_sunzenith(),
   read_photon_partition(),
-  read_photon_space();
+  read_photon_space(),
+  read_brdf_selection(),
+  spectralmodel_read_mlawer_lw(),
+  spectralmodel_read_kato(),
+  spectralmodel_read_pollack();
 
 Constituents
   *read_constituents();
 
-int
-  read_brdf_selection(),
-  spectralmodel_read_kato();
 
 /******************************************************************************/
 
-main(argc, argv)
+int main(argc, argv)
 
 int
   argc;
@@ -311,7 +318,8 @@ char
   /* adding doubling code for each spectral interval .                        */
   /*--------------------------------------------------------------------------*/
 
-  for (i=1; i<=pp->numintervals; ++i) {
+  for (i=1; i<=pp->numintervals; ++i) { 
+
 
     /*------------------------------------------------------------------------*/
     /* Phase functions for each constituent at this particular wavelength.    */
@@ -345,18 +353,25 @@ char
       /* interval or sub-interval.                                            */
       /*----------------------------------------------------------------------*/
 
+      /* printf("%15.5e\n",rt->plankbnd[i]);   */
+
       rap_twostr_lw_(
            &sm->solarinsol[i],  &rt->layers_number,   &suna->sunz_mu,
            &rt->layers_w0[1],   &rt->layers_g0[1],    &d->albedo[i][1],
            &rt->layers_tau[1],  &sm->alphad[i][j][1], &suna->sun2earth_distance,
            &rt->plankbnd[i],    &rt->planklayd[1],    &rt->planklevd[1],
-           &sm->bandwidth[i][0]);
+           &sm->bandwidth[i][0]);  
+
+
+
 
       /*----------------------------------------------------------------------*/
       /* DONE with the radiative transfer.                                    */
       /*----------------------------------------------------------------------*/
 
     }
+
+
 
     /*------------------------------------------------------------------------*/
     /* DONE with this subinterval so go to the next one.                      */
@@ -368,9 +383,8 @@ char
   /* DONE with the spectral band calculations.                                */
   /*--------------------------------------------------------------------------*/
 
+	return 0;
 }
 
 /******************************************************************************/
 /******************************************************************************/
-
-

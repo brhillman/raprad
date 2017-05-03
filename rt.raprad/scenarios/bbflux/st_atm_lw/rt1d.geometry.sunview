@@ -25,9 +25,9 @@
 /*-----------------------------------------------------------------*/
 
 [sunz_number]		NUMBER OF SUN ZENITH ANGLES: 1,
-[sunz_theta]		SOLAR ZENITH ANGLE:  30.0,
+[sunz_theta]		SOLAR ZENITH ANGLE:  0.,
 [sun2earth_distance]	SUN TO EARTH DISTANCE IN AU:  1.0,
-[gmt_time]              TIME IN GMT:   1800.0,
+[gmt_time]              TIME IN GMT:   1600.0,
 
 [z_number or a_number]	NUMBER OF VIEWING DIRECTIONS: 1,
 

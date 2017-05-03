@@ -2,8 +2,13 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 /*----------------------------------------------------------------------------*/
+
+int setup();
+
+void myfscanf();
 
 void
 read_configuration(configfileName, configfilePhotonPartition,

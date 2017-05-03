@@ -2,6 +2,7 @@
 /**************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 
@@ -36,7 +37,7 @@ Constituents
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
   /*----------------------------------------------------------------------*/
-
+  /*printf("1filename=%s.",filename);*/
   if ((fptr=fopen(filename,"r"))==NULL) {
     printf("could not open the phase function file - exiting!\n");
     exit(0);
@@ -102,7 +103,7 @@ Constituents
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
   /*----------------------------------------------------------------------*/
-
+  /*printf("2filename=%s.",filename);*/
   if ((fptr=fopen(filename,"r"))==NULL) {
     printf("could not open the phase function file - exiting!\n");
     exit(0);
@@ -188,7 +189,7 @@ Constituents
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
   /*----------------------------------------------------------------------*/
-
+  /*printf("3filename=%s.",filename);*/
   if ((fptr=fopen(filename,"r"))==NULL) {
     printf("could not open the phase function file - exiting!\n");
     exit(0);

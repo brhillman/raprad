@@ -56,27 +56,28 @@ c ivert  = maximum number of layers;
       dimension fup(ilayer), fdn(ilayer), direct(ilayer)
       dimension fnet(ilayer)
       dimension sol_direct(ilayer)
-      dimension planklay_temp(*), planklev_temp(*), bandwidth(2)
-      dimension gau_wt_temp(*)
+      real*8 planklay_temp(ilayer), planklev_temp(ilayer), bandwidth(2)
+      real*8 gau_wt_temp(ilayer)
 
       dimension b1(ilayer), b2(ilayer), b3(ilayer)
       dimension el1(ilayer), el2(ilayer)
       dimension em1(ilayer), em2(ilayer), ee1(ilayer)
       dimension af(idbl), bf(idbl), ef(idbl)
       dimension ak(ilayer), ck1(ilayer), ck2(ilayer)
-      dimension slope(ilayer), ptemp(ilayer)
+      real*8 slope(ilayer), ptemp(ilayer)
       dimension direc(ilayer), directu(ilayer)
       dimension gangle(ngauss), gweight(ngauss)
       dimension y3(ngauss,ilayer), gami(ilayer)
       dimension fluxird(ilayer), fluxiru(ilayer)
 
-      real w0_temp(*), g0_temp(*), taul_temp(*)
+      real w0_temp(ilayer), g0_temp(ilayer), taul_temp(ilayer)
       real w0(ilayer), g0(ilayer)
       real taul(ilayer), g0l(ilayer), w0l(ilayer)
       real taulnd(ivert), opd(ilayer), opdnd(ilayer)
       real amu0, suralb
       real*8 planklay(ilayer), planklev(ilayer)
       real*8 gau_wt(ilayer)
+      real*8 plankbnd,ptempg
 
 
       data epsilon / 1.0e-15 /
@@ -192,23 +193,21 @@ c making the delta approximation
          directu(j) = 0.0
  2000   continue
 
-      if (iopen .eq. 0) then
+
 
         open
      &  (unit=41,file='../../results/raprad.lw.out',status='unknown')
-c       open(unit=41,file='out.twosrt.dat',status='unknown')
 
-      endif
-
-      iopen = 1
 
 
 c calculating weighted plank functions and slope defined by Eq. 26 in 
 c Toon et al.
 
+
       call oppr1
      & (ntaujs,ptempg,taul,slope,ptemp,bandwidth,
      &  plankbnd,gau_wt,planklev)
+
 
       call twostr
      & (ntaujs,irflag,taul,w0,g0,suralb,
@@ -236,6 +235,8 @@ c        write(*, 400) j, fluxiru(j), fluxird(j), sol_direct(j)
         write(41,400) j, fluxiru(j), fluxird(j), sol_direct(j)
 
  3000 continue
+
+c       print*,'fluxiru=',fluxiru(ntaujs)
 
 c      write(40,240) amu0, dis2sun
 c      write(40,200)

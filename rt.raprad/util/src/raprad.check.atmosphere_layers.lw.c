@@ -1,6 +1,6 @@
 /******************************************************************************/
 /******************************************************************************/
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "../include/SpectralModel.h"
@@ -52,7 +52,7 @@ Brdf
 
   fprintf(fpta, "%10.5f", suna->sunz_mu);
 
-  fprintf(fpta, "%10.5f\n", d->albedo[i]);
+  fprintf(fpta, "%10.5f\n", d->albedo[i][1]);
 
   /*--------------------------------------------------------------------------*/
   /* Print the single-scattering albedo, tau and moments of legendre          */

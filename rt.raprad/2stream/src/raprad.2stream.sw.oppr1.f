@@ -40,7 +40,8 @@ c isolp  = number of solar probability intervals;
 c iirp   = number of infrared probability intervals;
 
 c  double precision
-       implicit real*8 (a-h, o-z)
+
+      implicit real*8 (a-h, o-z)
 
 
       dimension  ptemp2(itotal), pltemp1(itotal)
@@ -49,17 +50,20 @@ c     **************************************
 c     * calculate ptemp and slope          *
 c     **************************************
 c
+
 c       calculate the wavelength dependent plank function at the ground.
+
         itg                 = anint(10.*tgrnd) - nlow
-c
+
         do 93 i=1,nirp
          pltemp1(i) = plank(ltemp(i),itg)
 93      continue
+
          do 100 l            =   nsolp+1,ntotal
             ptempg(l)        =   pltemp1(l-nsolp)*weight(l)
-
  100    continue
-c
+
+
         do 300 j            =   1,nlayer
          if(j.eq.1) then
           kindex = 1

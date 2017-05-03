@@ -2,8 +2,10 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/Atmosphere.h"
+
 
 /******************************************************************************/
 
@@ -12,8 +14,7 @@ void check_atmosphere_layers_subdivide(atmnew)
     *atmnew;
 {
   int
-    i,
-    j;
+    i;
 
   FILE
     *fpta,

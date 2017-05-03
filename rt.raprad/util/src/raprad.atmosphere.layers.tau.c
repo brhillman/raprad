@@ -24,7 +24,9 @@
 void
   mfp_aerosolextinction(),
   mfp_cloudextinction(),
+  mfp_ozoneabsorption_martonchik(),
   mfp_rayleighscatter(),
+  mfp_rayleighscatter_martonchik(),
   mfp_spectralmodel_kato(),
   mfp_spectralmodel_mlawer_lw(),
   mfp_spectralmodel_pollack();
@@ -138,7 +140,7 @@ Brdf
         /*------------------------------------------------------------*/
         /* RAYLEIGH SCATTERING EXTINCTION                             */
         /*------------------------------------------------------------*/
-
+                               
         if (!strcmp(c[n].name,"RayleighScatter")) {
 
           /*----------------------------------------------------------*/
@@ -180,7 +182,7 @@ Brdf
         /*------------------------------------------------------------*/
         /* GASEOUS ABSORPTION EXTINCTION USING KATO MODEL             */
         /*------------------------------------------------------------*/
-
+                                    
         else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelKato")) {
 
           /*----------------------------------------------------------*/

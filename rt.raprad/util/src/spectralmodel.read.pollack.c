@@ -12,7 +12,7 @@
 
 /******************************************************************************/
 
-int spectralmodel_read_pollack(filename, pp, sm)
+void spectralmodel_read_pollack(filename, pp, sm)
 char
   *filename;
 PhotonPartition

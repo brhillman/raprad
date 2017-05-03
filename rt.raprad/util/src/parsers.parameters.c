@@ -2,14 +2,17 @@
 /*****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 
 /*****************************************************************************/
 
+void position(),
+     checkentry();
 int
 setup(fptr)
 FILE *fptr;
 {
-  int c, read;
+  int read;
 
   position(fptr);
   checkentry(fptr, &read);
@@ -19,7 +22,7 @@ FILE *fptr;
 
 /*****************************************************************************/
 
-int
+void
 position(fptr)
 FILE *fptr;
 {
@@ -31,7 +34,7 @@ FILE *fptr;
 
 /*****************************************************************************/
 
-int
+void
 checkentry(fptr, read)
 FILE *fptr;
 int *read;
@@ -57,6 +60,7 @@ int *read;
 
 /*****************************************************************************/
 
+/*
 int
 readentries(variables, fptr)
 int *variables;
@@ -88,10 +92,11 @@ FILE *fptr;
   }
 
 }
+*/
 
 /*****************************************************************************/
 
-int
+void
 myfscanf(string, fptr)
 char *string;
 FILE *fptr;

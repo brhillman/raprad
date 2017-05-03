@@ -72,7 +72,6 @@ mfp_spectralmodel_kato(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
     *moleculeptr;
 
   FILE
-    *fptr,
     *fopen();
 
   /*--------------------------------------------------------------*/
@@ -637,8 +636,6 @@ double km;
   double
     bext,
     densmidlayer;
-
-  int i;
 
   /* densmidlayer = linear_interpolate(dens, height, numlayers, altitude); */
   densmidlayer = log_interpolate(dens, height, numlayers, altitude);

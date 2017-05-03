@@ -2,6 +2,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/PhotonSpace.h"
@@ -12,6 +13,7 @@
 #define DELTA      0.05
 
 /******************************************************************************/
+void piksrt();
 
 void photon_space_final(ps, c)
   PhotonSpace

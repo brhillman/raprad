@@ -25,9 +25,9 @@
 /*-----------------------------------------------------------------*/
 
 [sunz_number]		NUMBER OF SUN ZENITH ANGLES: 1,
-[sunz_theta]		SOLAR ZENITH ANGLE:  60.0,
+[sunz_theta]		SOLAR ZENITH ANGLE:  60.,
 [sun2earth_distance]	SOLAR ZENITH ANGLE:  1.0,
-[gmt_time]              TIME IN GMT:   1800.0,
+[gmt_time]              TIME IN GMT:   1600.0,
 
 [z_number or a_number]	NUMBER OF VIEWING DIRECTIONS: 1,
 

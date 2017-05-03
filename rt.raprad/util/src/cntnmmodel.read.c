@@ -10,7 +10,7 @@
 
 /******************************************************************************/
 
-int cntnmmodel_read(filename, pp, sm)
+void cntnmmodel_read(filename, pp, sm)
 char
   *filename;
 PhotonPartition

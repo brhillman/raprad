@@ -15,7 +15,7 @@
 
 /******************************************************************************/
 
-int spectralmodel_read_kato(filename, pp, ps, sm)
+void spectralmodel_read_kato(filename, pp, ps, sm)
 char
   *filename;
 PhotonPartition

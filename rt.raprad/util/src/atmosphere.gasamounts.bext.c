@@ -2,6 +2,8 @@
 /* Linear interpolate a profile to a specific altitude.        */
 
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define SMALL_NUMBER             1.E-37
 
@@ -11,8 +13,6 @@
 #define A0			 6.022045E+23   /* #/mole  */
 #define DENSITY_WATER            1.000   	/* gm/cm^3 */
 #define GWATERVAPOR		 18.016 	/* Molecular Weight of Water Vapor (g/mol) */
-
-double mxratio_precmpercm_numberdensity();
 
 double
 bext_gasamounts_atmosphere(numlayers,u,p,height,altitude, flag_ucvd, ucvd, km, coverd)
@@ -26,7 +26,7 @@ double ucvd;
 double km;
 double coverd;
 {
-  double value, slope, peff, ueff, ueffcvd, bext;
+  double slope, peff, ueff, bext;
   int i;
 
   i = numlayers - 1;
