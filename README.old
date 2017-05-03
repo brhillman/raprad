@@ -1,0 +1,43 @@
+RAPRAD is the version where I have made some modifications so that the model can work with Linux system,
+such as changing the binary files and a few other things.
+
+The ORIGINAL is the original package that I received from Tom.
+
+Raprad-8 is the version before the computer was upgraded on 15 Sept 2008.
+
+On 15 Sept 2008 the RAPRAD version has some problems to run after the operating system is upgraded. This is
+because a lot of variables in the code were used but never been defined.
+
+I'm working on fixing this problem on the Raprad-9 version:
+
+Long wave
+1. Fix 'iopen' used but not defined in 'rt.raprad/2stream/src/raprad.2stream.lw.driver.f'
+2. Delete the computation of solar radiation in 'rt.raprad/2stream/src/raprad.2stream.lw.add.f'
+3. 'du0' in 'rt.raprad/2stream/src/raprad.2stream.lw.add.f' is not defined, but it not really needed anyway.
+4. 'wx_3' in 'util/src/rrtm_driver_setcoef_taumol.f' is used for a 'write' statement but is not defined.
+5. put a write statement in 'rt.raprad/2stream/src/raprad.2stream.lw.driver.f' to print out optical depth.
+   This seems to fix the problem that 'taul' is NaN when it is passed on to the subroutine 'oppr1'.
+   No idea why this would fix the problem.
+6. Modify 'util/src/setcoef.f' to make it less confusing: check 'istart'
+7. declare 'void' for the routine 'atmosphere_layers'
+8. declare 'void' for the routine 'check_spectralmodel_kato'
+9. declare 'void' for the routine 'spectralmodel_read_mlawer_lw'
+
+1. declare 'void' for the routine 'read_brdf_selection'
+2. declare 'void' for the routine 'spectralmodel_read_kato'
+3. declare 'void' for the routine 'spectralmodel_read_pollack'
+4. declare 'void' for the routine 'check_spectralmodel_pollack'
+5. declare 'void' for the routine 'cntnmmodel_read'
+6. declare 'void' for the routine 'check_cntnmmodel'
+7. declare 'void' for the routine 'check_atmosphere_layers_lw'
+8. declare 'void' for the routine 'checkentry'
+9. comment 'readentries' which isn't used anywhere
+
+
+1. declare 'void' for the routine 'check_geometry_sunzenith'
+
+
+Short wave
+1. Delete 'tmi' in '2stream/src/raprad.2stream.sw.add.f' that uses 'u1i' that is not defined.
+   'tmi' is not used anywhere anyway.
+
