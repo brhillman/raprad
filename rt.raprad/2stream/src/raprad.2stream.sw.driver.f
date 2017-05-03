@@ -44,7 +44,7 @@ c ivert  = maximum number of layers;
 
       implicit double precision(a-h, o-z)
 
-      dimension fup(ilayer), fdn(ilayer), direct(ilayer)
+      dimension fup(ilayer), fdn(ilayer), fdi(ilayer)
       dimension fnet(ilayer)
       dimension sol_fluxup(ilayer), sol_fluxdn(ilayer)
       dimension sol_direct(ilayer)
@@ -78,6 +78,7 @@ c than 0.9999 tend to induce model instabilities.
       ntaujs = nlayers + 1
 
       do 1000 j = 1, ntaujs
+
         if(j .eq. 1) then
           taul(j) = 0.0
           w0l(j)   = 0.0
@@ -87,12 +88,14 @@ c than 0.9999 tend to induce model instabilities.
           w0l(j)   = w0_temp(j-1)
           g0l(j)   = g0_temp(j-1)
         end if
+
  1000 continue
 
 
 c making the delta approximation
 
       do 10 j =1, ntaujs
+
         if(j.ne.1) then
           j1=j-1
         else
@@ -101,6 +104,7 @@ c making the delta approximation
 
         if(taul(j).lt.epsilon)  taul(j) = epsilon
            w0t = w0l(j)
+
         if(w0t.gt.1.-epsilon)   w0t=1.-epsilon
            denom = w0l(j) * taul(j)
         if(denom.le.epsilon)  denom=epsilon
@@ -113,10 +117,17 @@ c making the delta approximation
 
 
         fo        = g0t**2
+
         den       = 1.-w0t*fo
+
+
+
         taulnd(j) = taul(j)
         taul(j)   = taul(j) * den
         w0(j)     = (1.-fo)*w0t/den
+
+
+
         g0(j)     = g0t/(1.+g0t)
         opd(j)    = 0.0
         opd(j)    = opd(j1) + taul(j)
@@ -139,7 +150,7 @@ c making the delta approximation
 
          call add
      &    (ntaujs,taul,w0,g0,suralb,opd,opdnd,ak,b1,b2,b3,em1,em2,
-     &     el1,el2,af,bf,ef,amu0,fnet,fup,fdn,direct)
+     &     el1,el2,af,bf,ef,amu0,fnet,fup,fdn,fdi)
 
        end if
 
@@ -151,23 +162,25 @@ c correction factor of the sun to the earth distance
 
 c obtain irradiances at the bottom of jth layer
 
-      if (iopen .eq. 0) then
 
         open
      &  (unit=41,file='../../results/raprad.sw.out',status='unknown')
 
-      endif
-
-      iopen = 1
+!solconst changes with layer
+!gau_wt=1.
+!dist_cor=1. 
 
       do 50 j = 1,ntaujs
+
          sol_fluxup(j) = fup(j)*solconst*gau_wt*dist_cor
          sol_fluxdn(j) = fdn(j)*solconst*gau_wt*dist_cor
-         sol_direct(j) = direct(j)*solconst*gau_wt*dist_cor*amu0
+         sol_direct(j) = fdi(j)*solconst*gau_wt*dist_cor*amu0
 
          write(41,400) j, sol_fluxup(j), sol_fluxdn(j), sol_direct(j)
 
  50   continue
+
+
 
 
 c      write(40,240) amu0, dis2sun

@@ -36,6 +36,7 @@ c Currently, no IR is treated.
         ntot_band = ntot_band + nsub_band(i)
  1001 continue
 
+
       in_file(1:14)
      &  = '../../results/'
 
@@ -43,6 +44,8 @@ c Currently, no IR is treated.
 
       open(11,file=in_file,status='old')
       
+
+
       do 1000 n = 1, ntot_band
         do 1100 j = 1, jlayers
           read(11,*) i, sol_fluxup_sub(n,j), sol_fluxdn_sub(n,j),
@@ -52,26 +55,29 @@ c Currently, no IR is treated.
 
       close(unit=11)
 
+
+
 c computing band flux at each level
 
       do 2000 j = 1, jlayers
-        do 2100 i = 1, nband
+        do 2100 i = 1, n_band
           sol_fluxup(i,j) = 0.0
           sol_fluxdn(i,j) = 0.0
           sol_direct(i,j) = 0.0
  2100   continue
-
         total_sol_fluxup(j) = 0.0
         total_sol_fluxdn(j) = 0.0
         total_sol_direct(j) = 0.0
         total_sol_diff(j) = 0.0
         total_ir_fluxup(j) = 0.0
         total_ir_fluxdn(j) = 0.0
-
  2000 continue
           
 
+
+
       do 2300 i = 1, n_band
+
         if (i .eq. 1) then
           nstart = 1
           nend = nsub_band(i)
@@ -81,9 +87,8 @@ c computing band flux at each level
         endif
         
         do 2400 j = 1, jlayers
-
           do 2500 n = nstart, nend
-     
+    
             sol_fluxup(i,j) = sol_fluxup(i,j) + sol_fluxup_sub(n,j)
             sol_fluxdn(i,j) = sol_fluxdn(i,j) + sol_fluxdn_sub(n,j)
             sol_direct(i,j) = sol_direct(i,j) + sol_direct_sub(n,j)
@@ -92,26 +97,30 @@ c computing band flux at each level
  2400   continue
  2300 continue
 
+
+
 c For solar
       do 2600 j = 1, jlayers
         total_sol_fluxup(j) = 0.0
         total_sol_fluxdn(j) = 0.0
         total_sol_direct(j) = 0.0
         total_sol_diff(j) = total_sol_fluxdn(j) - total_sol_direct(j)
-
  2600 continue
 
+
+ 
 c For IR
       do 4000 j = 1, jlayers
-
-c        do 4100 i = 33, 48
-
-        do 4100 i = 1, 16
-
+        do 4100 i = 1, n_band
           total_ir_fluxup(j) = total_ir_fluxup(j) + sol_fluxup(i,j)
           total_ir_fluxdn(j) = total_ir_fluxdn(j) + sol_fluxdn(i,j)
  4100   continue
  4000 continue
+
+
+      print*,'long wave'
+         print*,total_ir_fluxup(31)-total_ir_fluxup(30)
+     &         +total_ir_fluxdn(30)-total_ir_fluxdn(31)     
 
 
 
@@ -128,7 +137,7 @@ c        do 4100 i = 33, 48
 
 
 
-c outpus to files
+c output to files
       xirdown = total_ir_fluxdn(jlayers)
       xirup = total_ir_fluxup(1)
       

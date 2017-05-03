@@ -59,10 +59,11 @@ c      needed for matrix.
        do 14 j           = 1,nlayer
 
 c      these are for twostream and hemispheric means
-c These b1 and b2 are gamma1 and 2 defined in Table 1 in Toon at al. (1989)
+c These b1 and b2 are gamma1 and 2 defined in Table 1 in Toon et al. (1989)
 
          b1(j)    =  0.5*u1i*(2. - w0(j)*(1. + g0(j)))
          b2(j)    =  0.5*u1i*w0(j)*(1. - g0(j))
+
 
 c equation 21 of Toon et al. (1989)
 
@@ -71,6 +72,7 @@ c equation 21 of Toon et al. (1989)
 c equation 22 of Toon et al. (1989)
 
          gami(j)  =  b2(j)/(b1(j) + ak(j))
+
          x1         =  ak(j)*taul(j)
 
          if(x1.gt.1000.)    x1=1000.
@@ -94,7 +96,9 @@ c     and the net flux (fnet) are related to x's as noted in add.
 c     first we set up the coefficients that are independent of solar
 c     angle or temparature: a(i),b(i),e(i). d(i) is defined in add.
 c
+
       j                   =  0
+
       do 18 jd               =  2,jn,2
         j               =  j + 1
 
@@ -110,6 +114,8 @@ c     eq. 41 in Toon et al.
         af(jd+1) =  em1(j)*el2(j)-el1(j)*em2(j)
         bf(jd+1) =  el1(j+1)*el1(j) - el2(j+1)*el2(j)
         ef(jd+1) =  el2(j)*em2(j+1)-el1(j)*em1(j+1)
+
+
 
    18  continue
 c

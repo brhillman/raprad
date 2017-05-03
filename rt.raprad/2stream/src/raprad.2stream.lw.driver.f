@@ -84,6 +84,7 @@ c ivert  = maximum number of layers;
 c     gauss angles and gauss weights for gaussian integration
 c     moments (use first moment values) n=3
 c
+
       data gangle  /  0.2123405382, 0.5905331356,
      1                0.9114120405                       /
       data gweight /  0.0698269799, 0.2292411064,
@@ -117,6 +118,7 @@ c n-1---------          n--------
 c        n                 n+1
 c   n---------        n+1--------
 c
+
       do 1000 j = 1, ntaujs
         if(j .eq. 1) then
           taul(j) = 0.0

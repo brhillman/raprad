@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"

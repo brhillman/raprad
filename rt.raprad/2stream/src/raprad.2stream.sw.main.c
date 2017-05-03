@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -48,7 +49,8 @@ int
 
 /******************************************************************************/
 
-main(argc, argv)
+//void main(argc, argv)
+int main(argc, argv)
 
 int
   argc;
@@ -253,7 +255,6 @@ char
   /*--------------------------------------------------------------------------*/
 
   atm  = (Atmosphere *) malloc(sizeof(Atmosphere));
-
   atmosphere_read_mcclatchey(configfileAtmosphere, atm);
 
   /*--------------------------------------------------------------------------*/
@@ -265,6 +266,8 @@ char
   atmrt1d = (Atmosphere *) malloc(sizeof(Atmosphere));
 
   atmosphere_layers_subdivide(ps, atm, atmrt1d);
+
+
 
   if (inputcheck) { check_atmosphere_layers_subdivide(atmrt1d); }
 
@@ -352,10 +355,13 @@ char
       /* interval or sub-interval.                                            */
       /*----------------------------------------------------------------------*/
 
+
+
       rap_twostr_sw_(
            &sm->solarinsol[i],  &rt->layers_number,   &suna->sunz_mu,
            &rt->layers_w0[1],   &rt->layers_g0[1],    &d->albedo[i][1],
            &rt->layers_tau[1],  &sm->alpha[i][j],     &suna->sun2earth_distance);
+
 
       /*----------------------------------------------------------------------*/
       /* DONE with the radiative transfer.                                    */
@@ -373,6 +379,7 @@ char
   /* DONE with the spectral band calculations.                                */
   /*--------------------------------------------------------------------------*/
 
+	return 0;
 }
 
 /******************************************************************************/

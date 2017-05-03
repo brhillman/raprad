@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -48,7 +49,8 @@ int
 
 /******************************************************************************/
 
-main(argc, argv)
+//void main(argc, argv)
+int main(argc, argv)
 
 int
   argc;
@@ -368,9 +370,8 @@ char
   /* DONE with the spectral band calculations.                                */
   /*--------------------------------------------------------------------------*/
 
+	return 0;
 }
 
 /******************************************************************************/
 /******************************************************************************/
-
-

@@ -442,8 +442,8 @@ mfp_spectralmodel_kato(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
                + (1.0-frcnx)*frcny*xsect[8][quadptindex];
 
         sm->abscoef[i][m + (j-1)*sm->nummolecules[i]] =
-               ((ansyru-ansyrl)*(w-sm->watvap[iw]) / 
-               (sm->watvap[iw+1]-sm->watvap[iw])) + ansyrl;
+               ((ansyru-ansyrl)*(w-sm->watvaplog[iw]) / 
+               (sm->watvaplog[iw+1]-sm->watvaplog[iw])) + ansyrl;
 
         /*--------------------------------------------------------*/
         /* DONE with the cross section for water moecules.        */
@@ -530,7 +530,12 @@ mfp_spectralmodel_kato(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
 
     bi[0]  = bext_spectralmodelkato(atm->numlayers, atm->densh2o,
                 atm->altitude, z, sm->abscoef[pp->smindex[i]][j]);
-
+/* 
+  bext_spectralmodelkato(numlayers,dens,height,altitude,km)
+  densmidlayer = log_interpolate(dens, height, numlayers, altitude);
+  bext = (km/10000.)*densmidlayer;
+*/
+    printf("***Water %15.5e\n",bi[0]);
   }
 
   /* Carbon Dioxide */
@@ -599,7 +604,8 @@ mfp_spectralmodel_kato(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
     bi[0] += 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uo3amagats,
                 atm->pressure, atm->altitude, z, 0, *ucvd,
                 sm->abscoef[pp->smindex[i]][2*j], 0.);
-
+   
+    /* printf("%e %e %e from kato after watervapor ozone bi\n", *atm->densh2o, z, bi[0]) ; */
   }
 
   /* No Gaseous Extinction */
@@ -639,7 +645,8 @@ double km;
 
   int i;
 
-  densmidlayer = linear_interpolate(dens, height, numlayers, altitude);
+  /* densmidlayer = linear_interpolate(dens, height, numlayers, altitude); */
+  densmidlayer = log_interpolate(dens, height, numlayers, altitude);
   bext = (km/10000.)*densmidlayer;
 
   return ((double)bext);

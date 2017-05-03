@@ -2,7 +2,9 @@
 /****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+
 
 #include "../include/numrec.nrutil.h"
 #include "../include/Angles.h"

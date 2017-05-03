@@ -2,6 +2,8 @@
 /* Linear interpolate a profile to a specific altitude.        */
 
 #include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define SMALL_NUMBER             1.E-37
 

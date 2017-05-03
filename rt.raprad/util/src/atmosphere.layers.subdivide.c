@@ -2,6 +2,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/Atmosphere.h"
@@ -67,6 +68,8 @@ void atmosphere_layers_subdivide(ps, atm, atmnew)
     atmnew->denso2[i]      =    log_interpolate(atm->denso2,atm->altitude,atm->numlayers,altitude);
     atmnew->densn2o[i]     =    log_interpolate(atm->densn2o,atm->altitude,atm->numlayers,altitude);
     atmnew->densch4[i]     =    log_interpolate(atm->densch4,atm->altitude,atm->numlayers,altitude);
+
+
 
   }
 

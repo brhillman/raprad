@@ -10,17 +10,17 @@
 
 /* Rt1d Input File Names */
 
-CONFIGURE PHOTON PARTITION: 	../../scenarios/bbflux/st_atm/rt1d.photonpartition,
+CONFIGURE PHOTON PARTITION: 	../../scenarios/bbflux/st_atm/rt1d.photonpartition.tra,
 
 CONFIGURE CONSTITUENTS:  	../../scenarios/bbflux/st_atm/rt1d.constituents,
 
-ANCILLARY SPECTRAL BAND MODEL: 	../../ancillary/spectralmodel.kato.modtran3_sun.wmo_correct_o3xsection,
+ANCILLARY SPECTRAL BAND MODEL: 	../../ancillary/spectralmodel.kato.modtran_sun3_orig.wmo_correct_o3xsection.all_H2O,
 
 ANCILLARY CONTINUUM BAND MODEL:  ,
 
 ANCILLARY ATMOSPHERE: 		../../ancillary/Atm_file/midlatitude.summer.modtran_all.atm,
 
-CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.36,
+CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.32,
 
 CONFIGURE GEOMETRY SUN/VIEW:  	../../scenarios/bbflux/src/rt1d.geometry.sunview.no_header,
 
