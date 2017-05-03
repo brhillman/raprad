@@ -1,0 +1,16 @@
+This version of the code has been modified from Tra Dinh's "Raprad-9" version.
+I have added more complete function prototypes (with actual function parameters)
+to the routines written in C to enable better error checking by the compiler,
+and I have started to do away with the "implicit" type definitions in the FORTRAN
+routines and replaced these with "implicit none" and explicitly declared all
+variable types. This is a work in progress, and not all routines have been fixed.
+The code now compiles and runs and no longer throws "NaNs", at least in the
+limited testing I have done. More extensively testing should be done, and the
+results evaluated to make sure they are reasonable.
+
+If this is to be made a robust tool that can continue to be expanded upon and
+used, I'd suggest we bring the code up to modern standards. Things like common
+blocks should probably be replaced with modules and implicit typing should be done
+away with completely. Note that this code as it stands is extremely fragile.
+Small changes as simple as changing a "real" to a "double precision" or "real*8"
+resulted in "NaN" being output for the fluxes.

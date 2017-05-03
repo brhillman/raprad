@@ -2,22 +2,17 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/Atmosphere.h"
 
+
 /******************************************************************************/
 
-void check_atmosphere_layers_subdivide(atmnew)
-  Atmosphere
-    *atmnew;
+void check_atmosphere_layers_subdivide(Atmosphere *atmnew)
 {
-  int
-    i,
-    j;
-
-  FILE
-    *fpta,
-    *fopen();
+  int i;
+  FILE *fpta, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open check.atmosphere.layers.subdivide                                   */

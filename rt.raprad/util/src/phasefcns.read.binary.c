@@ -2,37 +2,18 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
-
 #include "../include/Constituents.h"
 
 /******************************************************************************/
 
-void
-phasefcns_read_binary_header(filename, pwhich, c)
-char
-  *filename;
-int
-  pwhich;
-Constituents
-  *c;
+void phasefcns_read_binary_header(char *filename, int pwhich, Constituents *c)
 {
-  int
-    index,
-    pnum,
-    skip;
-
-  double
-    wavelength,
-    radiusout,
-    radiussig,
-    relrefoutr,
-    relrefoutc;
-
-  FILE
-    *fptr,
-    *fopen();
+  int index, pnum, skip;
+  double wavelength, radiusout, radiussig, relrefoutr, relrefoutc;
+  FILE *fptr, *fopen();
 
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
@@ -106,30 +87,11 @@ Constituents
 
 /******************************************************************************/
 
-void
-phasefcns_legendre_read_binary(filename, pwhich, c)
-char
-  *filename;
-int
-  pwhich;
-Constituents
-  *c;
+void phasefcns_legendre_read_binary(char *filename, int pwhich, Constituents *c)
 {
-  int
-    index,
-    pnum,
-    skip;
-
-  double
-    wavelength,
-    radiusout,
-    radiussig,
-    relrefoutr,
-    relrefoutc;
-
-  FILE
-    *fptr,
-    *fopen();
+  int index, pnum, skip;
+  double wavelength, radiusout, radiussig, relrefoutr, relrefoutc;
+  FILE *fptr, *fopen();
 
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */

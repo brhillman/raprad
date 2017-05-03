@@ -23,6 +23,9 @@ C     fractions related to the pressure and temperature interpolations.
 C     Also calculate the values of the integrated Planck functions 
 C     for each band at the level and layer temperatures.
 
+      implicit none
+
+      integer MXLAY,NBANDS,NBANDSLG,MG
       PARAMETER (MXLAY = 203)
       PARAMETER (NBANDS = 16)
       PARAMETER (NBANDSLG = 16)
@@ -33,11 +36,17 @@ C     for each band at the level and layer temperatures.
       real*8 tz, tavel, pz, pavel
       real*8 wkl_1, wkl_2, wkl_3, wkl_4, wkl_5, wkl_6, wkl_7
       real*8 colh2o, colco2, colo3, coln2o
-      real*8 colch4, colo2, coldry, co2mult
+      real*8 colch4, colo2, water, coldry, co2mult
+      real*8 co2reg, compfp, dbdtlay, dbdtlev
+      real*8 factor, scalefac, stpfac, t0frac, tbndfrac 
+      real*8 fp, ft, ft1, plog
+      real*8 tlayfrac, tlevfrac
 
       real*8 plankbnd, planklay, planklev
 
-      integer iband, ig, lay, istart, jp, jt, jt1
+      integer iband, indself, ig, lay, istart, jp, jt, jt1
+      integer indbound, indlay, indlev, indlev0
+      integer jp1
 
 C  Input      
 c      COMMON /CONTROL/  NUMANGS, IOUT, ISTART, IEND
@@ -60,6 +69,7 @@ c      COMMON /PLNKDAT/  PLANKLAY(MXLAY,NBANDS),
 c     &                  PLANKLEV(0:MXLAY,NBANDS),PLANKBND(NBANDS)
 
 C  Internal
+      real totplnk, totplk16
       COMMON /AVGPLNK/  TOTPLNK(181,NBANDSLG), TOTPLK16(181)
 C  --------
 
@@ -70,6 +80,7 @@ C  --------
      *            HVDUM1,HVRUTL,HVREXT
 
 c      DIMENSION SELFFAC(MXLAY),SELFFRAC(MXLAY),INDSELF(MXLAY)
+      real*8 pref, preflog, tref
       DIMENSION PREF(59),PREFLOG(59),TREF(59)
 
 C     These pressures are chosen such that the ln of the first pressure
@@ -138,11 +149,9 @@ C ****************** START OF EXECUTABLE CODE ***************************
         ENDIF
         T0FRAC = TZ - 159. - FLOAT(INDLEV0)
       end if
-c      LAYTROP = 0
-c      LAYSWTCH = 0
-c      LAYLOW = 0
 
-c      DO 7000 LAY = 1, NLAYERS
+
+
 C        Calculate the integrated Planck functions for each band at the
 C        surface, level, and layer temperatures.
          INDLAY = TAVEL - 159.
@@ -159,19 +168,17 @@ C        surface, level, and layer temperatures.
             INDLEV = 180
          ENDIF
          TLEVFRAC = TZ - 159. - FLOAT(INDLEV)
-c         DO 3500 IBAND = 1, 15
+
          if (iband .le. 15) then
 
             IF (LAY.EQ.1) THEN
                DBDTLEV = TOTPLNK(INDBOUND+1,IBAND)
      &              - TOTPLNK(INDBOUND,IBAND)
-c               PLANKBND = SEMISS(IBAND) *
                PLANKBND = SEMISS *
      &              (TOTPLNK(INDBOUND,IBAND) + TBNDFRAC * DBDTLEV)
                DBDTLEV = TOTPLNK(INDLEV0+1,IBAND)-TOTPLNK(INDLEV0,IBAND)
                PLANKLEV = TOTPLNK(INDLEV0,IBAND) + 
      &              T0FRAC * DBDTLEV
-c            ENDIF
             else
               DBDTLEV = TOTPLNK(INDLEV+1,IBAND) - TOTPLNK(INDLEV,IBAND)
               DBDTLAY = TOTPLNK(INDLAY+1,IBAND) - TOTPLNK(INDLAY,IBAND)
@@ -180,7 +187,7 @@ c            ENDIF
               PLANKLEV = TOTPLNK(INDLEV,IBAND) + 
      &             TLEVFRAC * DBDTLEV
             end if
-c 3500    CONTINUE
+
 
 C        For band 16, if radiative transfer will be performed on just
 C        this band, use integrated Planck values up to 3000 cm-1.  
@@ -195,13 +202,11 @@ c        irradiance. So istart is not equal 16.
          IF (ISTART .EQ. 16) THEN
             IF (LAY.EQ.1) THEN
                DBDTLEV = TOTPLK16(INDBOUND+1) - TOTPLK16(INDBOUND)
-c               PLANKBND = SEMISS(IBAND) *
                PLANKBND = SEMISS * 
      &              (TOTPLK16(INDBOUND) + TBNDFRAC * DBDTLEV)
                DBDTLEV = TOTPLNK(INDLEV0+1,IBAND)-TOTPLNK(INDLEV0,IBAND)
                PLANKLEV = TOTPLK16(INDLEV0) + 
      &              T0FRAC * DBDTLEV
-c            ENDIF
             else
               DBDTLEV = TOTPLK16(INDLEV+1) - TOTPLK16(INDLEV)
               DBDTLAY = TOTPLK16(INDLAY+1) - TOTPLK16(INDLAY)
@@ -214,13 +219,11 @@ c            ENDIF
             IF (LAY.EQ.1) THEN
                DBDTLEV = TOTPLNK(INDBOUND+1,IBAND)
      &              - TOTPLNK(INDBOUND,IBAND)
-c               PLANKBND = SEMISS(IBAND) * 
                PLANKBND = SEMISS * 
      &              (TOTPLNK(INDBOUND,IBAND) + TBNDFRAC * DBDTLEV)
                DBDTLEV = TOTPLNK(INDLEV0+1,IBAND)-TOTPLNK(INDLEV0,IBAND)
                PLANKLEV = TOTPLNK(INDLEV0,IBAND) + 
      &              T0FRAC * DBDTLEV
-c            ENDIF
             else
               DBDTLEV = TOTPLNK(INDLEV+1,IBAND) - TOTPLNK(INDLEV,IBAND)
               DBDTLAY = TOTPLNK(INDLAY+1,IBAND) - TOTPLNK(INDLAY,IBAND)
@@ -231,6 +234,7 @@ c            ENDIF
             end if
          ENDIF
        end if
+
 c       if (iband .eq. 16 .and. ig .eq. 1) then
 C        Find the two reference pressures on either side of the
 C        layer pressure.  Store them in JP and JP1.  Store in FP the
@@ -268,7 +272,6 @@ C        layer temperature falls.
          ENDIF
          FT1 = ((TAVEL-TREF(JP1))/15.) - FLOAT(JT1-3)
 
-c         WATER = WKL(1,LAY)/COLDRY
          WATER = WKL_1/COLDRY
          SCALEFAC = PAVEL * STPFAC / TAVEL
 
@@ -339,14 +342,15 @@ C        the optical depths (performed in routines TAUGBn for band n).
          FAC11 = FP * FT1
          FAC01 = FP * (1. - FT1)
 
-c 7000 CONTINUE
-c      end if
+
+
       RETURN
       END
 
 
       BLOCK DATA AVPLANK
 
+      integer NBANDSLG
       PARAMETER (NBANDSLG = 16)
 
       COMMON /AVGPLNK/  TOTPLNK(181,NBANDSLG), TOTPLK16(181)

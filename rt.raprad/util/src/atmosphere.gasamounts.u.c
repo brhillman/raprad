@@ -3,46 +3,41 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "../include/Atmosphere.h"
 
 /*----------------------------------------------------------------------------*/
 
-#define GAIR			28.964 	/* Molecular Weight of Air (g/mol) */
-#define GCARBONDIOXIDE         44.00995 /* Molecular Weight of Carbon Dioxide (g/mol) */
-#define GWATERVAPOR	        18.016 	/* Molecular Weight of Water Vapor (g/mol) */
-#define GOXYGEN		       31.9988  /* Molecular Weight of Oxygen (g/mol) */
-#define GOZONE		       47.9982  /* Molecular Weight of Ozone (g/mol) */
-#define GNITROUSOXIDE          44.0128  /* Molecular Weight of Nitrous Oxide (g/mol) */
-#define GMETHANE	       16.0426  /* Molecular Weight of Methane (g/mol) */
-#define A0			6.022045E+23   /* #/mole  */
+#define GAIR            28.964 	/* Molecular Weight of Air (g/mol) */
+#define GCARBONDIOXIDE  44.00995 /* Molecular Weight of Carbon Dioxide (g/mol) */
+#define GWATERVAPOR     18.016 	/* Molecular Weight of Water Vapor (g/mol) */
+#define GOXYGEN         31.9988  /* Molecular Weight of Oxygen (g/mol) */
+#define GOZONE          47.9982  /* Molecular Weight of Ozone (g/mol) */
+#define GNITROUSOXIDE   44.0128  /* Molecular Weight of Nitrous Oxide (g/mol) */
+#define GMETHANE        16.0426  /* Molecular Weight of Methane (g/mol) */
+#define A0              6.022045E+23   /* #/mole  */
 
 /*----------------------------------------------------------------------------*/
 
-double mxratio_h2o_gmperkg_numberdensity();
-double mxratio_o3_gmperkg_numberdensity();
-double mxratio_co2_gmperkg_numberdensity();
-double mxratio_o2_gmperkg_numberdensity();
-
-double mxratio_numberdensity_precmpercm();
-double mxratio_numberdensity_cmatmpercm();
-
-double mass_gmpervol_numberdensity();
+double mxratio_h2o_gmperkg_numberdensity(double, double);
+double mxratio_o3_gmperkg_numberdensity(double, double);
+double mxratio_co2_gmperkg_numberdensity(double, double);
+double mxratio_o2_gmperkg_numberdensity(double, double);
+double mxratio_numberdensity_precmpercm(double);
+double mxratio_numberdensity_cmatmpercm(double);
+double mass_gmpervol_numberdensity(double, double);
 
 /******************************************************************************/
 
-void atmosphere_gasamounts_u(atm)
-  Atmosphere
-    *atm;
+void atmosphere_gasamounts_u(Atmosphere *atm)
 {
-  int
-    i;
-  double
-    airdensity,
-    mass,
-    massdensity,
-    mixingratio,
-    numberdensity,
-    dz;
+  int i;
+  double airdensity;
+  double mass;
+  double massdensity;
+  double mixingratio;
+  double numberdensity;
+  double dz;
 
   /*--------------------------------------------------------------------------*/
   /* Allocate space for the layer gas amounts in terms of precipitable cm for */

@@ -18,11 +18,11 @@ ANCILLARY SPECTRAL BAND MODEL: 	../../ancillary/spectralmodel.kato.modtran_sun3_
 
 ANCILLARY CONTINUUM BAND MODEL:  ,
 
-ANCILLARY ATMOSPHERE: 		../../ancillary/Atm_file/subarcwinter.modtran.all_tracegases.intercomparison.atm,
+ANCILLARY ATMOSPHERE: 		../../ancillary/Atm_file/tropical.raprad.atm,
 
-CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.6,
+CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.49,
 
-CONFIGURE GEOMETRY SUN/VIEW:  	../../scenarios/bbflux/src/rt1d.geometry.sunview.no_header,
+CONFIGURE GEOMETRY SUN/VIEW:  	../../scenarios/bbflux/st_atm/rt1d.geometry.sunview,
 
 CONFIGURE GEOMETRY QUADRATURE:  ../../scenarios/bbflux/st_atm/rt1d.geometry.quadrature,
 
@@ -30,7 +30,7 @@ CONFIGURE BRDF SELECTION:  	../../scenarios/bbflux/st_atm/rt1d.brdf.selection,
 
 ANCILLARY BRDF DATA:  		,
 
-RT1D RESULTS:			../../results/rt1d,
+RT1D RESULTS:			../../results,
 
 /*-----------------------------------------------------------------*/
 /* END                                                             */

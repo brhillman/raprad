@@ -21,66 +21,44 @@
 
 /*--------------------------------------------------------------------*/
 
-void
-  mfp_aerosolextinction(),
-  mfp_cloudextinction(),
-  mfp_rayleighscatter(),
-  mfp_spectralmodel_kato(),
-  mfp_spectralmodel_mlawer_lw(),
-  mfp_spectralmodel_pollack();
-
-double
-  compute_cloud_watervapordensity(),
-  mxratio_numberdensity_precmpercm(),
-  log_interpolate();
+extern void mfp_aerosolextinction(int, int, int, PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, double *, double *, double *);
+extern void mfp_cloudextinction(int, int, int, PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, double *, double *, double *);
+extern void mfp_ozoneabsorption_martonchik(int, int, int, PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, double *, double *, double *);
+extern void mfp_rayleighscatter(int, int, int, PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, double *, double *, double *);
+extern void mfp_rayleighscatter_martonchik(int, int, int, PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, double *, double *, double *);
+extern void mfp_spectralmodel_kato(int, int, int, PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, double *, double *, double *);
+extern void mfp_spectralmodel_mlawer_lw(
+   int, int, int, 
+   PhotonSpace *, PhotonPartition *, SpectralModel *, Atmosphere *, Constituents *, Rt *, 
+   double *, double *, Brdf *, double *, 
+   int, int, int
+);
+extern void mfp_spectralmodel_pollack(
+   int i, int j, int k,
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c,
+   double *cvd, double *ucvd, double *bi
+);
+extern double compute_cloud_watervapordensity(char *, double, Atmosphere *);
+extern double mxratio_numberdensity_precmpercm(double);
+extern double log_interpolate(double *, double *, int, double);
 
 /**********************************************************************/
 
-void
-atmosphere_layers_tau(i, j, ps, pp, sm, atm, c, rt, d)
-int
-  i,
-  j;
-PhotonSpace
-  *ps;
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
-Atmosphere
-  *atm;
-Constituents
-  *c;
-Rt
-  *rt;
-Brdf
-  *d;
+void atmosphere_layers_tau(int i, int j, PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, Rt *rt, Brdf *d)
 {
 
-  int
-    k,
-    kk,
-    n;
-
-  double
-    bi[3],
-    cvd,
-    ucvd,
-    plog,
-    pressure[2],
-    z,
-    p,
-    dz;
+  int k, kk, n;
+  //double bi[3], cvd, ucvd, plog, pressure[2], z, p, dz;
+  double bi[3], cvd, ucvd, plog, z, p, dz;
 
   /*------------------------------------------------------------------*/
   /* The following indices are for the Mlawer model only.             */
   /*------------------------------------------------------------------*/
 
-  static int
-    layfirst = 1,
-    laytrop,
-    layswtch,
-    laylow;
+  static int layfirst = 1;
+  static int laytrop;
+  static int layswtch;
+  static int laylow;
 
   /*------------------------------------------------------------------*/
   /* Start from the first layer closest to the ground and work our    */
@@ -138,7 +116,7 @@ Brdf
         /*------------------------------------------------------------*/
         /* RAYLEIGH SCATTERING EXTINCTION                             */
         /*------------------------------------------------------------*/
-
+                               
         if (!strcmp(c[n].name,"RayleighScatter")) {
 
           /*----------------------------------------------------------*/
@@ -147,13 +125,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* RAYLEIGH SCATTERING MARTONCHIK                             */
         /*------------------------------------------------------------*/
 
-        else if (!strcmp(c[n].name,"RayleighScatterMartonchik")) {
+        } else if (!strcmp(c[n].name,"RayleighScatterMartonchik")) {
 
           /*----------------------------------------------------------*/
 
@@ -161,13 +137,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* GASEOUS ABSORPTION EXTINCTION USING POLLACK MODEL          */
         /*------------------------------------------------------------*/
 
-        else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelPollack")) {
+        } else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelPollack")) {
 
           /*----------------------------------------------------------*/
 
@@ -175,13 +149,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* GASEOUS ABSORPTION EXTINCTION USING KATO MODEL             */
         /*------------------------------------------------------------*/
-
-        else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelKato")) {
+                                    
+        } else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelKato")) {
 
           /*----------------------------------------------------------*/
 
@@ -189,13 +161,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* GASEOUS ABSORPTION EXTINCTION USING MLAWER LONGWAVE MODEL  */
         /*------------------------------------------------------------*/
 
-        else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelMlawerLw")) {
+        } else if (!strcmp(c[n].name,"GaseousAbsorptionSpectralModelMlawerLw")) {
 
           /*----------------------------------------------------------*/
           /* Look for three key heights called LAYTROP, LAYSWTCH, and */
@@ -240,13 +210,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* OZONE ABSORPTION MARTONCHIK                                */
         /*------------------------------------------------------------*/
 
-        else if (!strcmp(c[n].name,"OzoneAbsorptionMartonchik")) {
+        } else if (!strcmp(c[n].name,"OzoneAbsorptionMartonchik")) {
 
           /*----------------------------------------------------------*/
 
@@ -254,13 +222,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* CLOUD SCATTERING AND ABSORPTION EXTINCTION                 */
         /*------------------------------------------------------------*/
 
-        else if (!strcmp(c[n].name,"CloudExtinction")) {
+        } else if (!strcmp(c[n].name,"CloudExtinction")) {
 
           /*----------------------------------------------------------*/
 
@@ -268,13 +234,11 @@ Brdf
 
           /*----------------------------------------------------------*/
 
-        }
-
         /*------------------------------------------------------------*/
         /* AEROSOL SCATTERING AND ABSORPTION EXTINCTION               */
         /*------------------------------------------------------------*/
 
-        else if (!strcmp(c[n].name, "AerosolExtinction")) {
+        } else if (!strcmp(c[n].name, "AerosolExtinction")) {
 
           /*----------------------------------------------------------*/
 

@@ -1,6 +1,7 @@
-      subroutine add
-     &  (nlayer,taul,w0,g0,rsfx,opd,opdnd,ak,b1,b2,b3,em1,em2,
-     &   el1,el2,af,bf,ef,u0,fnet,sol_fluxup,sol_fluxdn,direct_nd)
+      subroutine addsw(
+     &  nlayer,taul,w0,g0,rsfx,opd,opdnd,ak,
+     &  b1,b2,b3,em1,em2,el1,el2,af,bf,ef,
+     &  u0,fnet,sol_fluxup,sol_fluxdn,direct_nd)
 
 c     ***************************************************************
 c     *  purpose             :  defines source terms, form matrix   *
@@ -20,32 +21,41 @@ c ivert  = maximum number of layers;
 c ilayer = maximum number of layer boundaries
 c idbl   = twice the maximum number of layer boundaries
 
-      parameter (ivert=200)
-      parameter (ilayer=ivert+1, idbl=2*ilayer)
+       implicit none !real*8 (a-h, o-z)
+
+       integer nlayer
+       integer ivert,ilayer,idbl
+       parameter (ivert=200)
+       parameter (ilayer=ivert+1, idbl=2*ilayer)
 
 c  double precision
 
-       implicit real*8 (a-h, o-z)
-
        real taul(*), w0(*), g0(*)
        real opd(ilayer), opdnd(ilayer)
-       real rsfx, u0
-       dimension ak(ilayer)
-       dimension b1(ilayer), b2(ilayer), b3(ilayer)
-       dimension el3(ilayer), ee3(ilayer)
-       dimension fnet(ilayer), sol_fluxup(ilayer), sol_fluxdn(ilayer)
-       dimension direct(ilayer), diffuse(ilayer), tmi(ilayer)
-       dimension direct_nd(ilayer)
-       dimension cpb(ilayer), cp(ilayer), cmb(ilayer), cm(ilayer)
-c       dimension slope(ilayer)
-       dimension em1(ilayer), em2(ilayer)
-       dimension el1(ilayer), el2(ilayer)
-       dimension as(idbl),af(idbl), bf(idbl), df(idbl), ds(idbl)
-       dimension ef(idbl), xk(idbl)
-       dimension ck1(ilayer), ck2(ilayer)
+       real rsfx, u0, du0
 
+c      BRH explicit type
+       real*8 ak(ilayer)
+       real*8 b1(ilayer), b2(ilayer), b3(ilayer)
+       real*8 el3(ilayer), ee3(ilayer)
+       real*8 fnet(ilayer), sol_fluxup(ilayer), sol_fluxdn(ilayer)
+       real*8 directt(ilayer), diffuse(ilayer)
+       real*8 direct_nd(ilayer)
+       real*8 cpb(ilayer), cp(ilayer), cmb(ilayer), cm(ilayer)
+       real*8 em1(ilayer), em2(ilayer)
+       real*8 el1(ilayer), el2(ilayer)
+       real*8 as(idbl),af(idbl), bf(idbl), df(idbl), ds(idbl)
+       real*8 ef(idbl), xk(idbl)
+       real*8 ck1(ilayer), ck2(ilayer)
+
+c      BRH
+       real*8 x2,b4,x3,c1,c2,cp1,x4,cm1,sfcs,x
+
+       real*8 epsilon
        data epsilon / 1.0e-15 /
 
+       integer jdble,jn,j,j1,isl,irs,jd
+       real*8 sol,sq3
 
        jdble = nlayer * 2
        jn = jdble - 1
@@ -59,7 +69,9 @@ c  flag for solar(isl) and IR(irs)
 c     this subroutine forms the matrix for the multiple layers and
 c     uses a tridiagonal routine to find radiation in the entire
 c     atmosphere.
-c
+
+
+
 c     ******************************
 c     *   calculations for solar   *
 c     ******************************
@@ -93,7 +105,7 @@ c     ******************************
 
           if(el3(j).ge.1000.)  el3(j)=0.0
 
-          direct(j) = u0*el3(j)
+          directt(j) = u0*el3(j)
           c1          =  b1(j) - du0
           c2          =  ak(j)*ak(j) - du0*du0
 
@@ -123,38 +135,12 @@ c equation 24 in Toon et al. (1989)
 
 c       calculate sfcs, the source at the bottom.
 
-        sfcs         =  direct(nlayer) * rsfx
-c
+        sfcs         =  directt(nlayer) * rsfx
+
        end if
-c
-c     ******************************
-c     * calculations for infrared. *
-c     ******************************
-c
-c      if(irs .ne. 0)  then
-c
-c        do 30 j           =   1,nlayer
-c
-c          if(j.eq.1) then
-c            kindex = 1
-c          else
-c            kindex = j-1
-c          endif
-c
-c          b3(j)     = 1.0/(b1(j)+b2(j))
-c          cp(j)     = (ptemp(kindex)+slope(j)*b3(j))*u1s
-c          cpb(j)    = cp(j) + slope(j)*taul(j)*u1s
-c          cm(j)     = (ptemp(kindex)-slope(j)*b3(j))*u1s
-c          cmb(j)    = cm(j) + slope(j)*taul(j)*u1s
-c          el3(j)    = 0.0
-c          direct(j) = 0.0
-c          ee3(j)    = 0.0
-c
-c 30     continue
-c
-c        sfcs          = emis*ptempg*pi
-c
-c      end if
+
+
+
 
       j                =  0
 
@@ -177,6 +163,7 @@ c     here are the top and bottom boundary conditions as well as the
 c     beginning of the tridiagonal solution definitions. i assume no
 c     diffuse radiation is incident at the top.
 c
+
       df(1)     = -cm(1)
       df(jdble) = sfcs+rsfx*cmb(nlayer)-cpb(nlayer)
       ds(jdble) = df(jdble)/bf(jdble)
@@ -188,12 +175,14 @@ c     ********************************************
 c
 c This block is following eq. 45, 46, and 47 in Toon et al. (1998)
 
+
       do 47 j           = 2, jdble
         x               = 1./(bf(jdble+1-j) -
      1                        ef(jdble+1-j)*as(jdble+2-j))
         as(jdble+1-j)   = af(jdble+1-j)*x
         ds(jdble+1-j)   = (df(jdble+1-j) - ef(jdble+1-j)
      2                        *ds(jdble+2-j))*x
+
   47  continue
 
       xk(1)    = ds(1)
@@ -206,13 +195,6 @@ c  ***************************************************************
 c     calculate layer coefficients, net flux and mean intensity
 c  ***************************************************************
       
-      do 60 j = 1, nlayer
-
-        sol_fluxdn(j) = 0.0
-        sol_fluxup(j) = 0.0
-        direct_nd(j) = 0.0
-
- 60   continue
 
       do 62 j= 1,nlayer
 
@@ -225,24 +207,21 @@ c equation 48 of Toon et al. (1989)
 
         fnet(j)  = ck1(j)  *( el1(j) -el2(j))   +
      3                 ck2(j) *( em1(j)-em2(j) ) + cpb(j) -
-     4                 cmb(j) - direct(j)
+     4                 cmb(j) - directt(j)
 
 c diffuse component of solar radiation
 
         diffuse(j) = ck1(j)*el2(j) + ck2(j)*em2(j)
      +                                     + cmb(j)
-c
-        tmi(j)     =  el3(j) + u1i * ( ck1(j)  *
-     5                   (el1(j) + el2(j))   +
-     6                    ck2(j) * ( em1(j)+em2(j) ) +
-     7                    cpb(j) + cmb(j) )
 
-        sol_fluxup(j) = sol_fluxup(j) + ck1(j)*el1(j)
+        sol_fluxup(j) = ck1(j)*el1(j)
      &                + ck2(j)*em1(j) + cpb(j)
-        sol_fluxdn(j) = sol_fluxdn(j) + ck1(j)*el2(j)
-     &                + ck2(j)*em2(j)+cmb(j)+direct(j)
+
+        sol_fluxdn(j) = ck1(j)*el2(j)
+     &                + ck2(j)*em2(j)+cmb(j)+directt(j)
 
         direct_nd(j) = exp(-opdnd(j)*du0)
+
 
    62 continue
 

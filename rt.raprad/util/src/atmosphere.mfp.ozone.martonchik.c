@@ -28,37 +28,14 @@ static double kabs_ozone[27] =
 
 /**********************************************************************/
 
-void
-mfp_ozoneabsorption_martonchik(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
-
-  int
-    i,
-    j,
-    k;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+void mfp_ozoneabsorption_martonchik(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, 
+   double *cvd, double *ucvd, double *bi
+)
 {
-  int
-    l,
-    ibottom,
-    itop;
-
-  double
-    dz,
-    height,
-    tau_ozone;
+  int l, ibottom, itop;
+  double dz, height, tau_ozone;
 
   /*--------------------------------------------------------------*/
   /* Find the index into kabs_ozone for the bottom and top of the */

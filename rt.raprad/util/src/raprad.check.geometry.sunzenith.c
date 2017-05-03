@@ -2,29 +2,19 @@
 /****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+
 
 #include "../include/numrec.nrutil.h"
 #include "../include/Angles.h"
 
 /*---------------------------------------------------------------*/
 
-int check_geometry_sunzenith();
 
-/****************************************************************/
-
-int
-check_geometry_sunzenith(suna)
-Sun
-  *suna;
+void check_geometry_sunzenith(Sun *suna)
 {
-  int
-    i,
-    j;
-
-  FILE
-    *finput,
-    *fopen();
+  FILE *finput, *fopen();
 
   /*-------------------------------------------------------------*/
   /* Open check.geometry.sunview                                 */

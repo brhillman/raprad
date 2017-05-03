@@ -18,9 +18,9 @@ ANCILLARY SPECTRAL BAND MODEL: 	../../ancillary/spectralmodel.kato.modtran_sun3_
 
 ANCILLARY CONTINUUM BAND MODEL:  ,
 
-ANCILLARY ATMOSPHERE: 		../../ancillary/Atm_file/midlatitude.summer.modtran_all.atm,
+ANCILLARY ATMOSPHERE: 		../../ancillary/Atm_file/galapagos.atm,
 
-CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.32,
+CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.46,
 
 CONFIGURE GEOMETRY SUN/VIEW:  	../../scenarios/bbflux/st_atm/rt1d.geometry.sunview,
 

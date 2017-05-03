@@ -1,6 +1,6 @@
 /****************************************************************/
 /****************************************************************/
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "../include/numrec.nrutil.h"
@@ -10,20 +10,10 @@
 
 /****************************************************************/
 
-void
-check_brdf_selection(pp,b)
-PhotonPartition
-  *pp;
-Brdf
-  *b;
+void check_brdf_selection(PhotonPartition *pp, Brdf *b)
 {
-  int
-    i,
-    j;
-
-  FILE
-    *finput,
-    *fopen();
+  int i, j;
+  FILE *finput, *fopen();
 
   /*-------------------------------------------------------------*/
   /* Open check.brdf.selection                                   */

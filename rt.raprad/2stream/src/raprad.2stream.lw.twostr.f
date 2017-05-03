@@ -1,5 +1,5 @@
-      subroutine twostr 
-     & (nlayer,irflag,taul,w0,g0,rsfx,
+      subroutine twostrlw(
+     &  nlayer,irflag,taul,w0,g0,rsfx,
      &  b1,b2,el1,el2,em1,em2,af,bf,ef,ak,u1i,u1s,gami,ee1)
 
 c
@@ -19,22 +19,30 @@ c ivert  = maximum number of layers;
 c ilayer = maximum number of layer boundaries
 c idbl   = twice the maximum number of layer boundaries
 
-      parameter (ivert=200)
-      parameter (irad=20)
-      parameter (ilayer=ivert+1, idbl=2*ilayer)
+c      implicit real*8 (a-h, o-z)
+       implicit none
+       integer nlayer
+       integer ivert,irad,ilayer,idbl
+       parameter (ivert=200)
+       parameter (irad=20)
+       parameter (ilayer=ivert+1, idbl=2*ilayer)
 
 
 c  double precision
-       implicit real*8 (a-h, o-z)
 
        real taul(*), w0(*), g0(*)
        real rsfx
-       dimension gami(ilayer), ak(ilayer)
-       dimension b1(ilayer), b2(ilayer)
-       dimension ee1(ilayer)
-       dimension el1(ilayer), el2(ilayer), em1(ilayer), em2(ilayer)
-       dimension af(idbl), bf(idbl), ef(idbl)
+       real(8) gami(ilayer), ak(ilayer)
+       real(8) b1(ilayer), b2(ilayer)
+       real(8) ee1(ilayer)
+       real(8) el1(ilayer), el2(ilayer), em1(ilayer), em2(ilayer)
+       real(8) af(idbl), bf(idbl), ef(idbl)
 
+c      BRH
+       real(8) pi,tpi,u1i,u1s
+       real(8) x1
+       integer jdble,jn,j,jd
+       integer irflag
 
 c       if(l.le.nsolp) then
 c           u1i = sq3

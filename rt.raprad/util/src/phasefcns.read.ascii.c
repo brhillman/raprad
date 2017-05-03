@@ -2,41 +2,23 @@
 /**************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
-
 #include "../include/Constituents.h"
 
 /**************************************************************************/
 
-void
-phasefcns_read_ascii_header(filename, interval, c)
-char
-  *filename;
-int
-  interval;
-Constituents
-  *c;
+void phasefcns_read_ascii_header(char *filename, int interval, Constituents *c)
 {
-  int
-    ch,
-    i;
-
-  double
-    wavelength,
-    radiusout,
-    radiussig,
-    relrefoutr,
-    relrefoutc;
-
-  FILE
-    *fptr,
-    *fopen();
+  int ch, i;
+  double wavelength, radiusout, radiussig, relrefoutr, relrefoutc;
+  FILE *fptr, *fopen();
 
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
   /*----------------------------------------------------------------------*/
-
+  /*printf("1filename=%s.",filename);*/
   if ((fptr=fopen(filename,"r"))==NULL) {
     printf("could not open the phase function file - exiting!\n");
     exit(0);
@@ -75,34 +57,16 @@ Constituents
 
 /**************************************************************************/
 
-void
-phasefcns_legendre_read_ascii(filename, interval, c)
-char
-  *filename;
-int
-  interval;
-Constituents
-  *c;
+void phasefcns_legendre_read_ascii(char *filename, int interval, Constituents *c)
 {
-  int
-    ch,
-    i;
-
-  double
-    wavelength,
-    radiusout,
-    radiussig,
-    relrefoutr,
-    relrefoutc;
-
-  FILE
-    *fptr,
-    *fopen();
+  int ch, i;
+  double wavelength, radiusout, radiussig, relrefoutr, relrefoutc;
+  FILE *fptr, *fopen();
 
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
   /*----------------------------------------------------------------------*/
-
+  /*printf("2filename=%s.",filename);*/
   if ((fptr=fopen(filename,"r"))==NULL) {
     printf("could not open the phase function file - exiting!\n");
     exit(0);
@@ -188,7 +152,7 @@ Constituents
   /*----------------------------------------------------------------------*/
   /* Open the phase function file.                                        */
   /*----------------------------------------------------------------------*/
-
+  /*printf("3filename=%s.",filename);*/
   if ((fptr=fopen(filename,"r"))==NULL) {
     printf("could not open the phase function file - exiting!\n");
     exit(0);

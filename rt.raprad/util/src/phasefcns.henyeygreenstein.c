@@ -1,11 +1,6 @@
 #include <math.h>
 
-void
-phasefcns_henyeygreenstein(pnum, g, p, mu)
-int pnum;
-double g;
-double *p;
-double *mu;
+void phasefcns_henyeygreenstein(int pnum, double g, double *p, double *mu)
 {
   int i;
   double pi, dtheta, thetaforward, theta;

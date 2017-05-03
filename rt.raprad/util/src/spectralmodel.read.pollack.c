@@ -12,37 +12,13 @@
 
 /******************************************************************************/
 
-int spectralmodel_read_pollack(filename, pp, sm)
-char
-  *filename;
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
+void spectralmodel_read_pollack(char *filename, PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fopen();
-
-  char
-    c,
-    gas[256];
-
-  int
-    i,
-    j,
-    k,
-    m,
-    bandnumber,
-    used,
-    count,
-    numbands,
-    numintervals,
-    nummolecules,
-    useband;
-
-  double
-    correction;
+  FILE *fpt, *fopen();
+  char c;
+  int i, j, k, m;
+  int bandnumber, numbands, numintervals, nummolecules, useband;
+   
 
   /*--------------------------------------------------------------------------*/
   /* Count the number of gaseous absorption bands that are used in the        */

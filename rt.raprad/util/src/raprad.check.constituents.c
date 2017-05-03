@@ -2,6 +2,7 @@
 /****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/Constituents.h"
@@ -10,22 +11,10 @@
 
 /****************************************************************/
 
-void
-check_constituents(pp, ps, c)
-PhotonPartition
-  *pp;
-PhotonSpace
-  *ps;
-Constituents
-  *c;
+void check_constituents(PhotonPartition *pp, PhotonSpace *ps, Constituents *c)
 {
-  int
-    i,
-    j;
-
-  FILE
-    *finput,
-    *fopen();
+  int i, j;
+  FILE *finput, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open check.constituents                                                  */

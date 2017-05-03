@@ -12,32 +12,13 @@
 
 /**********************************************************************/
 
-void
-mfp_rayleighscatter_martonchik(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
-
-  int
-    i,
-    j,
-    k;
-  PhotonSpace
-    *ps;
-  PhotonPartition
-    *pp;
-  SpectralModel
-    *sm;
-  Atmosphere
-    *atm;
-  Constituents
-    *c;
-  double
-    *cvd,
-    *ucvd,
-    *bi;
+void mfp_rayleighscatter_martonchik(
+   int i, int j, int k, 
+   PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, 
+   double *cvd, double *ucvd, double *bi
+)
 {
-  double
-    taua,
-    taub,
-    x;
+  double taua, taub, x;
 
   /*--------------------------------------------------------------*/
   /* Compute the optical depth of the atmosphere at this          */

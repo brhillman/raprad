@@ -2,24 +2,17 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/PhotonPartition.h"
 
 /******************************************************************************/
 
-void
-check_photon_partition(pp)
-  PhotonPartition
-    *pp;
+void check_photon_partition(PhotonPartition *pp)
 {
-  int
-    i,
-    j;
-
-  FILE
-    *fpta,
-    *fopen();
+  int i;
+  FILE *fpta, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open check.photon.partition                                              */

@@ -2,23 +2,23 @@
 /**************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/Constituents.h"
 
 /**************************************************************************/
 
-void
-read_constituents_phasefcns(i, ps, c)
-int
-  i;
-PhotonSpace
-  *ps;
-Constituents
-  *c;
+extern void phasefcns_explicit_read_ascii(char *, int, Constituents *);
+extern void phasefcns_explicit_read_binary(char *, int, Constituents *);
+extern void phasefcns_legendre_read_ascii(char *, int, Constituents *);
+extern void phasefcns_legendre_read_binary(char *, int, Constituents *);
+extern void phasefcns_henyeygreenstein(int, double, double *, double *);
+
+void read_constituents_phasefcns(int i, PhotonSpace *ps, Constituents *c)
 {
-  int
-    n;
+  int n;
 
   /*----------------------------------------------------------------------*/
   /* Loop over all of the constituents and read in their phase function   */

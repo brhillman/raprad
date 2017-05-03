@@ -10,31 +10,12 @@
 
 /******************************************************************************/
 
-int cntnmmodel_read(filename, pp, sm)
-char
-  *filename;
-PhotonPartition
-  *pp;
-SpectralModel
-  *sm;
+void cntnmmodel_read(char *filename, PhotonPartition *pp, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fopen();
-
-  char
-    c;
-
-  int
-    i,
-    j,
-    k,
-    bandnumber,
-    numbands,
-    useband;
-
-  double
-    dummyd;
+  FILE *fpt, *fopen();
+  char c;
+  int i, j, k, bandnumber, numbands, useband;
+  double dummyd;
 
   /*--------------------------------------------------------------------------*/
   /* If no band models are being used there is no need to go further so       */

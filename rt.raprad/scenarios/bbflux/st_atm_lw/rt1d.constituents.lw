@@ -38,32 +38,9 @@
 
 [constituents_number]	CONSTITUENTS: 3,
 
-
-[constituents_name]	CONSTITUENT NAME: CloudExtinction,
-[base_height]		 BASE HEIGHT OF THE LAYER (in meters): 1000.,
-[top_height]		  TOP HEIGHT OF THE LAYER (in meters): 5000.,
-[scale_height]		SCALE HEIGHT OF THE LAYER (in meters): -1.,
-[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): 5.5727e6,
-[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
-[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
-[*tau] 			TOTAL OPTICAL DEPTH: -1.,
-[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
-[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
-[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
-[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
-[*p_g]			ASYMMETRY PARAMETER: -1.,
-[phasefcn_file]        	PHASE FUNCTION FILE NAME: ../../ancillary/water.re10.sigma1.42.phase_function.16.lw,
-[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
-[phasefcn_which]	PHASE FUNCTION REPRESENTATION: 1,
-[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1,
-[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1,
-[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: water,
-
-
-
 [constituents_name]	CONSTITUENT NAME: RayleighScatter,
 [base_height]		 BASE HEIGHT OF THE CONSTITUENT (in meters):      0.,
-[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 70000.,
+[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 45000.,
 [scale_height]		SCALE HEIGHT OF THE CONSTITUENT (in meters): -1.,
 [cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): -1.,
 [*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
@@ -83,7 +60,7 @@
 
 [constituents_name]	CONSTITUENT NAME: GaseousAbsorptionSpectralModelMlawerLw,
 [base_height]		 BASE HEIGHT OF THE CONSTITUENT (in meters):      0.,
-[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 70000.,
+[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 45000.,
 [scale_height]		SCALE HEIGHT OF THE CONSTITUENT (in meters): -1.,
 [cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): -1.,
 [*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
@@ -101,7 +78,25 @@
 [p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1.,
 [es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: none,
 
-
+[constituents_name]	CONSTITUENT NAME: CloudExtinction,
+[base_height]		 BASE HEIGHT OF THE LAYER (in meters): 16000.,
+[top_height]		  TOP HEIGHT OF THE LAYER (in meters): 17000.,
+[scale_height]		SCALE HEIGHT OF THE LAYER (in meters): -1.,
+[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): 6.5e5,
+[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
+[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
+[*tau] 			TOTAL OPTICAL DEPTH: -1.,
+[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
+[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
+[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
+[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
+[*p_g]			ASYMMETRY PARAMETER: -1.,
+[phasefcn_file]        	PHASE FUNCTION FILE NAME: ../../ancillary/ice.bin04.phase_function.16.lw,
+[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
+[phasefcn_which]	PHASE FUNCTION REPRESENTATION: 1,
+[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1,
+[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1,
+[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: water,
 
 
 /*-----------------------------------------------------------------*/

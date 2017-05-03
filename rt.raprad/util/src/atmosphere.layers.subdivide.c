@@ -2,29 +2,23 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/Atmosphere.h"
 
 /*----------------------------------------------------------------------------*/
 
-double linear_interpolate();
-double log_interpolate();
-double hydrostatic_airmass();
+double linear_interpolate(double *, double *, int, double);
+double log_interpolate(double *, double *, int, double);
+double hydrostatic_airmass(double);
 
 /******************************************************************************/
 
-void atmosphere_layers_subdivide(ps, atm, atmnew)
-  PhotonSpace
-    *ps;
-  Atmosphere
-    *atm,
-    *atmnew;
+void atmosphere_layers_subdivide(PhotonSpace *ps, Atmosphere *atm, Atmosphere *atmnew)
 {
-  int
-    i;
-  double
-    altitude;
+  int i;
+  double altitude;
 
   atmnew->numlayers   = ps->gridnumf + 1;
   atmnew->altitude    = (double *) malloc(atmnew->numlayers*sizeof(double));
@@ -48,7 +42,6 @@ void atmosphere_layers_subdivide(ps, atm, atmnew)
   atmnew->densch4     = (double *) malloc(atmnew->numlayers*sizeof(double));
 
   for (i=0; i<atmnew->numlayers; i++) {
-
     altitude		   = ps->gridf[i];
     atmnew->altitude[i]    = altitude;
     atmnew->pressure[i]    =    log_interpolate(atm->pressure,atm->altitude,atm->numlayers,altitude);
@@ -67,7 +60,6 @@ void atmosphere_layers_subdivide(ps, atm, atmnew)
     atmnew->denso2[i]      =    log_interpolate(atm->denso2,atm->altitude,atm->numlayers,altitude);
     atmnew->densn2o[i]     =    log_interpolate(atm->densn2o,atm->altitude,atm->numlayers,altitude);
     atmnew->densch4[i]     =    log_interpolate(atm->densch4,atm->altitude,atm->numlayers,altitude);
-
   }
 
   /*---------------------------------------------------------------------*/

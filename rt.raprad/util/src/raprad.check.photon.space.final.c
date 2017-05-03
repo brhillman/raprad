@@ -2,6 +2,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/PhotonSpace.h"
@@ -9,17 +10,10 @@
 
 /******************************************************************************/
 
-void check_photon_space_final(ps)
-  PhotonSpace
-    *ps;
+void check_photon_space_final(PhotonSpace *ps)
 {
-  int
-    i,
-    j;
-
-  FILE
-    *fpta,
-    *fopen();
+  int i;
+  FILE  *fpta, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open check.photon.space.final                                            */

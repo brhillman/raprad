@@ -15,45 +15,13 @@
 
 /******************************************************************************/
 
-int spectralmodel_read_mlawer_lw(filename, pp, ps, sm)
-char
-  *filename;
-PhotonPartition
-  *pp;
-PhotonSpace
-  *ps;
-SpectralModel
-  *sm;
+void spectralmodel_read_mlawer_lw(char *filename, PhotonPartition *pp, PhotonSpace *ps, SpectralModel *sm)
 {
-  FILE
-    *fpt,
-    *fptrabs,
-    *fopen();
-
-  char
-    c,
-    gas[256],
-    *moleculeptr;
-
-  int
-    i,
-    j,
-    jj,
-    k,
-    m,
-   *mindex,
-    npts,
-    bandnumber,
-    used,
-    count,
-    numbands,
-    numintervals,
-    nummolecules,
-    useband;
-
-  double
-    abscoefficient,
-    correction;
+  FILE *fpt, *fopen();
+  char c;
+  int i, j, jj, k, bandnumber;
+  int numbands, useband;
+   
 
   /*--------------------------------------------------------------------------*/
   /* Count the number of gaseous absorption bands that are used in the        */

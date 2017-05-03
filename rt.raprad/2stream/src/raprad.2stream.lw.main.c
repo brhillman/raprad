@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -16,90 +17,75 @@
 
 /******************************************************************************/
 
-void
-  atmosphere_gasamounts_u(),
-  atmosphere_layers(),
-  atmosphere_layers_subdivide(),
-  atmosphere_layers_tau(),
-  atmosphere_read_mcclatchey(),
-  check_atmosphere_gasamounts_u(),
-  check_atmosphere_layers(),
-  check_atmosphere_layers_subdivide(),
-  check_brdf_selection(),
-  check_constituents(),
-  check_geometry_sunzenith(),
-  check_photon_partition(),
-  check_photon_space_final(),
-  check_spectralmodel_mlawer_lw(),
-  photon_space_final(),
-  rapad_alloc(),
-  read_configuration(),
-  read_constituents_phasefcns(),
-  read_geometry_sunzenith(),
-  read_photon_partition(),
-  read_photon_space();
-
-Constituents
-  *read_constituents();
-
-int
-  read_brdf_selection(),
-  spectralmodel_read_kato();
+extern void atmosphere_gasamounts_u(Atmosphere *atm);
+extern void atmosphere_layers(int i, int j, PhotonSpace *ps, SpectralModel *sm, Constituents *c, Rt *rt, Atmosphere *atm);
+extern void atmosphere_layers_subdivide(PhotonSpace *ps, Atmosphere *atm, Atmosphere *atmnew);
+extern void atmosphere_layers_tau(int i, int j, PhotonSpace *ps, PhotonPartition *pp, SpectralModel *sm, Atmosphere *atm, Constituents *c, Rt *rt, Brdf *d);
+extern void atmosphere_read_mcclatchey(char *file_name, Atmosphere *atm);
+extern void check_atmosphere_gasamounts_u(Atmosphere *atm);
+extern void check_atmosphere_layers_lw(int i, int j, SpectralModel *sm, Rt *rt, Sun *suna, Brdf *d);
+extern void check_atmosphere_layers_subdivide(Atmosphere *atmnew);
+extern void check_brdf_selection(PhotonPartition *pp, Brdf *b);
+extern void check_constituents(PhotonPartition *pp, PhotonSpace *ps, Constituents *c);
+extern void check_geometry_sunzenith(Sun *suna);
+extern void check_photon_partition(PhotonPartition *pp);
+extern void check_photon_space_final(PhotonSpace *ps);
+extern void check_spectralmodel_mlawer_lw(PhotonPartition *pp, SpectralModel *sm);
+extern void check_spectralmodel_kato(PhotonPartition *pp, SpectralModel *sm);
+extern void check_spectralmodel_pollack(PhotonPartition *pp, SpectralModel *sm);
+extern void check_cntnmmodel(PhotonPartition *pp, SpectralModel *sm);
+extern void cntnmmodel_read(char *filename, PhotonPartition *pp, SpectralModel *sm);
+extern void photon_space_final(PhotonSpace *ps, Constituents *c);
+extern void raprad_alloc(PhotonPartition *pp, PhotonSpace *ps, Rt *rt);
+extern void rap_twostr_lw_(
+   double *solconst, int *nlayers, float *amu0, 
+   float *w0_temp, float *g0_temp, float *suralb, float *taul_temp, double *gau_wt_temp, 
+   double *dis2sun, double *plankbnd, double *planklay_temp, double *planklev_temp, 
+   double *bandwidth
+);
+extern void read_configuration(
+   char *configfileName, char *configfilePhotonPartition,
+   char *configfileConstituents, char *configfileSpectralModel, char *configfileCntnm,
+   char *configfileAtmosphere, char *configfilePhotonSpace, char *configfileSunView,
+   char *configfileQuadrature, char *configfileBrdfSelection, char *configfileBrdf, char *outfileResults
+);
+extern void read_constituents_phasefcns(int i, PhotonSpace *ps, Constituents *c);
+extern void read_geometry_sunzenith(char *geometryfile, Sun *suna);
+extern void read_photon_partition(char *filename, PhotonPartition *pp);
+extern void read_photon_space(char *filename, PhotonSpace *ps);
+extern void read_brdf_selection(char *filename, PhotonPartition *pp, Brdf *);
+extern void spectralmodel_read_mlawer_lw(char *filename, PhotonPartition *pp, PhotonSpace *ps, SpectralModel *sm);
+extern void spectralmodel_read_kato(char *filename, PhotonPartition *pp, SpectralModel *sm);
+extern void spectralmodel_read_pollack(char *filename, PhotonPartition *pp, SpectralModel *sm);
+extern Constituents *read_constituents(char *constituentsfile, PhotonPartition *pp, PhotonSpace *ps);
 
 /******************************************************************************/
 
-main(argc, argv)
-
-int
-  argc;
-char
-  **argv;
-
+int main(int argc, char **argv)
 {
-  char
-    configfileName[256],		/* Configuration file */
-    configfilePhotonPartition[256],	/* Spectral intervals */
-    configfilePhotonSpace[256],		/* Atmosphere Layers */
-    configfileConstituents[256],        /* Constituents */
-    configfileSpectralModel[256],	/* Spectral band model */
-    configfileCntnm[256],		/* Continuum model */
-    configfileAtmosphere[256],		/* Atmospheric profile data */
-    configfileSunView[256],		/* Sun location and view angles */
-    configfileQuadrature[256],		/* Rt quadrature angles */
-    configfileBrdfSelection[256],	/* BRDF selection menu */
-    configfileBrdf[256],		/* BRDF data */
-    outfileResults[256];
+  char configfileName[256];		/* Configuration file */
+  char configfilePhotonPartition[256];	/* Spectral intervals */
+  char configfilePhotonSpace[256];		/* Atmosphere Layers */
+  char configfileConstituents[256];        /* Constituents */
+  char configfileSpectralModel[256];	/* Spectral band model */
+  char configfileCntnm[256];		/* Continuum model */
+  char configfileAtmosphere[256];		/* Atmospheric profile data */
+  char configfileSunView[256];		/* Sun location and view angles */
+  char configfileQuadrature[256];		/* Rt quadrature angles */
+  char configfileBrdfSelection[256];	/* BRDF selection menu */
+  char configfileBrdf[256];		/* BRDF data */
+  char outfileResults[256];
 
-  int
-    i,
-    inputcheck,
-    j,
-    n;
+  int i,inputcheck,j,n;
 
-  Atmosphere
-    *atm,
-    *atmrt1d;
-
-  Constituents
-    *c;
-
-  PhotonPartition
-    *pp;
-
-  Rt
-    *rt;
-
-  PhotonSpace
-    *ps;
-
-  SpectralModel
-    *sm;
-
-  Brdf
-    *d;
-
-  Sun
-    *suna;
+  Atmosphere *atm, *atmrt1d;
+  Constituents *c;
+  PhotonPartition *pp;
+  Rt *rt;
+  PhotonSpace *ps;
+  SpectralModel *sm;
+  Brdf *d;
+  Sun *suna;
 
   /*--------------------------------------------------------------------------*/
   /* Load the configuration file name and inputcheck flag from the command    */
@@ -126,11 +112,13 @@ char
   /* Read all input file names contained in ../config/rt1d.configuration      */
   /*--------------------------------------------------------------------------*/
 
-  read_configuration(configfileName, configfilePhotonPartition,
+  read_configuration(
+     configfileName, configfilePhotonPartition,
      configfileConstituents, configfileSpectralModel, configfileCntnm,
      configfileAtmosphere, configfilePhotonSpace, configfileSunView,
      configfileQuadrature, configfileBrdfSelection, configfileBrdf, 
-     outfileResults);
+     outfileResults
+  );
 
   /*--------------------------------------------------------------------------*/
   /* Structure that contains the users selections of which bands to run in    */
@@ -141,10 +129,14 @@ char
   /*--------------------------------------------------------------------------*/
 
   pp = (PhotonPartition *) malloc(sizeof(PhotonPartition));
+  if (pp == NULL) {
+    printf("ERROR: couldn't allocate memory for PhotonPartion!\n");
+    return 1;
+  }
 
   read_photon_partition(configfilePhotonPartition, pp);
 
-  if (inputcheck) { check_photon_partition(pp); }
+  if (inputcheck) check_photon_partition(pp);
 
   /*--------------------------------------------------------------------------*/
   /* Structure that contains information about the number and location of the */
@@ -153,6 +145,10 @@ char
   /*--------------------------------------------------------------------------*/
 
   ps = (PhotonSpace *) malloc(sizeof(PhotonSpace));
+  if (ps == NULL) {
+    printf("ERROR: couldn't allocate memory for PhotonSpace!\n");
+    return 1;
+  }
 
   read_photon_space(configfilePhotonSpace, ps);
 
@@ -164,7 +160,7 @@ char
 
   c = read_constituents(configfileConstituents, pp, ps);
 
-  if (inputcheck) { check_constituents(pp, ps, c); }
+  if (inputcheck) check_constituents(pp, ps, c);
 
   /*--------------------------------------------------------------------------*/
   /* Use the constituent locations and the requested layer geometry in ps to  */
@@ -175,7 +171,7 @@ char
 
   photon_space_final(ps, c);
 
-  if (inputcheck) { check_photon_space_final(ps); }
+  if (inputcheck) check_photon_space_final(ps);
 
   /*--------------------------------------------------------------------------*/
   /* Read the spectral domains and the subintervals within the spectral       */
@@ -187,17 +183,21 @@ char
   /*--------------------------------------------------------------------------*/
 
   sm = (SpectralModel *) malloc(sizeof(SpectralModel));
+  if (sm == NULL) {
+    printf("ERROR: couldn't allocate memory for SpectralModel!\n");
+    return 1;
+  }
 
   for (n=1; n<=ps->cnumber; n++) {
 
-    if      (!strcmp(c[n].name, "GaseousAbsorptionSpectralModelKato")) {
+    if (!strcmp(c[n].name, "GaseousAbsorptionSpectralModelKato")) {
 
       /*----------------------------------------------------------------------*/
       /* Read in the Kato gaseous absorption model.                           */
       /*----------------------------------------------------------------------*/
 
       spectralmodel_read_kato(configfileSpectralModel, pp, sm);
-      if (inputcheck) { check_spectralmodel_kato(pp, sm); }
+      if (inputcheck) check_spectralmodel_kato(pp, sm);
       break;
 
       /*----------------------------------------------------------------------*/
@@ -212,7 +212,7 @@ char
       /*----------------------------------------------------------------------*/
 
       spectralmodel_read_mlawer_lw(configfileSpectralModel, pp, ps, sm);
-      if (inputcheck) { check_spectralmodel_mlawer_lw(pp, sm); }
+      if (inputcheck) check_spectralmodel_mlawer_lw(pp, sm);
 
       /*----------------------------------------------------------------------*/
       /* DONE reading in the Mlawer gaseous absorption model.                 */
@@ -226,7 +226,7 @@ char
       /*----------------------------------------------------------------------*/
 
       spectralmodel_read_pollack(configfileSpectralModel, pp, sm);
-      if (inputcheck) { check_spectralmodel_pollack(pp, sm); }
+      if (inputcheck) check_spectralmodel_pollack(pp, sm);
 
       /*----------------------------------------------------------------------*/
       /* Extract the water vapor continuum absorption coefficients as         */
@@ -236,7 +236,7 @@ char
       /*----------------------------------------------------------------------*/
 
       cntnmmodel_read(configfileCntnm, pp, sm);
-      if (inputcheck) { check_cntnmmodel(pp, sm); }
+      if (inputcheck) check_cntnmmodel(pp, sm);
 
       break;
 
@@ -251,7 +251,11 @@ char
   /* Read in the atmospheric profile information.                             */
   /*--------------------------------------------------------------------------*/
 
-  atm  = (Atmosphere *) malloc(sizeof(Atmosphere));
+  atm = (Atmosphere *) malloc(sizeof(Atmosphere));
+  if (atm == NULL) {
+    printf("ERROR: couldn't allocate memory for Atmosphere!\n");
+    return 1;
+  }
 
   atmosphere_read_mcclatchey(configfileAtmosphere, atm);
 
@@ -262,10 +266,14 @@ char
   /*--------------------------------------------------------------------------*/
 
   atmrt1d = (Atmosphere *) malloc(sizeof(Atmosphere));
+  if (atmrt1d == NULL) {
+    printf("ERROR: couldn't allocate memory for Atmosphere!\n");
+    return 1;
+  }
 
   atmosphere_layers_subdivide(ps, atm, atmrt1d);
 
-  if (inputcheck) { check_atmosphere_layers_subdivide(atmrt1d); }
+  if (inputcheck) check_atmosphere_layers_subdivide(atmrt1d);
 
   /*--------------------------------------------------------------------------*/
   /* Compute the gas amounts in each layer in units of cm.                    */
@@ -273,33 +281,45 @@ char
 
   atmosphere_gasamounts_u(atmrt1d);
 
-  if (inputcheck) { check_atmosphere_gasamounts_u(atmrt1d); }
+  if (inputcheck) check_atmosphere_gasamounts_u(atmrt1d);
 
   /*--------------------------------------------------------------------------*/
   /* Get ILLUMINATION information from configfileSunZenith.                   */
   /*--------------------------------------------------------------------------*/
 
   suna = (Sun *) malloc(sizeof(Sun));
+  if (suna == NULL) {
+    printf("ERROR: couldn't allocate memory for Sun!\n");
+    return 1;
+  }
 
   read_geometry_sunzenith(configfileSunView, suna);
 
-  if (inputcheck) { check_geometry_sunzenith(suna); }
+  if (inputcheck) check_geometry_sunzenith(suna);
 
   /*--------------------------------------------------------------------------*/
   /* Choose the surface BRDFs to be used in the simulation.                   */
   /*--------------------------------------------------------------------------*/
 
   d = (Brdf *) malloc(sizeof(Brdf));
+  if (d == NULL) {
+    printf("ERROR: couldn't allocate memory for Brdf!\n");
+    return 1;
+  }
 
   read_brdf_selection(configfileBrdfSelection, pp, d);
 
-  if (inputcheck) { check_brdf_selection(pp, d); }
+  if (inputcheck) check_brdf_selection(pp, d);
 
   /*--------------------------------------------------------------------------*/
   /* Allocate space for arrays to hold layer scattering properties.           */
   /*--------------------------------------------------------------------------*/
 
   rt = (Rt *) malloc(sizeof(Rt));
+  if (rt == NULL) {
+    printf("ERROR: couldn't allocate memory for Rt!\n");
+    return 1;
+  }
 
   rt->rt_number     = ps->rt_number;
   rt->layers_number = ps->gridnumf;
@@ -311,7 +331,8 @@ char
   /* adding doubling code for each spectral interval .                        */
   /*--------------------------------------------------------------------------*/
 
-  for (i=1; i<=pp->numintervals; ++i) {
+  for (i=1; i<=pp->numintervals; ++i) { 
+
 
     /*------------------------------------------------------------------------*/
     /* Phase functions for each constituent at this particular wavelength.    */
@@ -338,19 +359,22 @@ char
 
       atmosphere_layers(i, j, ps, sm, c, rt, atmrt1d);
 
-      if (inputcheck) { check_atmosphere_layers_lw(i, j, sm, rt, suna, d); }
+      if (inputcheck) check_atmosphere_layers_lw(i, j, sm, rt, suna, d);
 
       /*----------------------------------------------------------------------*/
       /* Go do the two stread radiative transfer for this particular          */
       /* interval or sub-interval.                                            */
       /*----------------------------------------------------------------------*/
 
+      /* printf("%15.5e\n",rt->plankbnd[i]);   */
+
       rap_twostr_lw_(
            &sm->solarinsol[i],  &rt->layers_number,   &suna->sunz_mu,
            &rt->layers_w0[1],   &rt->layers_g0[1],    &d->albedo[i][1],
            &rt->layers_tau[1],  &sm->alphad[i][j][1], &suna->sun2earth_distance,
            &rt->plankbnd[i],    &rt->planklayd[1],    &rt->planklevd[1],
-           &sm->bandwidth[i][0]);
+           &sm->bandwidth[i][0]
+      );  
 
       /*----------------------------------------------------------------------*/
       /* DONE with the radiative transfer.                                    */
@@ -368,9 +392,8 @@ char
   /* DONE with the spectral band calculations.                                */
   /*--------------------------------------------------------------------------*/
 
+	return 0;
 }
 
 /******************************************************************************/
 /******************************************************************************/
-
-

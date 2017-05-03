@@ -1,6 +1,6 @@
 /******************************************************************************/
 /******************************************************************************/
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "../include/SpectralModel.h"
@@ -11,26 +11,10 @@
 
 /******************************************************************************/
 
-void
-check_atmosphere_layers(i, j, sm, rt, suna, d)
-int
-  i,
-  j;
-SpectralModel
-  *sm;
-Rt
-  *rt;
-Sun
-  *suna;
-Brdf
-  *d;
+void check_atmosphere_layers(int i, int j, SpectralModel *sm, Rt *rt, Sun *suna, Brdf *d)
 {
-  int
-    k;
-
-  FILE
-    *fpta,
-    *fopen();
+  int k;
+  FILE *fpta, *fopen();
 
   /*--------------------------------------------------------------------------*/
   /* Open check.photon.partition                                              */
@@ -52,7 +36,7 @@ Brdf
 
   fprintf(fpta, "%10.5f", suna->sunz_mu);
 
-  fprintf(fpta, "%10.5f\n", d->albedo[i]);
+  fprintf(fpta, "%10.5f\n", d->albedo[i][1]);
 
   /*--------------------------------------------------------------------------*/
   /* Print the single-scattering albedo, tau and moments of legendre          */
