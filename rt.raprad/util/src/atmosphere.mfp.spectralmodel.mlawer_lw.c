@@ -23,6 +23,9 @@ double
     linear_interpolate(),
     log_interpolate();
 
+void
+    rrtm_driver_setcoef_taumol_();
+
 /**********************************************************************/
 
 void
@@ -54,38 +57,16 @@ mfp_spectralmodel_mlawer_lw(i, j, k, ps, pp, sm, atm, c, rt, cvd, ucvd, d, bi, l
     *ucvd,
     *bi;
 {
-  int
-    ii,
-    ip,
-    it,
-    iw,
-    m,
-    mm,
-    npts,
-    operatediv,
-    operatemod,
-    quadptindex;
-
   double
-    ansyrl,
-    ansyru,
-    frcnx,
-    frcny,
     p,
     plev,
     t,
-    w,
-    xsect[9][64],
     z,
     dz,
     dryaircolumn,
     plkbnd;
 
-  char
-    *moleculeptr;
-
   FILE
-    *fptr,
     *fopen();
 
   /*--------------------------------------------------------------*/
@@ -127,6 +108,7 @@ mfp_spectralmodel_mlawer_lw(i, j, k, ps, pp, sm, atm, c, rt, cvd, ucvd, d, bi, l
     &atm->uo3[k-1], &atm->un2o[k-1], &atm->uch4[k-1], 
     &atm->uo2[k-1], &dryaircolumn, &d->albedo[i][1], &laytrop, &layswtch, &laylow,
     &bi[0], &sm->alphau[i][j][k], &plkbnd, &rt->planklayu[k], &rt->planklevu[k-1]) ;
+
 
   /*--------------------------------------------------------------*/
   /* Save the Planck function source radiance for this layer.     */

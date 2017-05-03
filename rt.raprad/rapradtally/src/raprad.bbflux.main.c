@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 #include "../../util/include/PhotonSpace.h"
 #include "../../util/include/PhotonPartition.h"
@@ -27,6 +28,9 @@ void
   check_photon_partition(),
   check_photon_space_final(),
   check_spectralmodel_kato(),
+  check_spectralmodel_pollack(),
+  check_cntnmmodel(),
+  cntnmmodel_read(),
   photon_space_final(),
   read_configuration(),
   read_geometry_sunzenith(),

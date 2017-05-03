@@ -1,6 +1,6 @@
 /******************************************************************************/
 /******************************************************************************/
-/* List of Thermodynamic Functions and Their Inputs and Outputs.
+/* List of Thermodynamic Functions and Their Inputs and Outputs. */
 /******************************************************************************/
 /*
 	double numberdensity_dryair();

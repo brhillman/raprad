@@ -7,21 +7,19 @@
 #
 #
 
-
-# SUN System compilier options
-SUNCC = cc -g -I/usr/local/include -c $@
-
 # GNU System compilier options
-GNUCC = gcc -I/usr/local/include
+SUNCC = gcc -ggdb -I/usr/local/include -c -o $@
 
 # SGI System compilier options
 SGICC = cc -g -cckr
 
-F77 = f77
+#F77 = f77
+F77 = ifort -traceback -fpe0 -check all -O0
 
-FFLAGS = -g -c
+FFLAGS = -g -c -o
 
-LINK.c= -lc -lF77 -lM77 -lV77 -lm -lsunmath
+#LINK.c= -lc -lF77 -lM77 -lV77 -lm -lsunmath
+LINK.c= -lc -lm -nofor-main
 
 
 COBJECTS = \
@@ -57,7 +55,9 @@ COBJECTS = \
 
 all:			\
 	rapradbbfluxlw 	\
-	rapradbbfluxsw
+	rapradbbfluxsw  \
+        combine_sw_lw_flx
+        
 
 
 OBJECTS2 = \
@@ -75,21 +75,21 @@ read_merged_sounding: ${OBJECTS1}
 	$(F77) -g -o $@ ${OBJECTS1} ${CDFLIB01} ${LINK.libs}
 
 combine_sw_lw_flx: $(OBJECTS2)
-	 $(F77) -g -o $@ $(OBJECTS2) $(LINK.c)
+	 $(F77) -g -o $@ combine_sw_lw_flx $(OBJECTS2) $(LINK.c)
 
 
 raprad.bbflux.main.o: ../src/raprad.bbflux.main.c
 	 $(SUNCC) ../src/raprad.bbflux.main.c
 
 raprad.bbflux.lw.o: ../src/raprad.bbflux.lw.f
-	$(F77) $(FFLAGS) ../src/raprad.bbflux.lw.f
+	$(F77) $(FFLAGS) $@ ../src/raprad.bbflux.lw.f
 
 raprad.bbflux.sw.o: ../src/raprad.bbflux.sw.f
-	$(F77) $(FFLAGS) ../src/raprad.bbflux.sw.f
+	$(F77) $(FFLAGS) $@ ../src/raprad.bbflux.sw.f
 
 
 combine_sw_lw_flx.o: ../src/combine_sw_lw_flx.f
-	$(F77) $(FFLAGS) ../src/combine_sw_lw_flx.f
+	$(F77) $(FFLAGS) $@ ../src/combine_sw_lw_flx.f
 
 
 ../../util/obj/raprad.check.constituents.o: ../../util/src/raprad.check.constituents.c
@@ -198,7 +198,10 @@ combine_sw_lw_flx.o: ../src/combine_sw_lw_flx.f
 
 
 clean:
-	 rm $(COBJECTS) $(FOBJECTS)
+	 rm $(COBJECTS) $(OBJECTS1) $(OBJECTS2)
+	 rm raprad.bbflux.lw.o
+	 rm raprad.bbflux.sw.o
+
 
 
 #

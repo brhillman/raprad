@@ -2,6 +2,7 @@
 /******************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/PhotonPartition.h"

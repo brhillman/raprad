@@ -1,5 +1,7 @@
 /**********************************************************************/
 /**********************************************************************/
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/PhotonPartition.h"

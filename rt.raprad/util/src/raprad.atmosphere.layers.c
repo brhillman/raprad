@@ -2,6 +2,8 @@
 /***********************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/SpectralModel.h"
@@ -11,7 +13,7 @@
 
 /***********************************************************************/
 
-int
+void
 atmosphere_layers(i, j, ps, sm, c, rt, atm)
 
 int

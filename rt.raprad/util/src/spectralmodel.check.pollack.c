@@ -12,7 +12,7 @@
 
 /******************************************************************************/
 
-int check_spectralmodel_pollack(pp, sm)
+void check_spectralmodel_pollack(pp, sm)
 PhotonPartition
   *pp;
 SpectralModel

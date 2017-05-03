@@ -8,23 +8,16 @@
 #
 #
 
-
-# SUN System compilier options
-SUNCC = cc -g -I/usr/local/include -c -o $@
-
-
 # GNU System compilier options
-GNUCC = gcc -I/usr/local/include
+SUNCC = gcc -ggdb -Wall -I/usr/local/include -c -o $@
 
-# SGI System compilier options
-SGICC = cc -g -cckr
-
-F77 = f77
+#F77 = f77
+F77 = ifort -traceback -fpe0 -check all -O0
 
 FFLAGS = -g -c -o $@
 
-LINK.c= -lc -lF77 -lM77 -lV77 -lm -lsunmath
-
+#LINK.c= -lc -lF77 -lM77 -lV77 -lm -lsunmath
+LINK.c= -lc -lm -nofor-main
 
 OBJECTS = \
 	 ../../util/obj/atmosphere.clausiusclapyron.o \
@@ -114,7 +107,7 @@ OBJECTS = \
 all: \
 	raprad2streamlw \
 	raprad2streamsw \
-	raprad2streamlw_mix
+#	raprad2streamlw_mix
 
 
 raprad2streamlw: $(2STREAMLWOBJECTS) $(OBJECTS)
@@ -125,7 +118,7 @@ raprad2streamsw: $(2STREAMSWOBJECTS) $(OBJECTS)
 	$(F77) -g -o $@ $(2STREAMSWOBJECTS) $(OBJECTS) $(LINK.c)
 
 
-raprad2streamlwmix: $(2STREAMLWMIXOBJECTS) $(OBJECTS)
+raprad2streamlw_mix: $(2STREAMLWMIXOBJECTS) $(OBJECTS)
 	$(F77) -g -o $@ $(2STREAMLWMIXOBJECTS) $(OBJECTS) $(LINK.c)
 
 
@@ -423,7 +416,7 @@ raprad.2stream.lw_mix.o: ../src_lw_mix/raprad.2stream.lw_mix.f
 
 
 clean:
-	 rm $(COBJECTS) $(2STREAMOBJECTS)
+	 rm $(OBJECTS) $(2STREAMLWOBJECTS) $(2STREAMSWOBJECTS)
 
 
 #

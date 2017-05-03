@@ -2,6 +2,8 @@
 /****************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../include/numrec.nrutil.h"
 #include "../include/Constituents.h"
@@ -9,6 +11,8 @@
 #include "../include/PhotonSpace.h"
 
 /****************************************************************/
+int setup();
+void myfscanf();
 
 Constituents
 *read_constituents(constituentsfile, pp, ps)
@@ -20,12 +24,8 @@ PhotonSpace
   *ps;
 {
   int
-    ca,
     i,
     j;
-
-  char
-    input_type[2];
 
   Constituents
     *c;

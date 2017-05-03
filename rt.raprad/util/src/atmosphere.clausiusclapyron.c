@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include "../include/Atmosphere.h"
+#include <string.h>
 
 #define RGAS                          8.31441 	/* J/mol/K */
 #define A0			 6.022045E+23   /* #/mole  */

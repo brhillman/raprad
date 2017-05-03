@@ -1,6 +1,6 @@
 /******************************************************************************/
 /******************************************************************************/
-/* List of Thermodynamic Functions and Their Inputs and Outputs.
+/* List of Thermodynamic Functions and Their Inputs and Outputs.*/
 /******************************************************************************/
 /*
 	double latenheat();
@@ -63,7 +63,7 @@ double latentheat();
 double clausiusclapyron_water_integration();
 	double clausiusclapyron_exponent();
 	double trapezoid_integration();
-	double richardson_extrapolation();
+	void richardson_extrapolation();
 
 double clausiusclapyron_water_bolton();
 double clausiusclapyron_water_starr();
@@ -195,7 +195,7 @@ int   i;
 	matrix: the matrix containing the values
 */
 
-double richardson_extrapolation(matrix,i)
+void richardson_extrapolation(matrix,i)
 double **matrix;
 int   i;
 {

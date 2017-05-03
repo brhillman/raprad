@@ -167,6 +167,10 @@ mfp_spectralmodel_pollack(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
 /* Linear interpolate a profile to a specific altitude.          */
 
 double
+    mxratio_precmpercm_numberdensity(),
+    continuum_crosssection();
+
+double
 bext_watervapor_cntnm_atmosphere(numlayers,u,air,p,T,height,altitude,flag_ucvd,ucvd,csself,csforeign)
 int numlayers;
 double *u;

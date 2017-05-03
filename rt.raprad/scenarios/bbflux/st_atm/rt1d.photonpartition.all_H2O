@@ -15,7 +15,7 @@
 /*                                                                 */
 /*	1) [index] channel or spectral band number index,          */
 /*                                                                 */
-/*	2) [wavelength] channel center wavelength,                 */
+/*	2) [wavelength] channel center wavelength (micro-metre),   */
 /*                                                                 */
 /*	3) [interval] gaseous absorption spectral model index      */
 /*		(-1 = no gaseous absorption),                      */

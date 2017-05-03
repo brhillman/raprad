@@ -12,7 +12,7 @@
 
 /******************************************************************************/
 
-int check_spectralmodel_kato(pp, sm)
+void check_spectralmodel_kato(pp, sm)
 PhotonPartition
   *pp;
 SpectralModel

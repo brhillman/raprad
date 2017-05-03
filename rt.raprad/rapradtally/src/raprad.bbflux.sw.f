@@ -54,7 +54,7 @@ c Currently, no IR is treated.
 c computing band flux at each level
 
       do 2000 j = 1, jlayers
-        do 2100 i = 1, nband
+        do 2100 i = 1, n_band
           sol_fluxup(i,j) = 0.0
           sol_fluxdn(i,j) = 0.0
           sol_direct(i,j) = 0.0
@@ -78,30 +78,30 @@ c computing band flux at each level
         endif
         
         do 2400 j = 1, jlayers
-
           do 2500 n = nstart, nend
-     
             sol_fluxup(i,j) = sol_fluxup(i,j) + sol_fluxup_sub(n,j)
             sol_fluxdn(i,j) = sol_fluxdn(i,j) + sol_fluxdn_sub(n,j)
             sol_direct(i,j) = sol_direct(i,j) + sol_direct_sub(n,j)
-
  2500     continue
  2400   continue
  2300 continue
 
+
       do 2600 j = 1, jlayers
-
         do 2700 i = 1, n_band
-
           total_sol_fluxup(j) = total_sol_fluxup(j) + sol_fluxup(i,j)
           total_sol_fluxdn(j) = total_sol_fluxdn(j) + sol_fluxdn(i,j)
           total_sol_direct(j) = total_sol_direct(j) + sol_direct(i,j)
-
  2700   continue
-
         total_sol_diff(j) = total_sol_fluxdn(j) - total_sol_direct(j)
-
  2600 continue
+   
+
+      print*,'short wave'
+      print*,sum(sol_fluxup(:,30))-sum(sol_fluxup(:,29))
+     &         +sum(sol_fluxdn(:,29))-sum(sol_fluxdn(:,30))
+
+
 
       do 2800 i = 1, n_band
         sol_absop(i) = sol_fluxdn(i,1) - sol_fluxup(i,1)

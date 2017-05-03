@@ -56,72 +56,10 @@ c     this subroutine forms the matrix for the multiple layers and
 c     uses a tridiagonal routine to find radiation in the entire
 c     atmosphere.
 c
-c     ******************************
-c     *   calculations for solar   *
-c     ******************************
-      if(irflag .eq. 0)  then
-        du0                =  1./u0
-
-        do 10 j            =  1,nlayer
-
-          if(j.ne.1) then
-
-            j1=j-1
-
-          else
-
-            j1=j
-
-          endif
-
-          b3(j)     =  0.5*(1.-sq3*g0(j)*u0)
-          b4          =  1. - b3(j)
-          x2          =  taul(j)*du0
-
-          if(x2.gt.1000.)  x2 = 1000.
-
-          ee3(j)    =  exp(-x2)
-          x3          =  opd(j)*du0
-
-          if(x3.gt.1000.)  x3 = 1000.
-
-          el3(j)    =  exp(-x3)*sol
-
-          if(el3(j).ge.1000.)  el3(j)=0.0
-
-          direct(j) = u0*el3(j)
-          c1          =  b1(j) - du0
-          c2          =  ak(j)*ak(j) - du0*du0
-
-          if(abs(c2).le.epsilon)   c2=epsilon
 
 
-c equation 23 in Toon et al. (1989)
 
-          cp1         =  w0(j)*(b3(j)*c1+b4*b2(j))/c2
-          cpb(j)    =  cp1 * el3(j)
 
-          if(j.ne.1) then
-            x4 = el3(j1)
-          else
-            x4 = sol
-          endif
-
-          cp(j)     =  cp1 * x4
-
-c equation 24 in Toon et al. (1989)
-
-          cm1         =  ( cp1*b2(j) + w0(j)*b4 )/c1
-          cmb(j)    =  cm1 * el3(j)
-          cm(j)     =  cm1 * x4
-
- 10     continue
-
-c       calculate sfcs, the source at the bottom.
-
-        sfcs         =  direct(nlayer) * rsfx
-c
-       end if
 c
 c     ******************************
 c     * calculations for infrared. *
@@ -131,7 +69,6 @@ c
         emis = 1.0 - rsfx
 
         do 30 j           =   1,nlayer
-
           if(j.eq.1) then
             kindex = 1
           else
@@ -146,24 +83,19 @@ c
           el3(j)    = 0.0
           direct(j) = 0.0
           ee3(j)    = 0.0
-
  30     continue
 
         sfcs          = emis*ptempg*pi
-
       end if
 
-      j                =  0
+      j = 0
 
-      do 42 jd         =  2,jn,2
-        j             =  j + 1
-
+      do 42 jd =  2,jn,2
+        j =  j + 1
 c           here are the even matrix elements
         df(jd) = (cp(j+1) - cpb(j))*em1(j+1) -
      $ (cm(j+1) - cmb(j))*em2(j+1)
-
 c           here are the odd matrix elements except for the top.
-
         df(jd+1) =  el2(j) * (cp(j+1)-cpb(j)) +
      &                    el1(j) * (cmb(j) - cm(j+1))
  42   continue
@@ -228,7 +160,7 @@ c diffuse component of solar radiation
 
         diffuse(j) = ck1(j)*el2(j) + ck2(j)*em2(j)
      +                                     + cmb(j)
-c
+
         tmi(j)     =  el3(j) + u1i * ( ck1(j)  *
      5                   (el1(j) + el2(j))   +
      6                    ck2(j) * ( em1(j)+em2(j) ) +
@@ -239,9 +171,10 @@ c
         sol_fluxdn(j) = sol_fluxdn(j) + ck1(j)*el2(j)
      &                + ck2(j)*em2(j)+cmb(j)+direct(j)
 
-        direct_nd(j) = exp(-opdnd(j)*du0)
+!        direct_nd(j) = exp(-opdnd(j)*du0)
 
    62 continue
+
 
 
  400  format (255f8.1)

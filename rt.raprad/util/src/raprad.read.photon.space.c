@@ -2,10 +2,16 @@
 /*****************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/PhotonSpace.h"
 
 /*****************************************************************************/
+
+int setup();
+void
+    myfscanf(),
+    position();
 
 void
 read_photon_space(configfilename, ps)
@@ -15,7 +21,6 @@ PhotonSpace
   *ps;
 {
   int
-    index,
     j,
     number;
 

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-
+#include <string.h>
 #include "../include/Atmosphere.h"
 
 /******************************************************************************/
@@ -39,6 +39,7 @@ double mxratio_volpervol_gmperkg();
 
 /******************************************************************************/
 
+int setup();
 void atmosphere_read_mcclatchey(file_name, atm)
 char *file_name;
 Atmosphere *atm;

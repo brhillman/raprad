@@ -12,7 +12,7 @@
 
 /******************************************************************************/
 
-int check_spectralmodel_mlawer_lw(pp, sm)
+void check_spectralmodel_mlawer_lw(pp, sm)
 PhotonPartition
   *pp;
 SpectralModel
@@ -23,10 +23,7 @@ SpectralModel
     *fopen();
 
   int
-    i,
-    j,
-    k,
-    m;
+    i;
 
   /*--------------------------------------------------------------------------*/
   /* Open check.spectralmodel.mlawer_lw                                       */

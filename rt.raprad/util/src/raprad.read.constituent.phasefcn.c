@@ -2,11 +2,20 @@
 /**************************************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../include/PhotonSpace.h"
 #include "../include/Constituents.h"
 
 /**************************************************************************/
+
+void 
+    phasefcns_explicit_read_ascii(),
+    phasefcns_explicit_read_binary(),
+    phasefcns_legendre_read_ascii(),
+    phasefcns_legendre_read_binary(),
+    phasefcns_henyeygreenstein();
 
 void
 read_constituents_phasefcns(i, ps, c)
