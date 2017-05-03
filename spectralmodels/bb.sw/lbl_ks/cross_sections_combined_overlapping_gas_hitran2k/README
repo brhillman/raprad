@@ -1,0 +1,142 @@
+This new k table is made from HITRAN 2000 data base to reduce the total number of subbands over the solar spectrum.
+The total number of ks with this new tables is significantly smaller than the original tables.
+The reason for the reduction is new treatment of overlapping bands.
+Instead of applying the multiplicative rule, water vapor is set to the major constituent and the other gas is set to minor constituents.
+The concentration of minor gases are fixed to the mean mixing ration in the following table.
+
+1) Major and Minor gases 
+
+Band No.      Major      Minor      Number of subbands
+12            H2O         -            6
+14            H2O         -            5
+16            H2O        O2            6
+17            H2O         -            6
+19            H2O         -            6
+20            H2O         -            6
+21            H2O         -            7
+22            H2O         -            6
+23            H2O         -            7
+24            H2O         -            8
+25            H2O        CO2          11
+27            H2O        CO2           6
+28            H2O         -            7
+29            H2O        CO2           9
+30            H2O        O3            7
+31            H2O        CO2           7
+32            H2O        CO2          15
+
+The format of the table is exactly the same as before. 
+Since the new tables include H2O in all bands, all bands use pressure, temperature and water vapor concentration coordinate.
+ 
+
+2) Mixing ratio of minor gases.
+Mixing ratio of minor gases are fixed when these tables are made from 
+LBLRTM (Clough et al. 1992, J. Geophys, Res., 97 15761-15785).
+The profile of the CO2 mixing ratio used in generating these tables is
+
+HEIGHT (M)    CO2 MIXING RATIO 
+                   (PPMV)
+     0.          364.5E-00
+  2000.          364.5E-00
+  4000.          364.5E-00
+  6000.          364.5E-00
+  8000.          364.5E-00
+ 10000.          364.5E-00
+ 12000.          364.5E-00
+ 14000.          364.5E-00
+ 16000.          364.5E-00
+ 18000.          363.9E-00
+ 20000.          363.5E-00
+ 22000.          362.7E-00
+ 24000.          361.7E-00
+ 26000.          361.0E-00
+ 28000.          360.5E-00
+ 30000.          360.1E-00
+ 32000.          359.8E-00
+ 34000.          359.6E-00
+ 36000.          359.5E-00
+ 38000.          359.3E-00
+ 40000.          359.1E-00
+ 42000.          359.1E-00
+ 44000.          359.1E-00
+100000.          359.1E-00
+
+The profile of ozone mixing ratio used in generating these tables is
+
+PRESSURE     OZONE MIXING RATIO
+   (PA)            (PPMV)
+  100000.0       0.023612 
+   70000.0       0.039540
+   50000.0       0.047081
+   30000.0       0.073250
+   20000.0       0.190994
+   15000.0       0.298272
+   10000.0       0.617116
+    7000.0       1.293755
+    5000.0       2.312874
+    3000.0       4.257398
+    2000.0       5.949703
+    1000.0       7.351449
+     700.0       7.571908
+     500.0       7.291189
+     400.0       6.156919
+     300.0       4.924317
+     100.0       2.940406
+      50.0       1.680096
+      30.0       1.134422
+
+The oxygen mixing ratio is fixed to 0.20946E+06 ppmv.
+
+3) Format of tables.
+
+Tables are given in three different formats, NetCDF, binary and ascii formats.
+Writing statement used to write the binary file is
+
+    npts = nx*ny*nz*maxngauss ;
+    fwrite(&gauabx[0],   sizeof(double),   npts, fptrb);
+
+where
+nx (pressure)                  = 17
+ny (temperature)               = 11
+nz (water vapor concentration) = 13
+and
+maxngauss is the number of Gaussian quadratures (number of subbands), which depend on band.
+
+gauabx is the cross section per molecule in cm^2.
+For overlapping bands, the absorption coefficients of all gases are divided by 
+the concentration of water vapor so that when cross section is multiplied by 
+the concentration of water vapor, it gives the absorption coefficient combining 
+both water vapor and minor gas.
+Binary files are made by a Unix (sun) system.
+
+Ascii format is
+first row
+band number, number of Gaussian quadratures, Gaussian weights
+second row to the end of the file
+index of pressure coordinate, index of temperature coordinate, 
+index of water vapor coordinate, absorption cross section in 
+cm^2.
+ 
+The pressure, temperature and water vapor coordinates are:
+pressure (hPa)
+1050.0 834.0 662.0 526.0 418.0 332.0 264.0 168.0 106.0  66.9  42.2 26.6  16.8  10.6   1.0   0.1  0.01
+
+Temperature (K)
+120.0 140.0 160.0 180.0 200.0 220.0 240.0 260.0 280.0 300.0 320.0
+
+water vapor concentration (m^-3)
+0.15e26 0.47e25 0.15e25  0.47e24  0.15e24  0.47e23  0.15e23  0.47e22  0.15e22  0.47e21  0.15e21  0.47e20  0.15e20
+
+Not all combinations are filled by absorption cross sections because some combinations are not
+realistic to the atmosphere of the earth.
+
+
+4) Comparison with old tables.
+The new tables give slightly less absorption compared with old table as shown by the attached table.
+
+
+5) Reference
+Kato, S., T. P. Ackerman, J. H. Mather, E. E. Clothiaux, 1999:
+The k-distribution method and correlated-k approximation for a shortwave radiative transfer model,
+J. Quant. Spectrosc. Radiat. Transfer, 62, 109-121.
+

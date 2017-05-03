@@ -1,0 +1,38 @@
+Comments about the original Kato spectral model label notation:
+
+	modtran3_sun:
+
+		Solar insolation from Modtran 3
+
+	wmo_kato_o3xsection:
+
+		The original ozone cross sections were developed by Clothiaux
+		from WMO data.  Kato recomputed the cross sections from the same
+		data set and came up with slightly different numbers.
+
+	all_H2O:
+
+		Kato included water vapor absorption into bands which contain
+		some weak water vapor absorption that had been neglected in the
+		original model.
+
+	modtran3_o3xsection:
+
+		Ozone cross sections come from work by Eric P. Shettle.
+		These are the ozone cross sections used in Modtran 3.
+
+	4sgp_mfrsr:
+
+		A kluge in order to compute irradiances at the MFRSR
+		wavelengths.  The solar constant is given by the Langley
+		Io value developed by Kato.  The wavelengths, too, match
+		the instrument wavelengths.  All gaseous absorption is
+		neglected, excepth that due to ozone.  The wavelengths
+		other than the instrument wavelengths do not contain any
+		useful information
+
+	4sgp_mfr:
+
+		The same as 4sgp_mfrsr, except for the MFRSR instrument
+		with no rotating shadow band that was used during the
+		Spring 1997 aircraft IOP.

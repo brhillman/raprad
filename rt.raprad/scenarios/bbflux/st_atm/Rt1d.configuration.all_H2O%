@@ -1,0 +1,37 @@
+/*-----------------------------------------------------------------*/
+/* CONFIGURATION                                                   */
+/*                                                                 */
+/*	The names of the CONFIGURE and ANCILLARY data files from   */
+/*	which the program gets its information.  The meaning of    */
+/*	this list should be fairly obvious upon inspection of the  */
+/*	CONFIG and ANCILLARY file directories.                     */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+/* Rt1d Input File Names */
+
+CONFIGURE PHOTON PARTITION: 	../../scenarios/bbflux/st_atm/rt1d.photonpartition.all_H2O,
+
+CONFIGURE CONSTITUENTS:  	../../scenarios/bbflux/st_atm/rt1d.constituents,
+
+ANCILLARY SPECTRAL BAND MODEL: 	../../ancillary/spectralmodel.kato.modtran_sun3_orig.wmo_correct_o3xsection.all_H2O,
+
+ANCILLARY CONTINUUM BAND MODEL:  ,
+
+ANCILLARY ATMOSPHERE: 		../../ancillary/Atm_file/midlatitude.summer.modtran_all.atm,
+
+CONFIGURE GEOMETRY SPACE:  	../../scenarios/bbflux/st_atm/rt1d.photonspace.32,
+
+CONFIGURE GEOMETRY SUN/VIEW:  	../../scenarios/bbflux/src/rt1d.geometry.sunview,
+
+CONFIGURE GEOMETRY QUADRATURE:  ../../scenarios/bbflux/st_atm/rt1d.geometry.quadrature,
+
+CONFIGURE BRDF SELECTION:  	../../scenarios/bbflux/st_atm/rt1d.brdf.selection,
+
+ANCILLARY BRDF DATA:  		,
+
+RT1D RESULTS:			../../results,
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

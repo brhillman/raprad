@@ -1,0 +1,22 @@
+/*-----------------------------------------------------------------*/
+/* GEOMETRY QUADRATURE                                             */
+/*                                                                 */
+/*	NOTE  The only quadrature scheme now available is the      */
+/*	Radau qaudrature.                                          */
+/*                                                                 */
+/* [zeniths_number] The number of zenith angles to be used in the  */
+/*	intensity quadrature for this simulation.  The valid range */
+/*	is an integer ranging from 3 to 12.                        */
+/*                                                                 */
+/* [azimuths_number] The number of azimuths angles to be used in   */
+/*	the intensity quadrature for this simulation.  A valid     */
+/*	choice is any even integer greater than, say, 4.           */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[zeniths_number]	NUMBER OF QUADUATURE ZENITH ANGLES: 2,
+[azimuths_number]	NUMBER OF QUADUATURE AZIMUTH ANGLES: 1,
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

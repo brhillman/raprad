@@ -1,0 +1,124 @@
+/*-----------------------------------------------------------------*/
+/* PHOTON SPACE                                                    */
+/*                                                                 */
+/*	The physical outlay of where photons can travel. Since     */
+/*	this model is a plane parallel model, the only relevant    */
+/*	coordinates are the z coordinates (in meters).             */
+/*                                                                 */
+/* [zm] Lowest elevation in the simulation (in meters).            */
+/*	                                                           */
+/* [zp] Highest elevation in the simulation (in meters).           */
+/*	                                                           */
+/* [gridnum] Number of individual layers in the atmosphere.        */
+/*                                                                 */
+/* The number of layer bounding planes in the simulation is        */
+/* equal to (gridnum+1).  Each bounding plane must have the        */
+/* following information attached to it                            */
+/*                                                                 */
+/*	1) [number] index,                                         */
+/*                                                                 */
+/*	2) [grid]   height of the bounding plane (in meters),      */
+/*                                                                 */
+/*	3) [rtflag] flag to indicate whether (1) or not (0) to     */
+/*		    calculate fluxes and radiances at this plane.  */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[zm] LOWEST  ELEVATION FOR PHOTONS (in meters): 0.,
+[zp] HIGHEST ELEVATION FOR PHOTONS (in meters): 70000.,
+
+[gridnum] NUMBER OF ATMOSPHERIC LAYERS: 86,
+
+[number][grid][rtflag] LAYER BOUNDARY LOCATIONS WITH FLAG:
+
+   0         0.	1
+   1       250.	1
+   2       500. 1
+   3       550. 1
+   4       600. 1
+   5       650. 1
+   6       700. 1
+   7       750. 1
+   8       800. 1
+   9       850. 1
+  10       900. 1
+  11       950. 1
+  12      1000. 1
+  13      1250. 1
+  14      1500. 1
+  15      1750. 1
+  16      2000. 1
+  17      2250. 1
+  18      2500. 1
+  19      2750. 1
+  20      3000. 1
+  21      3250. 1
+  22      3500. 1
+  23      3750. 1
+  24      4000. 1
+  25      4250. 1
+  26      4500. 1
+  27      4750. 1
+  28      5000. 1
+  29      5250. 1
+  30      5500. 1
+  31      5750. 1
+  32      6000. 1
+  33      6250. 1
+  34      6500. 1
+  35      6750. 1
+  36      7000. 1
+  37      7250. 1
+  38      7500. 1
+  39      7750. 1
+  40      8000. 1
+  41      8250. 1
+  42      8500. 1
+  43      8750. 1
+  44      9000. 1
+  45      9250. 1
+  46      9500. 1
+  47      9750. 1
+  48     10000. 1
+  49     10250. 1
+  50     10500. 1
+  51     10750. 1
+  52     11000. 1
+  53     11250. 1
+  54     11500. 1
+  55     11750. 1
+  56     12000. 1
+  57     12250. 1
+  58     12500. 1
+  59     12750. 1
+  60     13000. 1
+  61     13250. 1
+  62     13500. 1
+  63     13750. 1
+  64     14000. 1
+  65     14250. 1
+  66     14500. 1
+  67     14750. 1
+  68     15000. 1
+  69     15250. 1
+  70     15500. 1
+  71     15750. 1
+  72     17000. 1
+  73     18000. 1
+  74     19000. 1
+  75     20000. 1
+  76     21000. 1
+  77     22000. 1
+  78     23000. 1
+  79     24000. 1
+  80     25000. 1
+  81     30000. 1
+  82     35000. 1
+  83     40000. 1
+  84     45000. 1
+  85     50000. 1
+  86     70000. 1
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

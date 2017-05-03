@@ -1,0 +1,69 @@
+/*-----------------------------------------------------------------*/
+/* PHOTON SPACE                                                    */
+/*                                                                 */
+/*	The physical outlay of where photons can travel. Since     */
+/*	this model is a plane parallel model, the only relevant    */
+/*	coordinates are the z coordinates (in meters).             */
+/*                                                                 */
+/* [zm] Lowest elevation in the simulation (in meters).            */
+/*	                                                           */
+/* [zp] Highest elevation in the simulation (in meters).           */
+/*	                                                           */
+/* [gridnum] Number of individual layers in the atmosphere.        */
+/*                                                                 */
+/* The number of layer bounding planes in the simulation is        */
+/* equal to (gridnum+1).  Each bounding plane must have the        */
+/* following information attached to it                            */
+/*                                                                 */
+/*	1) [number] index,                                         */
+/*                                                                 */
+/*	2) [grid]   height of the bounding plane (in meters),      */
+/*                                                                 */
+/*	3) [rtflag] flag to indicate whether (1) or not (0) to     */
+/*		    calculate fluxes and radiances at this plane.  */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[zm] LOWEST  ELEVATION FOR PHOTONS (in meters): 0.,
+[zp] HIGHEST ELEVATION FOR PHOTONS (in meters): 100000.,
+
+[gridnum] NUMBER OF ATMOSPHERIC LAYERS: 31,
+
+[number][grid][rtflag] LAYER BOUNDARY LOCATIONS WITH FLAG:
+
+   0         0.	1
+   1      1000. 1
+   2      2000. 1
+   3      3000. 1
+   4      4000. 1
+   5      5000. 1
+   6      6000. 1
+   7      7000. 1
+   8      8000. 1
+   9      9000. 1
+  10     10000. 1
+  11     11000. 1
+  12     12000. 1
+  13     13000. 1
+  14     14000. 1
+  15     15000. 1
+  16     16000. 1
+  17     17000. 1
+  18     18000. 1
+  19     19000. 1
+  20     20000. 1
+  21     21000. 1
+  22     22000. 1
+  23     23000. 1
+  24     24000. 1
+  25     25000. 1
+  26     30000. 1
+  27     35000. 1
+  28     40000. 1
+  29     45000. 1
+  30     50000. 1
+  31     70000. 1
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

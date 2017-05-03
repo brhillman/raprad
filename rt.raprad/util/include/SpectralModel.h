@@ -1,0 +1,47 @@
+typedef struct Spectral_Model {
+
+  int
+    *numintrvls,
+    numwavelngths;   /* Number of wavelengths to be read in          */
+
+  char
+    **gas,
+    ***abscoeffile;
+
+  int
+    *nummolecules,
+    **nquadpts;
+
+  double
+    *wavelngth,      /* Array of wavelengths                         */
+    **bandwidth,
+    *solarinsol,     /* Solar insolation at the top-of-the-atmosphere*/
+    **coverd,        /* Pressure correction factor                   */
+    ***quadwts,
+    **alpha,         /* One entry for each sub-interval of wavelength */
+    ***alphad,       /* Multiple entries for each sub-interval of wavelength */
+    ***alphau,       /* Multiple entries for each sub-interval of wavelength */
+    **abscoef,
+    ***abscoefdata;  /* Nummolecules entries for each sub-interval   */
+
+  int
+    *cntnm;
+
+  double
+    **cntnmscoef,
+    **cntnmfcoef;
+
+  int
+    npres,
+    ntemp,
+    nwatvap;
+
+  double
+   *pres,
+   *preslog,
+   *temp,
+   *watvap,
+   *watvaplog;
+
+
+} SpectralModel;

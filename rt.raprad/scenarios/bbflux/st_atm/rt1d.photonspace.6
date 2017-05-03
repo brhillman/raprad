@@ -1,0 +1,44 @@
+/*-----------------------------------------------------------------*/
+/* PHOTON SPACE                                                    */
+/*                                                                 */
+/*	The physical outlay of where photons can travel. Since     */
+/*	this model is a plane parallel model, the only relevant    */
+/*	coordinates are the z coordinates (in meters).             */
+/*                                                                 */
+/* [zm] Lowest elevation in the simulation (in meters).            */
+/*	                                                           */
+/* [zp] Highest elevation in the simulation (in meters).           */
+/*	                                                           */
+/* [gridnum] Number of individual layers in the atmosphere.        */
+/*                                                                 */
+/* The number of layer bounding planes in the simulation is        */
+/* equal to (gridnum+1).  Each bounding plane must have the        */
+/* following information attached to it                            */
+/*                                                                 */
+/*	1) [number] index,                                         */
+/*                                                                 */
+/*	2) [grid]   height of the bounding plane (in meters),      */
+/*                                                                 */
+/*	3) [rtflag] flag to indicate whether (1) or not (0) to     */
+/*		    calculate fluxes and radiances at this plane.  */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[zm] LOWEST  ELEVATION FOR PHOTONS (in meters): 0.,
+[zp] HIGHEST ELEVATION FOR PHOTONS (in meters): 100000.,
+
+[gridnum] NUMBER OF ATMOSPHERIC LAYERS: 6,
+
+[number][grid][rtflag] LAYER BOUNDARY LOCATIONS WITH FLAG:
+
+   0         0.	1
+   1      1000. 1
+   2      5000. 1
+   3     10000. 1
+   4     15000. 1
+   5     50000. 1
+   6     70000. 1
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

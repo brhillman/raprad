@@ -1,0 +1,77 @@
+/*-----------------------------------------------------------------*/
+/* PHOTON PARTITION                                                */
+/*                                                                 */
+/* 	NOTE The photon partition file contains information about  */
+/*	the number of different spectral runs to be performed in a */
+/*	particular simulation.  This way one can merely calculate  */
+/*	a radiance at a narrow spectral interval or run a          */
+/*	broadband flux computation using a plethora of intervals.  */
+/*                                                                 */
+/* [numintervals] The number of spectral intervals used in the     */
+/*	current simulation.                                        */
+/*	                                                           */
+/* Each interval must have its corresponding row of information    */
+/* that provides the following information                         */
+/*                                                                 */
+/*	1) [index] channel or spectral band number index,          */
+/*                                                                 */
+/*	2) [wavelength] channel center wavelength,                 */
+/*                                                                 */
+/*	3) [interval] gaseous absorption spectral model index      */
+/*		(-1 = no gaseous absorption),                      */
+/*                                                                 */
+/*	4) [runsperinterval] number of subintervals for this       */
+/*		particular spectral band if a consideration,       */
+/*                                                                 */
+/*	5) [addscatterflag] flag to indicate the type of           */
+/*		radiative transfer                                 */
+/*                                                                 */
+/*		1 - raprad                                         */
+/*		2 -                                                */
+/*		3 -                                                */
+/*		4 -                                                */
+/*                                                                 */
+/*	6) [bbradflag] flag to indicate whether (1) or not (0) to  */
+/*		include photon emission for this interval,         */
+/*              (IR flug)                                          */
+/*                                                                 */
+/*	7) [numrefl] number of bounces of the radiation between    */
+/*		the atmosphere and surface at this wavelength.     */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[numintervals] NUMBER OF INTERVALS IN SIMULATION: 32,
+
+[index][wavelength][interval][runsperinterval][addscatterflag][bbradflag][numrefl] INTERVAL INFORMATION:
+ 1 2.563000e-01  1   1    1  0 4
+ 2 2.779478e-01  2   1    1  0 4
+ 3 2.951274e-01  3   1    1  0 4
+ 4 3.173065e-01  4   1    1  0 4
+ 5 3.451361e-01  5   1    1  0 4
+ 6 3.850000e-01  6   1    1  0 4
+ 7 4.297729e-01  7   1    1  0 4
+ 8 4.848632e-01  8   1    1  0 4
+ 9 5.288400e-01  9   1    1  0 4
+10 5.448000e-01 10   5    1  0 4
+11 5.580500e-01 11   1    1  0 4
+12 5.858000e-01 12   6    1  0 4
+13 6.150000e-01 13   1    1  0 4
+14 6.458500e-01 14   6    1  0 4
+15 6.754386e-01 15   1    1  0 4
+16 6.943129e-01 16   6    1  0 4
+17 7.235312e-01 17   6    1  0 4
+18 7.670463e-01 18   1    1  0 4
+19 8.179684e-01 19   6    1  0 4
+20 8.667137e-01 20   5    1  0 4
+21 9.319378e-01 21   8    1  0 4
+22 1.010325e+00 22   6    1  0 4
+23 1.119966e+00 23   7    1  0 4
+24 1.355064e+00 24   8    1  0 4
+25 1.564696e+00 25   6    1  0 4
+26 1.789124e+00 26  11    1  0 4
+27 2.059131e+00 27   6    1  0 4
+28 2.214327e+00 28   5    1  0 4
+29 2.638542e+00 29   8    1  0 4
+30 3.318655e+00 30   7    1  0 4
+31 3.813210e+00 31   5    1  0 4
+32 4.298329e+00 32   6    1  0 4

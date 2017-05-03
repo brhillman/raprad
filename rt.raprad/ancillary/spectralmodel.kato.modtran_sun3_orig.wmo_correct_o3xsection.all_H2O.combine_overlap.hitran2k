@@ -1,0 +1,204 @@
+SPECTRAL MODEL KATO (Correlated-k)
+
+The model has 32 spectral intervals with gaseous absorptionin in 29 of the intervals.
+Absorption is treated using the correlated-k technique on HI-TRAN database coefficients
+that are a function of pressure and temperature.  The water vapor coefficients are also
+a function of the water vapor concentration.  The transmission is given by
+
+T = Sum_{i=1}^{Number of Quadrature Points} quadrature_weights(i) * exp(-xsections(i)*Nmolecules)
+
+where Nmolecules is the gas column amount in units of cm amagats for Ozone and # m^{-3}
+for the other gases.  Note that 1 cm amagat is cross section (cm^2) times Loschmidt's
+number = No = 2.687e+19 cm^{-03}.  The quadrature_weights(i) and xsections(i) are the
+weights (dimensionless) and absorption coefficients (1/cm-atm for Ozone and cm^2/molecule
+for the other gases), respectively, for each interval.  For bands with absorption by
+multiple gases, we assume that the gaseous absorption is independent and the total
+transmission is then given by
+
+T = Tgas1 * Tgas2 * Etc
+
+The temperature, pressure and water vapor concentration grids are:
+
+PRESSURE GRID FOR SPECTRAL MODEL KATO (in mb)
+@
+17
+@
+  1050.0  834.0  662.0  526.0  418.0  332.0  264.0  168.0  106.0   66.9   42.2  26.6  16.8  10.6  1.0  0.1  0.01
+@
+TEMPERATURE GRID FOR SPECTRAL MODEL KATO (in K)
+@
+11
+@
+  120.0  140.0  160.0  180.0  200.0  220.0  240.0  260.0  280.0  300.0  320.0
+@
+WATER VAPOR CONCENTRATION GRID FOR SPECTRAL MODEL KATO (in # m^{-3})
+@
+13
+@
+  0.15e26 0.47e25 0.15e25  0.47e24  0.15e24  0.47e23  0.15e23  0.47e22  0.15e22  0.47e21  0.15e21  0.47e20  0.15e20
+@
+
+The following table contains the following information by column for each band:
+    FIRST ROW:
+ 	 1) spectral band number,
+	 2) absorbing gas (gases) for the band,
+	 3) number of gases composing the band,
+	 4) water vapor continuum included within the band (0=NO, 1=YES),
+	 5) beginning wavelength of the band (microns),
+	 6) ending wavelength of the band (microns),
+	 7) central wavelength of the band (microns),
+	 8) solar insolation at the top-of-atmosphere across the band (W/m^2),
+	 9,10,...) number of quadrature points for each gas (dimensionless)
+    SECOND ROW:
+            quadrature weights for gas 1,
+    THIRD ROW
+            cross-sections for gas 1 or the file where the cross-sections for
+	    gas 1 can be found,
+    FORTH ROW
+	    quadrature weights for gas 2,
+    FIFTH ROW
+            cross-sections for gas 2 or the file where the cross-sections for
+	    gas 2 can be found,
+    ETC ...
+
+@
+32
+@
+
+ 1 Ozone          1  0  2.401185e-01 2.724815e-01 2.563000e-01   0.403338E+01    1
+	1.0000
+	308.978
+~
+ 2 Ozone          1  0  2.724815e-01 2.834140e-01 2.779478e-01   0.227886E+01    1
+	1.0000
+	105.052
+~
+ 3 Ozone          1  0  2.834140e-01 3.068408e-01 2.951274e-01   0.116004E+02    1
+	1.0000
+	15.718
+~
+ 4 Ozone          1  0  3.068408e-01 3.277722e-01 3.173065e-01   0.154937E+02    1
+	1.0000
+	1.163
+~
+ 5 Ozone          1  0  3.277722e-01 3.625000e-01 3.451361e-01   0.352634E+02    1
+	1.0000
+	0.0048
+~
+ 6 None           1  0  3.625000e-01 4.075000e-01 3.850000e-01   0.541390E+02    1
+	1.0000
+	.0000
+~
+ 7 Ozone          1  0  4.075000e-01 4.520458e-01 4.297729e-01   0.787000E+02    1
+	1.0000
+	0.0018
+~
+ 8 Ozone          1  0  4.520458e-01 5.176806e-01 4.848632e-01   0.128678E+03    1
+	1.0000
+	0.0223
+~
+ 9 Ozone          1  0  5.176806e-01 5.400000e-01 5.288400e-01   0.417882E+02    1
+	1.0000
+	0.0685
+~
+10 OverlapH2OO3   2  0  5.400000e-01 5.495000e-01 5.448000e-01   0.177609E+02    5   1
+	0.118463       0.239314       0.284444       0.239314       0.118463
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections/cross_section.table.H2O.10.binary
+        1.0000
+	0.0825
+~   
+11 Ozone          1  0  5.495000e-01 5.666000e-01 5.580500e-01   0.316404E+02    1
+	1.0000
+	0.1043
+~
+12 OverlapH2OO3   2  1  5.666000e-01 6.050000e-01 5.858000e-01   0.696799E+02    6   1
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.12.hitran2k.binary
+	1.000
+	0.1169   
+~
+13 Ozone          1  0  6.050000e-01 6.250000e-01 6.150000e-01   0.343619E+02    1
+	1.0000
+	0.1139
+~
+14 OverlapH2OO3   2  1  6.250000e-01 6.667000e-01 6.458500e-01   0.668417E+02    5   1
+	0.11846344252809E+00   0.23931433524968E+00   0.28444444444444E+00   0.23931433524968E+00   0.11846344252809E+00
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.14.hitran2k.binary
+	1.0000
+	0.0701
+~
+15 Ozone          1  0  6.667000e-01 6.841772e-01 6.754386e-01   0.265117E+02    1
+	1.0000
+	0.0414
+~
+16 OverlapH2OO3 2  1  6.841772e-01 7.044486e-01 6.943129e-01   0.291896E+02    6   1
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.16.hitran2k.binary
+	1.0000
+	0.0274
+~
+17 WaterVapor     1  1  7.044486e-01 7.426139e-01 7.235312e-01   0.513002E+02    6
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.17.hitran2k.binary
+~
+18 Oxygen         1  1  7.426139e-01 7.914788e-01 7.670463e-01   0.597838E+02    6
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections/cross_section.table._O2.18.binary
+~
+19 WaterVapor     1  1  7.914788e-01 8.444581e-01 8.179684e-01   0.579682E+02    6
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.19.hitran2k.binary
+~
+20 WaterVapor     1  1  8.444581e-01 8.889693e-01 8.667137e-01   0.433013E+02    6
+	0.85662246189581E-01   0.18038078652407E+00   0.23395696728634E+00   0.23395696728634E+00   0.18038078652407E+00   0.85662246189581E-01
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.20.hitran2k.binary
+~
+21 WaterVapor     1  1  8.889693e-01 9.749063e-01 9.319378e-01   0.742619E+02    7
+	0.64742483084431E-01   0.13985269574464E+00   0.19091502525256E+00   0.20897959183673E+00   0.19091502525256E+00   0.13985269574464E+00   0.64742483084431E-01
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.21.hitran2k.binary
+~
+22 WaterVapor     1  1  9.749063e-01 1.045744e+00 1.010325e+00   0.515635E+02    6
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.22.hitran2k.binary
+~
+23 WaterVapor     1  1  1.045744e+00 1.194188e+00 1.119966e+00   0.863763E+02    7
+	0.064742       0.139853       0.190915       0.208980       0.190915       0.139853       0.064742
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.23.hitran2k.binary
+~
+24 WaterVapor     1  1  1.194188e+00 1.515940e+00 1.355064e+00   0.123446E+03    8
+	0.050614       0.111191       0.156853       0.181342       0.181342       0.156853       0.111191       0.050614
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.24.hitran2k.binary
+~
+25 WaterVapor  1  1  1.515940e+00 1.613451e+00 1.564696e+00   0.260267E+02    6
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.25.hitran2k.binary
+~
+26 WaterVapor     1  1  1.613451e+00 1.964798e+00 1.789124e+00   0.621167E+02    11
+	0.027834       0.062790       0.093145       0.116597       0.131402       0.136463       0.131402       0.116597       0.093145       0.062790       0.027834
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.26.hitran2k.binary
+~
+27 WaterVapor  1  1  1.964798e+00 2.153464e+00 2.059131e+00   0.198044E+02    6
+	0.085662       0.180381       0.233957       0.233957       0.180381       0.085662
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.27.hitran2k.binary
+~
+28 WaterVapor     1  1  2.153464e+00 2.275190e+00 2.214327e+00   0.977596E+01    7
+	0.64742483084431E-01   0.13985269574464E+00   0.19091502525256E+00   0.20897959183673E+00   0.19091502525256E+00   0.13985269574464E+00   0.64742483084431E-01
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.28.hitran2k.binary
+~
+29 WaterVapor  1  1  2.275190e+00 3.001893e+00 2.638542e+00   0.322878E+02    9
+	0.40637194180784E-01   0.90324080347429E-01   0.13030534820147E+00   0.15617353852000E+00   0.16511967750063E+00   0.15617353852000E+00   0.13030534820147E+00   0.90324080347429E-01   0.40637194180784E-01
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.29.hitran2k.binary
+~
+30 WaterVapor   1  1  3.001893e+00 3.635417e+00 3.318655e+00   0.116344E+02    8
+	0.50614268145185E-01   0.11119051722669E+00   0.15685332293894E+00   0.18134189168918E+00   0.18134189168918E+00   0.15685332293894E+00   0.11119051722669E+00   0.50614268145185E-01
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.30.hitran2k.binary
+~
+31 WaterVapor  1  1  3.635417e+00 3.991003e+00 3.813210e+00   0.375286E+01    4
+	0.17392742256872E+00   0.32607257743127E+00   0.32607257743127E+00   0.17392742256872E+00
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.31.hitran2k.binary
+~
+32 WaterVapor  1  1  3.991003e+00 4.605654e+00 4.298329e+00   0.405624E+01    15
+	0.15376620998057E-01   0.35183023744054E-01   0.53579610233586E-01   0.69785338963077E-01   0.83134602908496E-01   0.93080500007781E-01   0.99215742663556E-01   0.10128912096278E+00   0.99215742663556E-01   0.93080500007781E-01   0.83134602908496E-01   0.69785338963077E-01   0.53579610233586E-01   0.35183023744054E-01   0.15376620998057E-01
+	../../../spectralmodels/bb.sw/lbl_ks/cross_sections_combined_overlapping_gas_hitran2k/cross_section.table.H2O.32.hitran2k.binary
+~
+@

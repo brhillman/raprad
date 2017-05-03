@@ -1,0 +1,54 @@
+#! /bin/csh
+
+set configfilesw = "../../scenarios/bbflux/st_atm/Rt1d.configuration.all_H2O.combo.hitran2k"
+set configfilelw = "../../scenarios/bbflux/st_atm_lw/Rt1d.configuration.lw"
+
+set pathcode4 = "/home/kato/code/rt/temp/rt.raprad/4stream/obj"
+set pathcode2 = "/home/kato/code/rt/temp/rt.raprad/2stream/obj"
+set pathresult = "/home/kato/code/rt/temp/rt.raprad/results"
+set pathinput = "/home/kato/code/rt/temp/rt.raprad/scenarios/bbflux/src"
+set pathflux = "/home/kato/code/rt/temp/rt.raprad/rapradtally/obj"
+
+
+
+@ count = 1
+
+while ($count <= 9)
+# generating input file including the solar zenith angle
+    @ count_mu = $count * 10
+    cd $pathinput
+    mk_sunview_st_atm $count_mu
+
+# run raprad
+    echo 'running Rtid'
+    cd $pathcode2 
+    raprad2streamsw $configfilesw 0
+
+#    cd $pathcode2 
+    raprad2streamlw $configfilelw 0
+
+# computing irradiance
+    echo 'computing irradiance'
+    cd $pathflux
+    rapradbbfluxsw $configfilesw 0
+    rapradbbfluxlw $configfilelw 0
+
+# combining SW and LW results
+    combine_sw_lw_flx
+
+# moving the results
+    mv $pathresult/raprad.flx $pathresult/raprad.$count.flx
+    mv $pathresult/raprad.bflx $pathresult/raprad.$count.bflx
+    rm $pathresult/raprad.sw.flx
+    rm $pathresult/raprad.lw.flx
+
+    @ count++
+
+end
+
+
+
+
+
+    
+

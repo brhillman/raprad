@@ -1,0 +1,37 @@
+#! /bin/csh
+
+set configfilesw = "../../scenarios/bbflux/st_atm/Rt1d.configuration.all_H2O"
+set configfilelw = "../../scenarios/bbflux/st_atm_lw/Rt1d.configuration.lw"
+
+set pathcode = "/home/kato/code/rt/temp/rt.raprad/2stream/obj"
+set pathresult = "/home/kato/code/rt/temp/rt.raprad/results"
+set pathinput = "/home/kato/code/rt/temp/rt.raprad/scenarios/bbflux/src"
+set pathflux = "/home/kato/code/rt/temp/rt.raprad/rapradtally/obj"
+
+
+# run raprad
+    echo 'running Rtid'
+    cd $pathcode 
+    raprad2streamsw $configfilesw 0
+    raprad2streamlw $configfilelw 0
+
+# computing irradiance
+    echo 'computing irradiance'
+    cd $pathflux
+    rapradbbfluxsw $configfilesw 0
+    rapradbbfluxlw $configfilelw 0
+
+# combining SW and LW results
+    combine_sw_lw_flx
+
+# moving the results
+#    mv $pathresult/raprad.flx $pathresult/raprad.2strm.midsummer.albedo02.sol_z60.flx
+#    mv $pathresult/raprad.bflx $pathresult/raprad.2strm.midsummer.albedo02.sol_z60.bflx
+#    mv $pathresult/raprad.aflx $pathresult/raprad.2strm.midsummer.albedo02.sol_z60.aflx
+
+#    rm $pathresult/raprad.sw.flx
+#    rm $pathresult/raprad.lw.flx
+
+
+    
+

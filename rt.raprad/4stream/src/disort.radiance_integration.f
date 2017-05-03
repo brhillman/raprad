@@ -1,0 +1,284 @@
+      subroutine radiance_integration
+     &  (radiance, radiance_trans, dir, mu0, numu, nphi,
+     &   umu, umu_w, phi, tot_tau, WVNMLO, WVNMHI, idiff, isave, 
+     &   radiance_toa_flip, radiance_toa2_flip, dir_radiance_toa_flip, 
+     &   f_dn_black, salbedo)
+
+c This subroutine integrate radiance(1:nmu,1:nphi) with 
+c transmission(1:nmu,1:nphi) to obtain radiance.
+c It assume
+c transmission of the atmosphere as a function of mu and phi is given
+c for a solar zenith angle, mu0.
+c upward radiance is given as a function of mu and phi
+c Therefore resulting radiance is a function phi for a given mu0.
+
+c nmu radiance is given at gaussian quadrature angles betwqeen 0 and 1.
+c nphi radiance is given at gaussian quadrature angles between  0 and 1.
+
+c radiance  downward radiance at the surface with balck surface
+c radiacne_trans
+c        radiance used to compute transmission of the atmosphere.
+c umu    Gauusian quadrature points between 0 and 1
+c        the first element is -1, and from the secons to the half
+c        is minus of the inverse gaussian quadrature of 0 to 1.
+c        the last half is the gaussian quadrature between 0 and 1.
+c        the very last element is 1.
+c umu_w  Gaussian quadrature weight responding umu. The first and the
+c        last elements are 0.
+c phi       azimuth angle in degrees between 0 and 180
+c tot_tau   total optical thickness of the atmosphere
+c f_dn      downward irradiance at the surface with a balck surface 
+
+c    Source   Reflection   Direction      Transmission    Output
+c
+c    direct ---------------- mu0 --------- diffuse       radiance_toa2
+c                 |
+c                 |--------- mu ---------- direct        dir_radiance_toa
+c                 |
+c    diffuse---------------- mu0 --------- diffuse       radiance_toa       
+c
+
+c In order to seve time the very last term 'radiance_toa' can be neglected
+c because diffuse irradiance and transmission are both small for realistic
+c aerosol optical thicknesses.
+c
+
+
+c Output
+c radiance_toa 
+c         The top of the atmosphere radiance due to the diffuse 
+c         downward irradiance at the surface reflected by the 
+c         surface to the angle at mu0 and diffusively transmitted
+c         through the atmosphere. 
+c radiance_toa2 
+c         The top of the atmosphere radiance due to the direct
+c         downward irradiance at the surface reflected by the 
+c         surface at the angle of mu0 and diffusively transmitted 
+c         through the atmosphere.
+c dir_radiance_toa
+c         The top of the atmosphere radiance due to the diffuse 
+c         downward irradance at the surface reflected by the surface
+c         directly transmitted through the atmosphere.
+c         and     
+c         The top of the atmosphere radiance due to the direct
+c         downward radiance at the surface reflected by the surface
+c         directly transmitted through the atmosphere. 
+c         This is obtained by multiplying dir_radiance_toa by the sum
+c         of the downward direct and diffuse irradiances at the surface.
+c
+
+
+
+      parameter(maxumu = 150, maxcmu = 150)
+      parameter(maxphi = 100)
+
+      real*8 umu_w(MAXUMU)
+
+      real radiance( MAXUMU, MAXPHI ), trans( MAXUMU, MAXPHI )
+      real radiance_trans( MAXUMU, MAXPHI )
+      real dir
+      real sum( MAXUMU, MAXPHI )
+      real radiance_up_sfc( MAXPHI )
+      real radiance_toa( MAXUMU, MAXPHI )
+      real radiance_toa_flip( MAXUMU, MAXPHI )
+      real radiance_toa2( MAXUMU, MAXPHI )
+      real radiance_toa2_flip( MAXUMU, MAXPHI )
+      real dir_radiance_toa( MAXUMU, MAXPHI )
+      real dir_radiance_toa_flip( MAXUMU, MAXPHI )
+      real mu0, umu(MAXUMU),  phi(MAXPHI)
+      real sum_albedo(MAXPHI), sum_radiance(MAXPHI)
+      real sum_radiance_dir_diff(MAXPHI), sum_radiance_dir(MAXPHI)
+      real f_dn_black, salbedo, f_up_dir_diff, f_up_dir
+
+      pi = 4.0 * atan(1.0)
+      dir_radiance = dir / pi
+      
+      do 1000 i = 1, (numu - 1) / 2
+        do 1100 j = 1, nphi
+          radiance_toa(i,j) = 0.0
+          radiance_toa2(i,j) = 0.0
+          dir_radiance_toa(i,j) = 0.0
+          radiance_toa_flip(i,j) = 0.0
+          radiance_toa2_flip(i,j) = 0.0
+          dir_radiance_toa_flip(i,j) = 0.0
+          sum(i,j) = 0.0
+          trans(i,j) = pi * radiance_trans(i,j) / mu0
+ 1100   continue
+        sum_albedo(i) = 0.0
+        sum_radiance(i) = 0.0
+        sum_radiance_dir_diff(i) = 0.0
+        sum_radiance_dir(i) = 0.0
+ 1000 continue
+
+c --------------------------------------------------------------------
+c using bidirectional reflectivity of the surface, obtain the reflected
+c radiance at the incident angle mu0 direction.
+
+      if (isave .eq. 0) then
+
+        do 3000 jshift = 1, nphi
+          do 3100 i = 1, numu / 2
+            do 3200 j = 1, nphi*2
+              if (j .ge. jshift) then
+                if (j .le. nphi) then
+                  dphi = phi(j) - phi(jshift)
+                  used_radiance = radiance(i,j)
+                else if 
+     &            (j .gt. nphi .and. j .le. nphi + jshift - 1) then
+                  dphi = 180.0 + phi(j - nphi) - phi(jshift)
+                  used_radiance = radiance(i,2*nphi-j)
+                else
+                  dphi = 180.0 - phi(j - nphi) + phi(jshift)
+                  used_radiance = radiance(i,2*nphi-j)
+                end if
+              else
+                dphi = phi(jshift) - phi(j)
+                used_radiance = radiance(i,j)
+              end if
+
+              dphi = pi * dphi / 180.0
+            
+              call bdref(WVNMLO, WVNMHI, mu0, -umu(i), DPHI, BDREF_F)
+
+              if (j .eq. 1 .or. j .eq. nphi*2) then 
+                sum(i,jshift) = sum(i,jshift) +
+     &            0.5 * BDREF_F * used_radiance * pi / nphi
+              else
+                sum(i,jshift) = sum(i,jshift) +
+     &            BDREF_F * used_radiance * pi / nphi
+              end if
+ 3200       continue
+            radiance_up_sfc(jshift) = radiance_up_sfc(jshift)
+     &                    - umu(i) * sum(i,jshift) * umu_w(i)
+ 3100     continue
+
+          radiance_up_sfc(jshift) = radiance_up_sfc(jshift) 
+     &                            / (pi * nphi * numu)
+
+ 3000   continue
+
+c Now the radiance_up_sfc(jshift) contains the upward radiance at the 
+c zenith angle of mu0 foa all azimuth angles.        
+
+c --------------------------------------------------------------------
+c Computing toa radiance 
+c The source is diffuse radiation at the surface reflected into mu0 diraction
+c and transmitted by multiple scattering.
+c Using reciprocity radiance at the top of the atmosphere is
+c radiance_up_sfc(jshift) times the transmission.
+c Resulting irradiance, mu goes to 1 to 0.
+
+
+        do 4000 jshift = 1, nphi
+          do 4100 i = 1, numu / 2
+            do 4200 j = 1, nphi
+              if (j + jshift - 1 .le. nphi) then 
+                jj = j + jshift - 1
+                radiance_toa(i,j) = radiance_toa(i,j) 
+     &            + mu0 * trans(i,jj) * radiance_up_sfc(j) 
+              else
+                jj = j + jshift - nphi - 1
+                radiance_toa(i,j) = radiance_toa(i,j) 
+     &            + mu0 * trans(i,jj) * radiance_up_sfc(j) 
+              end if
+ 4200       continue
+ 4100     continue
+ 4000   continue
+      end if
+
+c -------------------------------------------------------------------
+c Since radiance_toa need to compute for all solar zenith angle
+c this routine is called with all solar zenith angles.
+ 
+      if (idiff .eq. 1) go to 6001
+
+c -------------------------------------------------------------------
+c computing directly transmitted radiance from the surface
+c The source is both direct and diffuse, reflected by the surface
+c and transmitted directly.
+
+      do 5000 i = 1, numu / 2
+        do 5100 j = 1, nphi
+          dphi = pi * phi(j) / 180.0
+          call bdref(WVNMLO, WVNMHI, -umu(i), mu0, DPHI, BDREF_F)
+          dir_radiance_toa(i,j) = BDREF_F 
+     &      * exp(tot_tau / umu(i)) / pi
+ 5100   continue
+ 5000 continue
+   
+c ---------------------------------------------------------------------
+c computing the direct irradaince reflectied by the surface at the angle
+c mu0 (specular reflection) transmitted by the multiple scattering.   
+
+      call bdref(WVNMLO, WVNMHI, mu0, mu0, 0.0, BDREF_F)
+
+      dir_up_sfc = mu0 * dir_radiance * BDREF_F / pi
+
+c computing albedo and downward irradiance with a black surface
+      salbedo = 0.0
+      f_dn_black = 0.0
+      f_up_dir_diff = 0.0
+      f_up_dir = 0.0
+
+      do 4300 i = 1, numu / 2
+        do 4400 j = 1, nphi
+          radiance_toa2(i,j) = mu0 * trans(i,j) * dir_up_sfc
+     &                       / (nphi * numu)
+
+          dphi = pi * phi(j) / 180.0
+c          call bdref(WVNMLO, WVNMHI, -umu(i), mu0, dphi, BDREF_F)
+          if (j .eq. 1 .or. j .eq. nphi) then
+c            sum_albedo(i) = sum_albedo(i) 
+c     &                    + 0.5 * BDREF_F * pi / (nphi - 1)
+            sum_radiance(i) = sum_radiance(i)
+     &                    + 0.5 * radiance(i,j) * pi / (nphi - 1)
+            sum_radiance_dir_diff(i) = sum_radiance_dir_diff(i)
+     &                    + 0.5 * radiance_toa2(i,j) * pi / (nphi - 1)
+            sum_radiance_dir(i) = sum_radiance_dir(i)
+     &                 + 0.5 * dir_radiance_toa(i,j) * pi / (nphi - 1)
+          else
+c            sum_albedo(i) = sum_albedo(i) 
+c     &                    + BDREF_F * pi / (nphi - 1)
+            sum_radiance(i) = sum_radiance(i)
+     &                    + radiance(i,j) * pi / (nphi - 1)
+            sum_radiance_dir_diff(i) = sum_radiance_dir_diff(i)
+     &                    + radiance_toa2(i,j) * pi / (nphi - 1)
+            sum_radiance_dir(i) = sum_radiance_dir(i)
+     &                    + dir_radiance_toa(i,j) * pi / (nphi - 1)
+          end if
+ 4400   continue
+c        salbedo = salbedo - umu(i) * umu_w(i) * sum_albedo(i)
+        f_dn_black = f_dn_black - umu(i) * umu_w(i) * sum_radiance(i)
+        f_up_dir_diff = f_up_dir_diff
+     &                - umu(i) * umu_w(i) * sum_radiance_dir_diff(i) 
+        f_up_dir = f_up_dir
+     &                - umu(i) * umu_w(i) * sum_radiance_dir(i) 
+ 4300 continue
+
+c      salbedo = 2.0 * salbedo / pi
+
+c      write(*,*) 'albedo = ', salbedo
+
+      f_dn_black = 2.0 * f_dn_black
+      f_up_dir_diff = 2.0 * f_up_dir_diff
+      f_up_dir = 2.0 * f_up_dir
+
+      write(*,*) 'f_up_dir_diff = ', f_up_dir_diff
+      write(*,*) 'f_up_dir      = ', f_up_dir
+
+c---------------------------------------------------------------------
+c flip the order of mu so that it is in the increasing order from 0 to 1
+
+ 6001 continue
+
+      do 6000 i = 1, numu / 2
+        iflip = numu / 2 - i + 1
+        do 6100 j = 1, nphi
+          dir_radiance_toa_flip(iflip,j) = dir_radiance_toa(i,j)
+          radiance_toa_flip(iflip,j) = radiance_toa(i,j)
+          radiance_toa2_flip(iflip,j) = radiance_toa2(i,j)
+ 6100   continue
+ 6000 continue
+
+      return
+      end

@@ -1,0 +1,228 @@
+/**********************************************************************/
+/**********************************************************************/
+
+#include "../include/PhotonSpace.h"
+#include "../include/PhotonPartition.h"
+#include "../include/SpectralModel.h"
+#include "../include/Atmosphere.h"
+#include "../include/Constituents.h"
+
+#define SMALL_NUMBER             1.E-37
+
+#define PASCALS_TO_ATMOSPHERES   1.013E+05
+#define PASCALS_TO_MILLIBARS     1.E+02
+
+#define A0			 6.022045E+23   /* #/mole  */
+#define DENSITY_WATER            1.000   	/* gm/cm^3 */
+#define GWATERVAPOR		 18.016 	/* Molecular Weight of Water Vapor (g/mol) */
+
+double bext_gasamounts_atmosphere();
+double bext_watervapor_cntnm_atmosphere();
+
+/**********************************************************************/
+
+void
+mfp_spectralmodel_pollack(i, j, k, ps, pp, sm, atm, c, cvd, ucvd, bi)
+
+  int
+    i,
+    j,
+    k;
+  PhotonSpace
+    *ps;
+  PhotonPartition
+    *pp;
+  SpectralModel
+    *sm;
+  Atmosphere
+    *atm;
+  Constituents
+    *c;
+  double
+    *cvd,
+    *ucvd,
+    *bi;
+{
+  double
+    z;
+
+  /*--------------------------------------------------------------*/
+  /* Mid-layer height.                                            */
+  /*--------------------------------------------------------------*/
+
+  z = (ps->gridf[k-1] + ps->gridf[k]) / 2.;
+
+  /*--------------------------------------------------------------*/
+  /* Based on the spectral model gas constituent, go calculate    */
+  /* the extinction coefficient.  The mulitplicate factor of 100. */
+  /* is to go from cm^{-1} to m^{-1}.                             */
+  /*--------------------------------------------------------------*/
+
+  /* Water Vapor */
+
+  if (!strcmp("WaterVapor",sm->gas[pp->smindex[i]])) {
+
+    bi[0] = 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uh2oprecm,
+                atm->pressure, atm->altitude, z, 1, *ucvd,
+                sm->abscoef[pp->smindex[i]][j], sm->coverd[pp->smindex[i]][1]);
+
+  }
+
+  /* Carbon Dioxide */
+
+  else if (!strcmp("CarbonDioxide",sm->gas[pp->smindex[i]])) {
+
+    bi[0] = 100.*bext_gasamounts_atmosphere(atm->numlayers,atm->uco2amagats,
+                atm->pressure, atm->altitude, z, 0, *ucvd,
+                sm->abscoef[pp->smindex[i]][j], sm->coverd[pp->smindex[i]][1]);
+
+  }
+
+  /* Ozone */
+
+  else if (!strcmp("Ozone",sm->gas[pp->smindex[i]])) {
+
+    bi[0] = 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uo3amagats,
+                atm->pressure, atm->altitude, z, 0, *ucvd,
+                sm->abscoef[pp->smindex[i]][j], sm->coverd[pp->smindex[i]][1]);
+
+  }
+
+  /* Oxygen */
+
+  else if (!strcmp("Oxygen",sm->gas[pp->smindex[i]])) {
+
+    bi[0] = 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uo2amagats,
+                atm->pressure, atm->altitude, z, 0, *ucvd,
+                sm->abscoef[pp->smindex[i]][j], sm->coverd[pp->smindex[i]][1]);
+
+  }
+
+  /* Water Vapor and Carbon Dioxide */
+
+  else if (!strcmp("OverlapH2OCO2",sm->gas[pp->smindex[i]])) {
+
+    bi[0]  = 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uh2oprecm,
+                atm->pressure, atm->altitude, z, 1, *ucvd,
+                sm->abscoef[pp->smindex[i]][2*j], sm->coverd[pp->smindex[i]][1]);
+
+    bi[0] += 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uco2amagats,
+                atm->pressure, atm->altitude, z, 0, *ucvd,
+                sm->abscoef[pp->smindex[i]][2*j+1], sm->coverd[pp->smindex[i]][2]);
+  }
+
+  /* Water Vapor and Ozone */
+
+  else if (!strcmp("OverlapH2OO3",sm->gas[pp->smindex[i]])) {
+
+    bi[0]  = 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uh2oprecm,
+                atm->pressure, atm->altitude, z, 1, *ucvd,
+                sm->abscoef[pp->smindex[i]][2*j], sm->coverd[pp->smindex[i]][1]);
+
+    bi[0] += 100.*bext_gasamounts_atmosphere(atm->numlayers, atm->uo3amagats,
+                atm->pressure, atm->altitude, z, 0, *ucvd,
+                sm->abscoef[pp->smindex[i]][2*j+1], sm->coverd[pp->smindex[i]][2]);
+  }
+
+  /* No Gaseous Extinction */
+
+  else if (!strcmp("None",sm->gas[pp->smindex[i]])) {
+
+    bi[0] = 0.;
+
+  }
+
+  /*--------------------------------------------------------------*/
+  /* If the water vapor continuum absorption is turned on, add    */
+  /* its contribution to the extinction.                          */
+  /*--------------------------------------------------------------*/
+
+  if (sm->cntnm[pp->smindex[i]]) {
+
+    bi[0] += 100.*bext_watervapor_cntnm_atmosphere(atm->numlayers, atm->uh2oprecm,
+                atm->dryairdens, atm->pressure, atm->temperature,
+                atm->altitude, z, 1, *ucvd,
+                sm->cntnmscoef[pp->smindex[i]], sm->cntnmfcoef[pp->smindex[i]]);
+
+  }
+
+  /*--------------------------------------------------------------*/
+  /* Make the assignments to the remaining coefficients.          */
+  /*--------------------------------------------------------------*/
+
+  bi[1] = 0.;
+  bi[2] = bi[0];
+
+  /*--------------------------------------------------------------*/
+  /* DONE                                                         */
+  /*--------------------------------------------------------------*/
+
+}
+
+/*****************************************************************/
+/* Linear interpolate a profile to a specific altitude.          */
+
+double
+bext_watervapor_cntnm_atmosphere(numlayers,u,air,p,T,height,altitude,flag_ucvd,ucvd,csself,csforeign)
+int numlayers;
+double *u;
+double *air;
+double *p;
+double *T;
+double *height;
+double altitude;
+int flag_ucvd;
+double ucvd;
+double *csself;
+double *csforeign;
+{
+  double cs, km, slope, densh2oeff, dryairdenseff, peff, Teff, ueff, bext;
+  int i;
+
+  i = numlayers - 1;
+
+  while ((altitude<(height[i]-SMALL_NUMBER)) && (i >= 0)) { --i; }
+
+  if ((i==(numlayers - 1)) && (altitude>(height[i]+SMALL_NUMBER))) {
+    printf("Some altitude was out of range and we\n");
+    printf("currently do not allow extrapolations.  Exiting!\n");
+    exit(1);
+  }
+
+  if (i<0) {
+    printf("Some altitude was out of range and we\n");
+    printf("currently do not allow extrapolations.  Exiting!\n");
+    exit(1);
+  }
+
+  ueff = u[i];
+
+  if (flag_ucvd) {
+    if (ueff < ucvd) {
+      ueff = ucvd;
+    }
+  }
+
+  densh2oeff = 1.E+06*mxratio_precmpercm_numberdensity(ueff);
+
+  slope = (air[i+1]-air[i]) / (height[i+1]-height[i]);
+  dryairdenseff  = (slope*(altitude - height[i]) + air[i]);
+
+  slope = (p[i+1]-p[i]) / (height[i+1]-height[i]);
+  peff  = (slope*(altitude - height[i]) + p[i]) / PASCALS_TO_MILLIBARS;
+
+  slope = (T[i+1]-T[i]) / (height[i+1]-height[i]);
+  Teff  = (slope*(altitude - height[i]) + T[i]);
+
+  cs = continuum_crosssection(peff,Teff,densh2oeff,dryairdenseff,csself,csforeign);
+
+  km = (DENSITY_WATER*A0*cs) / GWATERVAPOR;
+
+  bext  = km*ueff;
+
+  return ((double)bext);
+
+}
+
+/**********************************************************************/
+/**********************************************************************/

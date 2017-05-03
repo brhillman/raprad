@@ -1,0 +1,95 @@
+/*-----------------------------------------------------------------*/
+/* BRDF SELECTION                                                  */
+/*                                                                 */
+/* [total_number] The number of BRDFs that we currently have in    */
+/*	the database.                                              */
+/*                                                                 */
+/* [used_number] The number of BRDFs that we wish to use in this   */
+/*	particular simulation (used_number <= total_number).       */
+/*                                                                 */
+/* [*which] A list, separated by spaces, of which BRDFs to use in  */
+/*	this simulation.  There must be exactly used_number        */
+/*	entries here with each entry between 1 and total_number.   */
+/*	A -1 implies a black surface and a 0 implies isotropic     */
+/*	scatter.                                                   */
+/*                                                                 */
+/* [*channel] A list, separated by spaces, of the spectral channel */
+/*	index for the BRDF.  For each element of *which there must */
+/*	be an element here.  Kimes' data base generally contains   */
+/*	BRDFs at two different spectral intervals which we index   */
+/*	with either a 1 or 2.                                      */
+/*                                                                 */
+/* [*symmetry] A list of flags (0-Entire Hemisphere; 1-Half Hemi   */
+/*	sphere), separated by spaces, indicating the space over    */
+/*	which each BRDF in *which was measured.                    */
+/*                                                                 */
+/* [normalize] A flag (0-Use True Measured Albedos; 1-Overwrite    */
+/*	the True Measured Albedos with the Values in *albedo)      */
+/*	indicating the source of the surface albedo for each       */
+/*	selected BRDF in the simulation.                           */
+/*                                                                 */
+/* [*index] Channel or spectral band number index,                 */
+/*                                                                 */
+/* [*nbrdfruns] Number of different BRDFs to be used in one set of */
+/*	calculations with the same overlying atmosphere.           */
+/*                                                                 */
+/* [**srftemp] A list, separated by spaces, of the surface         */
+/*	temperatures that we want associated with each interval    */
+/*	and each brdf run in that interval.                        */
+/*                                                                 */
+/* [**albedo] A list, separated by spaces, of the albedos that we  */
+/*	want associated with each interval and each brdf run in    */
+/*	that interval.         					   */
+/*                                                                 */
+/* [**brdfindex] A list, separated by spaces, of the index into    */
+/*	the BRDFs that we have requested to be allocated by        */
+/*	used_number, which, channel, symmetry and normalize.       */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[total_number]		TOTAL NUMBER OF BRDF SCENES: 11,
+[used_number]		NUMBER OF BRDF SCENES ACTUALLY USED: 1,
+[*which]		WHICH BRDF SCENES ARE TO BE USED: 0,
+[*channel]		WHICH BRDF SPECTRAL BANDS ARE TO BE USED: 1,
+[*symmetry]		BRDF FOR 0-180 DEGREES (1) OR ENTIRE HEMISPHERE (0): 1,
+[normalize]		DO (1) or DO NOT (0) NORMALIZE THE BRDFS: 1,
+
+[index][nbrdruns][brdfindex_1]...[brdfindex_nbrdfruns][srftemp_1]...[srftemp_nbrdfruns][albedo_1]...[albedo_nbrdfruns]:
+
+ 1	1
+	1  294.20  0.0
+ 2	1
+	1  294.20  0.0
+ 3	1
+	1  294.20  0.0
+ 4	1
+	1  294.20  0.0
+ 5	1
+	1  294.20  0.0
+ 6	1
+	1  294.20  0.0
+ 7	1
+	1  294.20  0.0
+ 8	1
+	1  294.20  0.0
+ 9	1
+	1  294.20  0.0
+10	1
+	1  294.20  0.0
+11	1
+	1  294.20  0.0
+12	1
+	1  294.20  0.0
+13	1
+	1  294.20  0.0
+14	1
+	1  294.20  0.0
+15	1
+	1  294.20  0.0
+16	1
+	1  294.20  0.0
+
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

@@ -1,0 +1,39 @@
+/*-----------------------------------------------------------------*/
+/* GEOMETRY VIEWING                                                */
+/*                                                                 */
+/*	NOTE  The Sun sets the 0 azimuth and the azimuth increases */
+/*	      CCW from this point.                                 */
+/*                                                                 */
+/* [sunz_number] Currently, the only valid choice is 1.            */
+/*                                                                 */
+/* [sunz_theta] Sun zenith angle in degrees ranging from 0. to a   */
+/*	number less than 90.                                       */
+/*                                                                 */
+/* [sun2earth_distance] Distance from the Sun to the Earth in      */
+/*	astronomical units.                                        */
+/*                                                                 */
+/* [gmt_time] Time of the day in GMT (hhmm.ss). This value does    */
+/*      not affect the results at all.                             */
+/*                                                                 */
+/* [z_number or a_number] The number of viewing directions at      */
+/*	which the user wants the radiance calculated.              */
+/*                                                                 */
+/* [(*z_theta,*a_theta)] A list, separated by spaces, of           */
+/*	(zenith,azimuth) angle pairs with the number of pairs      */
+/*	equal to z_number or a_number.	                           */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[sunz_number]		NUMBER OF SUN ZENITH ANGLES: 1,
+[sunz_theta]		SOLAR ZENITH ANGLE:  30.0,
+[sun2earth_distance]	SUN TO EARTH DISTANCE IN AU:  1.0,
+[gmt_time]              TIME IN GMT:   1800.0,
+
+[z_number or a_number]	NUMBER OF VIEWING DIRECTIONS: 1,
+
+[(*z_theta,*a_theta)]	VIEWING DIRECTION PAIRS (ZENITH, AZIMUTH):
+			(0., 0.) (44.92612, 180.),
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/

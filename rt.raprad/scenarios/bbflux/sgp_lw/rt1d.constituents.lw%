@@ -1,0 +1,155 @@
+/*-----------------------------------------------------------------*/
+/* CONSTITUENT PROPERTIES                                          */
+/*                                                                 */
+/* There are so many ways in which to specify the absorption and   */
+/* scattering properties of different constituents that we cannot  */
+/* possibly plan for them all.  Furthermore, all of these          */
+/* properties change as a function of wavelength which complicates */
+/* matters further.  So instead, we have provided two ways of      */
+/* getting this information into the simulation.  Either you       */
+/* specify the wavelength dependence of the particles' properties  */
+/* explicity in this file or you put in a -1 flag and have these   */
+/* properities determined elsewhere in the code either using       */
+/* the appropriate phase function file input or explicity          */
+/* calculating them in some routine that calculates the particle   */
+/* extinction properties as a function of wavelength and layer.    */
+/* For this latter case, the constituent number densities must be  */
+/* specified either in this file or the atmospheric input file.    */ 
+/* If you do not specify a -1, then the optical depths and single  */
+/* scatter albedos must be specified for each band in a list whose */
+/* number of members equals the number of channels                 */
+/* pp->numintervals chosen in the photon partition configuration.  */
+/* In any case, the phase function file for any scattering         */
+/* constituent must contain exactly pp->numintervals entries, one  */
+/* for each channel or spectral band used in the computation.      */
+/* Any cloud properties must come before all other constituent     */
+/* properties.  This is so because the water vapor density in the  */
+/* cloud must be considered when computing the gaseous absorption  */
+/* in the region of the cloud.                                     */
+/*                                                                 */
+/* The choices for phasefcn_which are                              */
+/*                                                                 */
+/* 	-1 = No Phase Function because of no scattering            */
+/*	 0 = Explicit Array of Number                              */
+/*	 1 = Legendre Polynomials                                  */
+/*	 2 = Henyey-Greenstein Phase Function                      */
+/*                                                                 */
+/*-----------------------------------------------------------------*/
+
+[constituents_number]	CONSTITUENTS: 2,
+
+
+[constituents_name]	CONSTITUENT NAME: RayleighScatter,
+[base_height]		 BASE HEIGHT OF THE CONSTITUENT (in meters):      0.,
+[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 70000.,
+[scale_height]		SCALE HEIGHT OF THE CONSTITUENT (in meters): -1.,
+[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): -1.,
+[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
+[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
+[*tau] 			TOTAL OPTICAL DEPTH: -1.,
+[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
+[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
+[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
+[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
+[*p_g]			ASYMMETRY PARAMETER: -1.,
+[phasefcn_file]        	PHASE FUNCTION FILE NAME: ../../ancillary/rayleigh.phase_function.mlawer_lw,
+[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
+[phasefcn_which]	PHASE FUNCTION REPRESENTATION: 1,
+[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1.,
+[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1.,
+[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: none,
+
+[constituents_name]	CONSTITUENT NAME: GaseousAbsorptionSpectralModelMlawerLw,
+[base_height]		 BASE HEIGHT OF THE CONSTITUENT (in meters):      0.,
+[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 70000.,
+[scale_height]		SCALE HEIGHT OF THE CONSTITUENT (in meters): -1.,
+[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): -1.,
+[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
+[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
+[*tau] 			TOTAL OPTICAL DEPTH: -1.,
+[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
+[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
+[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
+[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
+[*p_g]			ASYMMETRY PARAMETER: -1.,
+[phasefcn_file]        	PHASE FUNCTION FILE NAME: -1.,
+[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
+[phasefcn_which]	PHASE FUNCTION REPRESENTATION: -1.,
+[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1.,
+[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1.,
+[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: none,
+
+
+/* aerosol fall96 Sep. 21 */
+
+[constituents_name]	CONSTITUENT NAME: AerosolExtinction,
+[base_height]		 BASE HEIGHT OF THE CONSTITUENT (in meters): 0.,
+[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 1000.,
+[scale_height]		SCALE HEIGHT OF THE CONSTITUENT (in meters): -1.,
+[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): -1.,
+[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
+[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
+[*tau] 			TOTAL OPTICAL DEPTH:    0.1341 0.1199 0.1103 0.0998 0.0888 0.0763 0.0655 0.0554 0.0492 0.0472 0.0456 0.0427 0.0399 0.0373 0.0350 0.0337 0.0318 0.0294 0.0269 0.0248 0.0224 0.0201 0.0174 0.0133 0.0109 0.0091 0.0075 0.0068 0.0053 0.0039 0.0032 0.0027,
+[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
+[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
+[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
+[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
+[*p_g]			ASYMMETRY PARAMETER: -1.,
+[phasefcn_file]        	PHASE FUNCTION FILE NAME:  /home/kato/code/rt/rt1d_raprad_4str/ancillary/mineral.960921.1540.dat,
+[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
+[phasefcn_which]	PHASE FUNCTION REPRESENTATION: 1,
+[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1,
+[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1,
+[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: none,
+
+
+
+/*arese aerosol Oct. 14, 1996 */
+
+[constituents_name]	CONSTITUENT NAME: AerosolExtinction,
+[base_height]		 BASE HEIGHT OF THE CONSTITUENT (in meters): 0.,
+[top_height]		  TOP HEIGHT OF THE CONSTITUENT (in meters): 1000.,
+[scale_height]		SCALE HEIGHT OF THE CONSTITUENT (in meters): -1.,
+[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): -1.,
+[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
+[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
+[*tau] 			TOTAL OPTICAL DEPTH:    0.1457E+00 0.1321E+00 0.1229E+00 0.1126E+00 0.1017E+00 0.8915E-01 0.7806E-01 0.6749E-01 0.6078E-01 0.5864E-01 0.5695E-01 0.5372E-01 0.5066E-01 0.4775E-01 0.4524E-01 0.4376E-01 0.4164E-01 0.3880E-01 0.3590E-01 0.3348E-01 0.3068E-01 0.2783E-01 0.2457E-01 0.1952E-01 0.1641E-01 0.1396E-01 0.1178E-01 0.1079E-01 0.8736E-02 0.6624E-02 0.5601E-02 0.4848E-02,
+[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
+[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
+[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
+[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
+[*p_g]			ASYMMETRY PARAMETER: -1.,
+[phasefcn_file]        	PHASE FUNCTION FILE NAME:  ../ancillary/mineral.951014.1300_1400.dat,
+[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
+[phasefcn_which]	PHASE FUNCTION REPRESENTATION: 1,
+[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1,
+[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1,
+[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: none,
+
+
+/* CLOUD EXTINCTION CONSTITUENT PROPERTIES */
+
+[constituents_name]	CONSTITUENT NAME: CloudExtinction,
+[base_height]		 BASE HEIGHT OF THE LAYER (in meters): 500.,
+[top_height]		  TOP HEIGHT OF THE LAYER (in meters): 1000.,
+[scale_height]		SCALE HEIGHT OF THE LAYER (in meters): -1.,
+[cdensity]		NUMBER DENSITY FOR THE CONSTITUENT (#/m^3): 2.39E+07,
+[*tau_abs] 		TOTAL ABSORPTION OPTICAL DEPTH: -1.,
+[*tau_sca] 		TOTAL SCATTERING OPTICAL DEPTH: -1.,
+[*tau] 			TOTAL OPTICAL DEPTH: -1.,
+[*sig_ext]		TOTAL EXTINCTION CROSS-SECTION (micron^2): -1.,
+[*sig_sca]		TOTAL SCATTERING CROSS-SECTION (micron^2): -1.,
+[*sig_abs]		TOTAL ABSORPTION CROSS-SECTION (micron^2): -1.,
+[*w0] 			SINGLE SCATTERING ALBEDO: -1.,
+[*p_g]			ASYMMETRY PARAMETER: -1.,
+[phasefcn_file]        	PHASE FUNCTION FILE NAME: ../../ancillary/water.rs10.sigma1.42.phase_function.16.lw,
+[phasefcn_format]       PHASE FUNCTION FORMAT: ascii,
+[phasefcn_which]	PHASE FUNCTION REPRESENTATION: 1,
+[p_explicit_number]	NUMBER OF ANGLES IN THE PHASE FUNCTION: -1,
+[p_legendre_number]	NUMBER OF LEGENDRE POLYNOMIALS IN THE PHASE FUNCTION: -1,
+[es] 			SATURATION VAPOR PRESSURE OVER WATER OR ICE: water,
+
+
+/*-----------------------------------------------------------------*/
+/* END                                                             */
+/*-----------------------------------------------------------------*/
